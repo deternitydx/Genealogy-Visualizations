@@ -1,0 +1,166 @@
+<html>
+<head>
+<title>Genealogy Display Prototype</title>
+<style>
+
+	h1 {
+		font-family: sans-serif;
+		font-weight: normal;
+		font-size: 16px;
+	}
+
+svg {
+  font: 10px sans-serif;
+}
+
+#chart {
+  height: 500px;
+}
+
+.node rect {
+  cursor: move;
+  fill-opacity: .9;
+  shape-rendering: crispEdges;
+}
+
+.node text {
+  pointer-events: none;
+  text-shadow: 0 1px 0 #fff;
+}
+
+.link {
+  fill: none;
+  stroke-opacity: .2;
+}
+
+.link:hover {
+    stroke-opacity: .8;
+}
+
+.chord path {
+  fill-opacity: .67;
+  stroke: #000;
+  stroke-width: .5px;
+}
+
+</style>
+<link rel="stylesheet" href="css/jquery-ui.css" />
+<link rel="stylesheet" href="css/tipsy.css" />
+<script type="text/javascript" src="js/jquery-2.1.1.js"></script>
+<script src="js/jquery-ui.js"></script>
+<script src="js/jquery.tipsy.js"></script>
+<script>
+	// jQuery to handle tooltips
+/*
+  $(function() {
+    $( document ).tooltip();
+  });
+*/
+	// jQuery to handle dialog
+	$(function() {
+    $( "#dialog" ).dialog({
+      autoOpen: false,
+      width: 640,
+      height: 580,
+      modal: true,
+      show: {
+        effect: "fade",
+        duration: 500
+      },
+      hide: {
+        effect: "fade",
+        duration: 500
+      }
+    });
+ 
+  });
+  
+  function show_info(node){
+	var dialog = d3.select("#dialog");
+	//dialog.text(""); // empty it out
+	
+	/*dialog.append("iframe")
+		.attr("src", "chord.html?id="+node.name)
+		.attr("frameborder", "0")
+		.attr("width", 600)
+		.attr("height", 600)
+		.style("overflow", "hidden"); */
+	//    document.getElementById('moreinfo').src = "chord.html?id="+id;
+    chordDiagram.useHoverOver = true; 
+    chordDiagram.drawChord(node.id);
+	// open the dialog window with jQuery
+	$("#dialog").dialog("option", "title", node.name);
+	$("#dialog").dialog("open"); 
+}
+</script>
+
+
+</head>
+<body>
+	<div id="chart"></div>
+
+
+<script src="js/d3.v3.min.js"></script>
+<script src="js/sankey.js"></script>
+<script src="js/display_sankey.js"></script>
+<script src="js/display_chord.js"></script>
+<script>
+var QueryString = function () {
+  // This function is anonymous, is executed immediately and 
+  // the return value is assigned to QueryString!
+  var query_string = {};
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i=0;i<vars.length;i++) {
+    var pair = vars[i].split("=");
+    	// If first entry with this name
+    if (typeof query_string[pair[0]] === "undefined") {
+      query_string[pair[0]] = pair[1];
+    	// If second entry with this name
+    } else if (typeof query_string[pair[0]] === "string") {
+      var arr = [ query_string[pair[0]], pair[1] ];
+      query_string[pair[0]] = arr;
+    	// If third or later entry with this name
+    } else {
+      query_string[pair[0]].push(pair[1]);
+    }
+  } 
+    return query_string;
+} ();
+
+
+    // Instantiate the sankey display, selecting the chart object as the target
+    var sankeyDiagram = new SankeyDisplay("#chart");
+    //sankeyDiagram.width = $(document).width() - 25;
+    //sankeyDiagram.height = $(document).height() - 25;
+    sankeyDiagram.width = 20;
+    sankeyDiagram.height = 20;
+    sankeyDiagram.breadth = 225;
+    //sankeyDiagram.height=1000;
+    var append = "?";
+    if (QueryString.wife)
+        append += "view=female&";
+    if (QueryString.id)
+        append += "id=" + QueryString.id + "&";
+    if (QueryString.levels)
+        append += "levels=" + QueryString.levels + "&";
+    if (QueryString.forwards)
+        append += "forwards=1&";
+    if (QueryString.backwards)
+        append += "backwards=1&";
+
+    sankeyDiagram.drawDiagram("api/lineage.php" + append);
+
+	var chordDiagram = new ChordDisplay("#dialog");
+    if (QueryString.wife) {
+        chordDiagram.json_location = function(id) {return "api/marriages_by_woman.php?id=" + id;};
+        chordDiagram.patriarchal = false;
+    } else
+        chordDiagram.json_location = function(id) {return "api/marriages_by_man.php?id=" + id;};
+
+</script>
+<div id="dialog" class="dialog" style="overflow: hidden">
+</div>
+
+</body>
+</html>

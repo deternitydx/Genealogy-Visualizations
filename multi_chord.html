@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+<style>
+
+body {
+  font: 10px sans-serif;
+}
+
+.chord path {
+  fill-opacity: .67;
+  stroke: #000;
+  stroke-width: .5px;
+}
+
+	h1 {
+		font-family: sans-serif;
+		font-weight: normal;
+		font-size: 16px;
+	}
+
+	h3 {
+		text-align: center;
+	}
+
+	h4 {
+		margin: 0px;
+		padding: 0px;
+		margin-top: 15px;
+		text-align: center;
+	}
+
+	#legend {
+		width: 90px;
+		float: left;
+		clear: none;
+		margin-top: 45px;
+		text-align: center;
+	}
+
+	#legend p {
+		text-align: center;
+		margin: 1px;
+		padding:1px;
+	}
+/*svg {
+	font: 10px sans-serif;
+	padding: 0px;
+	margin: 0px;
+	max-height: 100%;
+}*/
+
+#chordID1, #chordID2 {
+	float:left;
+	clear: none;
+	padding: 0px;
+}
+
+#bottom {
+	float:left;
+	clear:both;
+	color: #000000;
+	margin: 50px;
+}
+
+#bottom svg {
+	overflow: visible;
+}
+
+.node rect {
+  cursor: move;
+  fill-opacity: .9;
+  shape-rendering: crispEdges;
+}
+
+.node text {
+  pointer-events: none;
+  text-shadow: 0 1px 0 #fff;
+}
+
+.link {
+  fill: none;
+  stroke-opacity: .2;
+}
+
+.link:hover {
+  stroke-opacity: .5;
+}
+
+.chord path {
+  fill-opacity: .67;
+  stroke: #000;
+  stroke-width: .5px;
+}
+
+table {
+	border: 1px solid #000000;
+	margin: 0px;
+	padding: 0px;
+	width: 100%;
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+
+td, tr {
+	border: 1px solid #000000;
+	margin: 0px;
+	padding: 5px;
+	text-align: center;
+}
+
+</style>
+<link rel="stylesheet" href="css/jquery-ui.css" />
+<link rel="stylesheet" href="css/tipsy.css" />
+<link rel="stylesheet" href="js/slider/d3.slider.css" />  
+<script type="text/javascript" src="js/jquery-2.1.1.js"></script>
+<script src="js/jquery-ui.js"></script>
+<script src="js/jquery.tipsy.js"></script>
+<script src="js/d3.v3.min.js"></script>
+<script src="js/slider/d3.slider.js"></script>
+<script src="js/display_chord_time.js"></script>
+</head>
+<body>
+<div id="legend"></div>
+<div id="chordID1"></div>
+<div id="chordID2"></div>
+<div id="bottom"></div>
+<script>
+var QueryString = function () {
+  // This function is anonymous, is executed immediately and 
+  // the return value is assigned to QueryString!
+  var query_string = {};
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i=0;i<vars.length;i++) {
+    var pair = vars[i].split("=");
+    	// If first entry with this name
+    if (typeof query_string[pair[0]] === "undefined") {
+      query_string[pair[0]] = pair[1];
+    	// If second entry with this name
+    } else if (typeof query_string[pair[0]] === "string") {
+      var arr = [ query_string[pair[0]], pair[1] ];
+      query_string[pair[0]] = arr;
+    	// If third or later entry with this name
+    } else {
+      query_string[pair[0]].push(pair[1]);
+    }
+  } 
+    return query_string;
+} ();
+
+var chordDiagram1 = new ChordDisplay("#chordID1");
+chordDiagram1.width = 400; chordDiagram1.height = 400;
+chordDiagram1.json_location = function(id) {return "api/marriages_by_man.php?id=" + 495;};
+chordDiagram1.originalTime = QueryString.time ? QueryString.time : null; 
+chordDiagram1.drawChord(QueryString.id ? QueryString.id : 50);
+chordDiagram1.drawTitle("#chordID1", "Joseph Smith");
+//chordDiagram1.drawTimeSlider("#bottom");
+//chordDiagram.drawLegend("#legend");
+
+var chordDiagram2 = new ChordDisplay("#chordID2");
+chordDiagram2.width = 400; chordDiagram2.height = 400;
+chordDiagram2.json_location = function(id) {return "api/marriages_by_man.php?id=" + 615;};
+chordDiagram2.originalTime = QueryString.time ? QueryString.time : null; 
+chordDiagram2.drawChord(QueryString.id ? QueryString.id : 50);
+chordDiagram2.drawTitle("#chordID2", "Brigham Young");
+
+var slider = null;
+
+drawTimeSlider = function(element) {
+
+			var stepperdiv = d3.select(element).append("div").style("margin-top", "30px");
+			stepperdiv.append("button").text("Prev").on("click", goPrevious);
+			stepperdiv.append("button").text("All Time").on("click", allTime);
+			stepperdiv.append("button").text("Next").on("click", goNext);
+            stepperdiv.append("span").attr("id","timeText").html("All Time");
+			
+			// Add the time slider
+			var min = 1830, max = 1870;
+        		var time_slider_scale = d3.scale.linear().domain([min, max]).range([min, max]);
+			var time_slider_axis = d3.svg.axis().orient("bottom").ticks(10).scale(time_slider_scale).tickFormat(d3.format(".0f"));
+            slider = d3.slider().axis(time_slider_axis).min(min).max(max).on("slide", redraw);
+			d3.select(element).append("div").attr("id", "sliderDiv").call(slider);
+
+}
+
+redraw = function(event,time) {
+                chordDiagram1.redraw(event,time); chordDiagram2.redraw(event,time);
+};
+goPrevious = function(event,time) {
+		slider.value(slider.value() - 1);
+                chordDiagram1.redraw(null,slider.value()); chordDiagram2.redraw(null,slider.value());
+};
+goNext = function(event,time) { 
+		slider.value(slider.value() + 1);
+                chordDiagram1.redraw(null,slider.value()); chordDiagram2.redraw(null,slider.value());
+};
+allTime = function(event,time) { 
+                chordDiagram1.allTime(event,time); chordDiagram2.allTime(event,time);
+};
+drawTimeSlider("#bottom");
+
+
+</script>
+</body>
+</html>

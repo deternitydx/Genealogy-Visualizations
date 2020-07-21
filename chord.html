@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="css/jquery-ui.css" />
+<link rel="stylesheet" href="css/chords.css" />
+<link rel="stylesheet" href="css/tipsy.css" />
+<link rel="stylesheet" href="js/slider/d3.slider.css" />  
+<script type="text/javascript" src="js/jquery-2.1.1.js"></script>
+<script src="js/jquery-ui.js"></script>
+<script src="js/jquery.tipsy.js"></script>
+<script src="js/d3.v3.min.js"></script>
+<script src="js/slider/d3.slider.js"></script>
+<script src="js/display_chord.js"></script>
+</head>
+<body>
+<div id="bodyDiv" style="height: 1000px">
+<div id="legend"></div>
+<div id="chordID"></div>
+<div id="bottom"></div>
+<script>
+var QueryString = function () {
+  // This function is anonymous, is executed immediately and 
+  // the return value is assigned to QueryString!
+  var query_string = {};
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i=0;i<vars.length;i++) {
+    var pair = vars[i].split("=");
+    	// If first entry with this name
+    if (typeof query_string[pair[0]] === "undefined") {
+      query_string[pair[0]] = pair[1];
+    	// If second entry with this name
+    } else if (typeof query_string[pair[0]] === "string") {
+      var arr = [ query_string[pair[0]], pair[1] ];
+      query_string[pair[0]] = arr;
+    	// If third or later entry with this name
+    } else {
+      query_string[pair[0]].push(pair[1]);
+    }
+  } 
+    return query_string;
+} ();
+
+var chordDiagram = new ChordDisplay("#chordID");
+
+// Do query for gender
+d3.json("api/gender.php?id="+QueryString.id, function(data) {
+ 
+    if (data.gender == "Female") {
+        chordDiagram.json_location = function(id) {return "api/marriages_by_woman.php?id=" + id;};
+        chordDiagram.patriarchal = false;
+    } else
+        chordDiagram.json_location = function(id) {return "api/marriages_by_man.php?id=" + id;};
+    chordDiagram.originalTime = QueryString.time ? QueryString.time : null; 
+    chordDiagram.nameAsTitle = true;
+    chordDiagram.drawNumSigOthers = true;
+    chordDiagram.useHoverOver = QueryString.hover ? true : false;
+    chordDiagram.drawChord(QueryString.id ? QueryString.id : 615);
+    chordDiagram.drawLegend("#legend");
+
+    if (QueryString.temporal) {
+        chordDiagram.drawTimeSlider("#bottom");
+    }
+});
+</script>
+</div>
+</body>
+</html>

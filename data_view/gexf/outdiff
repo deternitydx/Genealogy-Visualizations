@@ -1,0 +1,406 @@
+0a1,25
+> Abigail Augusta Pond" weight = "5" />
+> Agnes Taylor" weight = "4" />
+> Alice Longstroth
+> Almera Woodward Johnson" weight = "2" />
+> Amanda Trimble Gheen
+> Ann Alice Gheen" weight = "3" />
+> Anna Marie Whitney" weight = "5" />
+> Annie Ballantyne
+> Ann Maria Whitney" weight = "5" />
+> Aurelia Read Spencer
+> Aurella Reed Spencer
+> Bathsheba Smith" weight = "5" />
+> Benjamin Franklin Cutler
+> Brigham Kimball
+> Brigham Young
+> Caroline Clara Smith
+> Caroline Clara Smith Callister" weight = "5" />
+> Catherine Curtis Spencer
+> Catherine Curtis Spencer   Oct Spencer" weight = "5" />
+> Charles Miller
+> Charles Spaulding Kimball
+> Charlotte Bishop" weight = "3" />
+> Clarissa Clara Decker" weight = "3" />
+> Clarissa Cutler
+> Claudius Victor Spencer" weight = "5" />
+1a27,28
+> David Patten Kimball
+> Delcena Diademia Johnson" weight = "3" />
+2a30
+> Don Carlos Whitney
+7a36
+> 	<edge id = "" source = "10451" target = "15277" label = "Henry Green Boyle" weight = "5" />
+11a41,43
+> 	<edge id = "" source = "10589" target = "32267" label = "Ariah Coats Brower" weight = "5" />
+> 	<edge id = "" source = "10639" target = "32267" label = "Samuel Bringhurst" weight = "5" />
+> 	<edge id = "" source = "10660" target = "615" label = "Caroline Matilda Allen" weight = "5" />
+12a45
+> 	<edge id = "" source = "10764" target = "32267" label = "Margaret Elizabeth Hussey" weight = "5" />
+15c48
+< 	<edge id = "" source = "10989" target = "12596" label = "Mercy Fielding" weight = "2" />
+---
+> 	<edge id = "" source = "10989" target = "12596" label = "Mercy Fielding
+20a54,55
+> 	<edge id = "" source = "11034" target = "615" label = "Samuel Webster Brown" weight = "5" />
+> 	<edge id = "" source = "11042" target = "615" label = "Lydia Maria Lathrop" weight = "5" />
+23a59,61
+> 	<edge id = "" source = "11449" target = "615" label = "Israel Barlow" weight = "5" />
+> 	<edge id = "" source = "11473" target = "5720" label = "Harrison Burgess" weight = "5" />
+> 	<edge id = "" source = "11620" target = "615" label = "Elizabeth Haven
+29a68
+> 	<edge id = "" source = "12225" target = "615" label = "Elijah Averett
+34a74,75
+> 	<edge id = "" source = "12362" target = "32267" label = "George Quayle Cannon
+> 	<edge id = "" source = "12596" target = "12596" label = "Lovina Smith
+38a80,81
+> 	<edge id = "" source = "12600" target = "12600" label = "Agnes Charlotte Smith
+> 	<edge id = "" source = "12648" target = "12648" label = "George Smith
+52a96
+> 	<edge id = "" source = "137" target = "12596" label = "Howard Coray" weight = "5" />
+54,55c98,100
+< 	<edge id = "" source = "13814" target = "57138" label = "Melvina Kingsbury" weight = "3" />
+< 	<edge id = "" source = "13916" target = "32267" label = "Annie Ballantyne" weight = "3" />
+---
+> 	<edge id = "" source = "13814" target = "36149" label = "Joseph Kingsbury" weight = "5" />
+> 	<edge id = "" source = "13814" target = "57138" label = "Joseph Kingsbury
+> 	<edge id = "" source = "13916" target = "32267" label = "Richard Ballantyne
+58a104
+> 	<edge id = "" source = "142" target = "32267" label = "Frederick Walter Cox, Jr." weight = "5" />
+59a106
+> 	<edge id = "" source = "143" target = "15728" label = "Chauncey Whiting" weight = "5" />
+63,64c110,113
+< 	<edge id = "" source = "1486" target = "12241" label = "Julia Ann Johnson" weight = "3" />
+< 	<edge id = "" source = "1486" target = "495" label = "Delcena Diademia Johnson" weight = "2" />
+---
+> 	<edge id = "" source = "1480" target = "615" label = "Ovanda Fuller" weight = "5" />
+> 	<edge id = "" source = "1486" target = "12241" label = "Julia Ann Johnson
+> 	<edge id = "" source = "1486" target = "495" label = "Delcena Diademia Johnson
+> 	<edge id = "" source = "14944" target = "615" label = "Cherizade Bernice Grimes" weight = "5" />
+67c116
+< 	<edge id = "" source = "1505" target = "36149" label = "Elizabeth Almira Pond" weight = "3" />
+---
+> 	<edge id = "" source = "1505" target = "36149" label = "Louisa Alcina Pond
+69a119
+> 	<edge id = "" source = "15277" target = "15277" label = "Joshua Lewis Miller
+83a134
+> 	<edge id = "" source = "15728" target = "15728" label = "Cordelia Calista Morley
+89a141
+> 	<edge id = "" source = "15977" target = "5720" label = "Mary Ann Barton" weight = "5" />
+107a160,162
+> 	<edge id = "" source = "16729" target = "12648" label = "Helen Marr Clark" weight = "5" />
+> 	<edge id = "" source = "16764" target = "5720" label = "Howard Egan" weight = "5" />
+> 	<edge id = "" source = "16780" target = "5720" label = "David Candland" weight = "5" />
+115a171
+> 	<edge id = "" source = "17306" target = "25079" label = "Desdemona Chase" weight = "5" />
+120a177
+> 	<edge id = "" source = "18040" target = "22809" label = "Lucy Caroline Clayton" weight = "5" />
+124a182
+> 	<edge id = "" source = "18040" target = "5720" label = "Alice Clayton" weight = "5" />
+126a185
+> 	<edge id = "" source = "18065" target = "12648" label = "Augusta Bowen Cleveland" weight = "5" />
+138a198,199
+> 	<edge id = "" source = "20301" target = "615" label = "William Weeks" weight = "5" />
+> 	<edge id = "" source = "20411" target = "615" label = "Ann Cady Eldredge" weight = "5" />
+141a203
+> 	<edge id = "" source = "21051" target = "615" label = "Rebecca Whitcomb Greenleaf" weight = "5" />
+150,151c212,215
+< 	<edge id = "" source = "22663" target = "36149" label = "Elizabeth Mahala Moore" weight = "3" />
+< 	<edge id = "" source = "22754" target = "18044" label = "Ruth Moon" weight = "3" />
+---
+> 	<edge id = "" source = "22663" target = "36149" label = "Dorcas Adelia Moore
+> 	<edge id = "" source = "22700" target = "36149" label = "Mahala Dorcas E Higley" weight = "5" />
+> 	<edge id = "" source = "22754" target = "18044" label = "Ruth Moon
+> 	<edge id = "" source = "22809" target = "22809" label = "Rhoda Ann Jenetta Richards
+163c227
+< 	<edge id = "" source = "23476" target = "615" label = "Lucy Ann Decker" weight = "3" />
+---
+> 	<edge id = "" source = "23476" target = "615" label = "Lucy Ann Decker
+167c231
+< 	<edge id = "" source = "24280" target = "495" label = "Maria Lawrence" weight = "3" />
+---
+> 	<edge id = "" source = "24280" target = "495" label = "Maria Lawrence
+170a235
+> 	<edge id = "" source = "24784" target = "615" label = "John Lytle" weight = "5" />
+172c237,238
+< 	<edge id = "" source = "24897" target = "22809" label = "Nancy Longstroth" weight = "3" />
+---
+> 	<edge id = "" source = "24897" target = "22809" label = "Stephen Longstroth
+> 	<edge id = "" source = "25079" target = "25079" label = "Ruth Adelia Deseret Lyman
+184a251
+> 	<edge id = "" source = "25832" target = "5720" label = "Nancy Ann Knowles" weight = "5" />
+187a255
+> 	<edge id = "" source = "262" target = "615" label = "Joshua Sawyer Holman" weight = "5" />
+189a258,259
+> 	<edge id = "" source = "26455" target = "36149" label = "Thomas Moore" weight = "5" />
+> 	<edge id = "" source = "26455" target = "57138" label = "Thomas Moore" weight = "5" />
+190a261
+> 	<edge id = "" source = "26600" target = "5720" label = "Cornelia Melvina Divine" weight = "5" />
+191a263
+> 	<edge id = "" source = "269" target = "32267" label = "Mary Isabella Hales" weight = "5" />
+196c268,270
+< 	<edge id = "" source = "27285" target = "425" label = "Adelia Ann Bishop" weight = "3" />
+---
+> 	<edge id = "" source = "27086" target = "615" label = "Sarah Jane Witt" weight = "5" />
+> 	<edge id = "" source = "27285" target = "425" label = "Adelia Ann Bishop
+> 	<edge id = "" source = "27630" target = "615" label = "John Doyle Lee" weight = "5" />
+204c278
+< 	<edge id = "" source = "282" target = "495" label = "Zina Huntington" weight = "3" />
+---
+> 	<edge id = "" source = "282" target = "495" label = "Zina Huntington
+209a284
+> 	<edge id = "" source = "28896" target = "615" label = "Hannah Harvey" weight = "5" />
+210a286
+> 	<edge id = "" source = "29076" target = "3502" label = "Almon Worthy Sherman" weight = "5" />
+211a288
+> 	<edge id = "" source = "29366" target = "615" label = "George Davis Grant" weight = "5" />
+220c297,298
+< 	<edge id = "" source = "30398" target = "5720" label = "Alice Ann Gheen" weight = "3" />
+---
+> 	<edge id = "" source = "30260" target = "615" label = "Eunice Dunning" weight = "5" />
+> 	<edge id = "" source = "30398" target = "5720" label = "Alice Ann Gheen
+221a300
+> 	<edge id = "" source = "30968" target = "32267" label = "John Benbow" weight = "5" />
+223a303
+> 	<edge id = "" source = "31357" target = "5720" label = "Charles Wesley Hubbard" weight = "5" />
+230a311
+> 	<edge id = "" source = "31692" target = "31692" label = "Laura Miranda Hyde
+268c349
+< 	<edge id = "" source = "32251" target = "32267" label = "John Taylor" weight = "4" />
+---
+> 	<edge id = "" source = "32251" target = "32267" label = "John Taylor
+272a354
+> 	<edge id = "" source = "32267" target = "32267" label = "George J Taylor
+276c358,359
+< 	<edge id = "" source = "32300" target = "5720" label = "Vilate Murray" weight = "3" />
+---
+> 	<edge id = "" source = "32300" target = "5720" label = "Vilate Murray
+> 	<edge id = "" source = "32525" target = "5720" label = "Caroline Pinkham" weight = "5" />
+281a365,366
+> 	<edge id = "" source = "33008" target = "5720" label = "Abraham Whitney Palmer" weight = "5" />
+> 	<edge id = "" source = "33258" target = "22809" label = "Ellen Partington" weight = "5" />
+291,292c376,377
+< 	<edge id = "" source = "34214" target = "495" label = "Lucy Walker" weight = "3" />
+< 	<edge id = "" source = "34214" target = "5720" label = "Lucy Walker" weight = "2" />
+---
+> 	<edge id = "" source = "34214" target = "495" label = "Lucy Walker
+> 	<edge id = "" source = "34214" target = "5720" label = "Lucy Walker
+303c388,389
+< 	<edge id = "" source = "34765" target = "615" label = "Mary Harvey Pierce" weight = "3" />
+---
+> 	<edge id = "" source = "34765" target = "615" label = "Mary Harvey Pierce
+> 	<edge id = "" source = "3502" target = "3502" label = "Thaddeus Cutler
+312c398,399
+< 	<edge id = "" source = "3502" target = "5720" label = "Clarissa Cutler" weight = "3" />
+---
+> 	<edge id = "" source = "3502" target = "5720" label = "Clarissa Cutler
+> 	<edge id = "" source = "35323" target = "5720" label = "James Smithies" weight = "5" />
+315a403
+> 	<edge id = "" source = "35785" target = "615" label = "Margaret Snyder" weight = "5" />
+317a406
+> 	<edge id = "" source = "36149" target = "36149" label = "Sarah Whitney
+318a408
+> 	<edge id = "" source = "36149" target = "57138" label = "Sarah Whitney" weight = "5" />
+330a421,422
+> 	<edge id = "" source = "36761" target = "36761" label = "Mary Leone Spencer
+> 	<edge id = "" source = "3725" target = "615" label = "Sophia Kellogg" weight = "5" />
+343a436
+> 	<edge id = "" source = "38637" target = "5720" label = "Mary Ann Bosworth" weight = "5" />
+353c446
+< 	<edge id = "" source = "3975" target = "615" label = "Mary Angell" weight = "3" />
+---
+> 	<edge id = "" source = "3975" target = "615" label = "Mary Angell
+354a448
+> 	<edge id = "" source = "39944" target = "615" label = "Christina Diana Whitner" weight = "5" />
+359,360c453,454
+< 	<edge id = "" source = "403" target = "25079" label = "Caroline Ely Partridge" weight = "3" />
+< 	<edge id = "" source = "403" target = "495" label = "Emily Dow Partridge" weight = "3" />
+---
+> 	<edge id = "" source = "403" target = "25079" label = "Caroline Ely Partridge
+> 	<edge id = "" source = "403" target = "495" label = "Emily Dow Partridge
+368a463,465
+> 	<edge id = "" source = "40" target = "15728" label = "Lucy Diantha Morley
+> 	<edge id = "" source = "41691" target = "615" label = "Chandler Holbrook" weight = "5" />
+> 	<edge id = "" source = "41802" target = "12648" label = "Thomas Callister" weight = "5" />
+370a468,471
+> 	<edge id = "" source = "41877" target = "615" label = "Albert Perry Rockwood" weight = "5" />
+> 	<edge id = "" source = "41958" target = "615" label = "Juliette Homan" weight = "5" />
+> 	<edge id = "" source = "41959" target = "615" label = "Herman Daggatt Bayles" weight = "5" />
+> 	<edge id = "" source = "41979" target = "22809" label = "Peter Muir Fife" weight = "5" />
+371a473,474
+> 	<edge id = "" source = "42029" target = "5720" label = "Joseph Grafton Hovey" weight = "5" />
+> 	<edge id = "" source = "42033" target = "5720" label = "Martha Ann Webster" weight = "5" />
+379a483
+> 	<edge id = "" source = "42334" target = "615" label = "Amanda Armstrong Fausett" weight = "5" />
+382a487,488
+> 	<edge id = "" source = "42590" target = "32267" label = "Thomas Hall" weight = "5" />
+> 	<edge id = "" source = "425" target = "425" label = "Celestia Lacrissa Pratt
+404a511
+> 	<edge id = "" source = "43477" target = "5720" label = "Anne Barnes" weight = "5" />
+407a515
+> 	<edge id = "" source = "43696" target = "32267" label = "Stephen Hales" weight = "5" />
+409a518
+> 	<edge id = "" source = "44076" target = "615" label = "Robert Pierce" weight = "5" />
+415c524
+< 	<edge id = "" source = "44636" target = "5720" label = "Harriet Sanders" weight = "3" />
+---
+> 	<edge id = "" source = "44636" target = "5720" label = "Harriet Sanders
+431a541,542
+> 	<edge id = "" source = "45544" target = "12596" label = "James Lawson" weight = "5" />
+> 	<edge id = "" source = "45602" target = "615" label = "John Harvey" weight = "5" />
+434c545
+< 	<edge id = "" source = "45613" target = "495" label = "Mary Frost" weight = "2" />
+---
+> 	<edge id = "" source = "45613" target = "495" label = "Mary Frost
+439a551
+> 	<edge id = "" source = "45808" target = "615" label = "Curtis Edwin Bolton" weight = "5" />
+455a568
+> 	<edge id = "" source = "47384" target = "615" label = "Moses Martin Sanders" weight = "5" />
+463a577
+> 	<edge id = "" source = "47951" target = "615" label = "Jeremiah Willey" weight = "5" />
+468a583
+> 	<edge id = "" source = "484" target = "484" label = "George Albert Smith
+469a585
+> 	<edge id = "" source = "48592" target = "615" label = "James C. Graham" weight = "5" />
+470a587
+> 	<edge id = "" source = "486" target = "12648" label = "Bathsheba Bigler" weight = "5" />
+478a596
+> 	<edge id = "" source = "48790" target = "32267" label = "Eleanor Beitler" weight = "5" />
+483a602
+> 	<edge id = "" source = "49053" target = "615" label = "Isaac Morley" weight = "5" />
+484a604,605
+> 	<edge id = "" source = "49055" target = "615" label = "Lucy Gunn" weight = "5" />
+> 	<edge id = "" source = "49107" target = "5720" label = "Alvah Lewis Tippets" weight = "5" />
+488c609
+< 	<edge id = "" source = "492" target = "484" label = "Hannah Maria Libby" weight = "3" />
+---
+> 	<edge id = "" source = "492" target = "484" label = "Hannah Maria Libby
+517a639,641
+> 	<edge id = "" source = "50148" target = "615" label = "George Roberts Grant" weight = "5" />
+> 	<edge id = "" source = "50175" target = "615" label = "Joseph Busby" weight = "5" />
+> 	<edge id = "" source = "50514" target = "615" label = "Polly Johnson" weight = "5" />
+518a643,645
+> 	<edge id = "" source = "50559" target = "615" label = "Hannah Ann Dubois" weight = "5" />
+> 	<edge id = "" source = "50597" target = "615" label = "James Graham" weight = "5" />
+> 	<edge id = "" source = "5067" target = "615" label = "Stephen Hezekiah Goddard" weight = "5" />
+520a648,649
+> 	<edge id = "" source = "50970" target = "615" label = "Simeon Adams Dunn" weight = "5" />
+> 	<edge id = "" source = "50985" target = "5720" label = "William Pitt" weight = "5" />
+526a656,657
+> 	<edge id = "" source = "52370" target = "15277" label = "William Leyland" weight = "5" />
+> 	<edge id = "" source = "52638" target = "5720" label = "Amanda Egglestone" weight = "5" />
+527a659
+> 	<edge id = "" source = "5412" target = "5720" label = "Jesse Pierce Harmon" weight = "5" />
+530a663
+> 	<edge id = "" source = "57138" target = "36149" label = "John Kimball Whitney
+534a668
+> 	<edge id = "" source = "57138" target = "57138" label = "John Kimball Whitney
+539c673
+< 	<edge id = "" source = "5720" target = "495" label = "Helen Whitney" weight = "3" />
+---
+> 	<edge id = "" source = "5720" target = "495" label = "Helen Whitney
+540a675,676
+> 	<edge id = "" source = "5720" target = "5720" label = "Heber Parley Kimball
+> 	<edge id = "" source = "581" target = "615" label = "Agatha Ann Woolsey" weight = "5" />
+544a681
+> 	<edge id = "" source = "615" target = "615" label = "Elizabeth Young
+547a685
+> 	<edge id = "" source = "6230" target = "615" label = "Samantha Call" weight = "5" />
+550a689
+> 	<edge id = "" source = "700" target = "12596" label = "Martha Jane Knowlton" weight = "5" />
+552a692
+> 	<edge id = "" source = "7727" target = "7727" label = "Ellen Curtis Spencer
+560a701,702
+> 	<edge id = "" source = "8815" target = "32267" label = "Alvin Wines" weight = "5" />
+> 	<edge id = "" source = "9223" target = "5720" label = "Mary Marion Davenport" weight = "5" />
+563a706
+> 	<edge id = "" source = "9716" target = "495" label = "John Milton Bernhisel" weight = "5" />
+719a863,881
+> Editha Ann Morley
+> Edith Ann Morley" weight = "5" />
+> Elisha Averett
+> Eliza Averett" weight = "5" />
+> Elizabeth Almira Pond
+> Elizabeth Mahala Moore" weight = "5" />
+> Elizabeth Miller
+> Elizabeth Young Ellsworth
+> Eliza Leyland
+> Eliza Maria Partridge
+> Eliza Maria Partridge" weight = "3" />
+> Ellen Sanders" weight = "3" />
+> Emily Matilda Hyde" weight = "5" />
+> Emily Trask Cutler" weight = "3" />
+> Emily Trask Cutler" weight = "5" />
+> Eunice Caroline Young
+> Francis M Lyman
+> George Boardman Spencer
+> George John Taylor" weight = "5" />
+723a886,926
+> Harriett Pamela Partridge" weight = "3" />
+> Harrison Miller
+> Heber John Richards" weight = "5" />
+> Helen Mar Kimball" weight = "3" />
+> Helen Mar Kimball" weight = "5" />
+> Helen Whitney
+> Henry William Kimball
+> Horace Kimball Whitney
+> Howard Orson Spencer
+> Isaac Morley
+> Jane Ballantyne" weight = "5" />
+> Jemima Angell" weight = "3" />
+> Jerusha Smith
+> John Lyman Smith
+> John Smith
+> John Willard Young
+> Joseph Angell Young
+> Joseph Fielding
+> Joseph Fielding Smith
+> Josephine Donna Smith" weight = "5" />
+> Joseph Moroni Taylor
+> Joshua Kimball Whitney
+> Joshua Kimball Whitney" weight = "5" />
+>  Kimball Helen Mar 
+> Lois Huntington Cutler
+> Louisa Elizabeth Cutler
+> Lovina Smith Walker" weight = "5" />
+> Lucy Diantha Morely Allen
+> Lucy Walker Smith" weight = "2" />
+> Lucy Walker Smith" weight = "3" />
+> Margaret Moon" weight = "3" />
+> Margaret W Pierce" weight = "3" />
+> Martha Ann Smith
+> Mary Alice Cannon" weight = "5" />
+> Mary Ann Taylor
+> Mary Catherine Miller" weight = "5" />
+> Mary Fielding" weight = "2" />
+> Mary Jane Whitney
+> Mary Miller
+> Matilda Lyman" weight = "5" />
+> Melvina Kingsbury" weight = "5" />
+725a929,931
+>  Morley Philena 
+> Nancy Haven" weight = "5" />
+> Nancy Longstroth
+1039a1246,1267
+> Olive Frost" weight = "2" />
+> Orson Howard Spencer
+> Orson Kimball Whitney
+> Orson Pratt" weight = "5" />
+> Philena Morley" weight = "5" />
+> Prescendia Lathrop Huntington" weight = "3" />
+> Roxy Erma Alice Young" weight = "5" />
+> Ruth Miller
+> Sally Maria Cutler
+> Sarah A Lawrence" weight = "3" />
+> Sarah Ann Libby" weight = "3" />
+> Sarah Leyland
+> Sarah Longstroth" weight = "5" />
+> Sarah Smith
+> Sophia Leyland
+> Theresa Arathusa Morley
+> Truman Osborn Angell
+> Vilate Young
+> William Ellis Murray" weight = "3" />
+> William Henry Kimball
+> William Lathrop Cutler
+> William Leyland

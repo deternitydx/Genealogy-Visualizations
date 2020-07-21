@@ -1,0 +1,1766 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>DAACS</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="css/bootstrap.css" rel="stylesheet" media="screen">
+	<link href="css/form.css" rel="stylesheet" media="screen">
+	<link href="css/jquery.fancybox.css" rel="stylesheet" media="screen">
+	<link rel="stylesheet" type="text/css" href="css/styles.css" media="all">
+	<!--[if lt IE 9]>
+		<script type="text/javascript" src="js/html5.js"></script>
+		<script type="text/javascript" src="js/respond.min.js"></script>
+		<script type="text/javascript" src="js/PIE.js"></script>
+		<link rel="stylesheet" media="all" type="text/css" href="css/ie.css">
+	<![endif]-->
+</head>
+<body>
+	<div id="wrapper">
+		<div class="top-bar">
+			<div class="container">
+				<div class="user">
+					<span>welcome, Jillian Galle</span>
+				</div><!-- user -->
+				<ul class="links">
+					<li class="active"><a href="dashboard.html">dashboard</a></li>
+					<li><a href="#">My Info</a></li>
+					<li><a href="#">Help</a></li>
+					<li><a href="#">Sign Out</a></li>
+				</ul><!-- links -->
+			</div><!-- container -->
+		</div><!-- top-bar -->
+		<header>
+			<div class="container">
+				<strong class="logo"><a href="/">daacs research consortium</a></strong>
+				<nav>
+					<ul>
+						<li>
+							<a data-toggle="dropdown" class="arrow" href="#">Data Entry</a>
+							<div class="dropdown-menu" role="menu">
+								<ul>
+									<li><a href="#">Projects</a></li>
+									<li><a href="#">Contexts</a></li>
+									<li><a href="#">Features</a></li>
+									<li><a href="#">Features</a></li>
+									<li><a href="list.html">Ceramics</a></li>
+								</ul>
+								<ul>
+									<li><a href="#">Glass</a></li>
+									<li><a href="#">Beads</a></li>
+									<li><a href="#">Buckles</a></li>
+									<li><a href="#">Buttons</a></li>
+									<li><a href="#">Pipes</a></li>
+								</ul>
+								<ul>
+									<li><a href="#">Utensils</a></li>
+									<li><a href="#">Faunal</a></li>
+									<li><a href="#">Images</a></li>
+									<li><a href="#">Objects</a></li>
+									<li><a href="#">Boxes</a></li>
+								</ul>
+							</div>
+						</li>
+						<li>
+							<a href="query-type.html">Query the database</a>
+						</li>
+						<li>
+							<a data-toggle="dropdown" class="arrow" href="#">tools</a>
+							<div class="dropdown-menu drop-3" role="menu">
+								<ul>
+									<li><a href="#">Organizations</a></li>
+									<li><a href="#">Users</a></li>
+									<li><a href="#">Messages</a></li>
+									<li><a href="files-list.html">Files</a></li>
+									<li><a href="#">Reports</a></li>
+								</ul>
+								<ul>
+									<li><a href="#">Lookup Tables</a></li>
+								</ul>
+							</div>
+						</li>
+					</ul>
+				</nav>
+			</div><!-- container -->
+		</header><!-- header -->
+		<div class="main-area container">
+			<div class="page-header page-header-01">
+				<div class="frame">
+					<div class="clearfix">
+						<a href="#" class="back-link">Back to List</a>
+					</div>
+					<div class="paging">
+						<a href="#" class="next">Next</a>
+						<span class="caption">10 of 12</span>
+						<a href="#" class="prev">Previous</a>
+					</div><!-- paging -->
+				</div><!-- frame -->
+				<a href="#" data-toggle="modal" data-target="#add-new" class="add-new">Add New</a>
+				<h1>Ceramic Artifact</h1>
+			</div><!-- page-header -->
+			<div class="alert alert-01 alert-success" style="display: none">
+				<p>Successfully saved!</p>
+			</div><!-- end alert -->
+			<div class="clearfix">
+				<form action="#">
+					<fieldset>
+						<aside id="aside">
+							<h2 class="visible-md visible-lg">Record Details</h2>
+							<div class="box">
+								<a href="#" data-toggle="modal" data-target="#add-new" class="add-new">Add New record</a>
+							</div><!-- box -->
+							<div class="box">
+								<button id="button-record-save" class="btn btn-success btn-save ie-fix"><span>Save</span></button>
+								<div class="area clearfix">
+									<a href="#" class="btn btn-info btn-duplicate ie-fix">Duplicate</a>
+									<a href="#" data-toggle="modal" data-target="#alert-modal-main" class="delete">Delete</a>
+								</div>
+							</div><!-- box -->
+							<div class="details-bar">
+								<a href="#" data-toggle="dropdown" class="open-close"></a>
+								<strong class="txt">Artifact ID:  <span>1000-186-NOS-00114</span></strong>
+								<div class="drop dropdown-menu" role="menu">
+									<div class="info-box">
+										<dl>
+											<dt class="visible-md visible-lg">Artifact ID:</dt><dd class="visible-md visible-lg">1000-186-NOS-00114</dd>
+											<dt>Project:</dt><dd>Building o</dd>
+											<dt>Context Sample:</dt><dd>1000-186-NOS-</dd>
+										</dl>
+										<dl>
+											<dt>ware:</dt><dd>Creamware</dd>
+											<dt>form:</dt><dd>Teabowl</dd>
+											<dt>manu. technique:</dt><dd>Molded</dd>
+											<dt>completeness:</dt><dd>Rim</dd>
+											<dt>decoration:</dt><dd>No</dd>
+										</dl>
+									</div><!-- info-box -->
+									<div class="aside-accordion" id="aside-accordion">
+										<div class="panel">
+											<h2><a class="collapsed" data-toggle="collapse" data-parent="#aside-accordion" href="#collapse-01">all ceramics in context</a></h2>
+											<div id="collapse-01" class="panel-collapse collapse">
+												<div class="frame">
+													<div class="artifacts scrollable-area">
+														<ul>
+															<li><a href="ceramic-artifact-5.html">1000-186A-NOS--00111</a></li>
+															<li><a href="ceramic-artifact-6.html">1000-186A-NOS--00112</a></li>
+															<li><a href="ceramic-artifact-7.html">1000-186A-NOS--00113</a></li>
+															<li class="current">1000-186A-NOS--00114</li>
+															<li><a href="#">1000-186A-NOS--00115</a></li>
+															<li><a href="#">1000-186A-NOS--00111</a></li>
+															<li><a href="#">1000-186A-NOS--00112</a></li>
+															<li><a href="#">1000-186A-NOS--00113</a></li>
+															<li><a href="#">1000-186A-NOS--00111</a></li>
+															<li><a href="#">1000-186A-NOS--00112</a></li>
+															<li><a href="#">1000-186A-NOS--00113</a></li>
+														</ul>
+													</div><!-- artifacts -->
+												</div>
+											</div>
+										</div>
+										<div class="panel">
+											<h2 class="visible-md visible-lg"><a class="collapsed" data-toggle="collapse" data-parent="#aside-accordion" href="#collapse-02">Cataloger Details</a></h2>
+											<div id="collapse-02" class="panel-collapse collapse">
+												<div class="details-box">
+													<dl>
+														<dt>Added By:</dt><dd>John Sawyer</dd>
+														<dt>Date Added:</dt><dd>7/30/2001 3:00pm</dd>
+													</dl>
+													<dl>
+														<dt>Changed By:</dt><dd>John Sawyer</dd>
+														<dt>Date Changed:</dt><dd>7/30/2001 4:30pm</dd>
+													</dl>
+													<div class="clearfix">
+														<a href="#" class="link">Change Log</a>
+													</div>
+												</div><!-- details-box -->
+											</div>
+										</div>
+										<div class="panel">
+											<h2 class="visible-md visible-lg"><a class="collapsed" data-toggle="collapse" data-parent="#aside-accordion" href="#collapse-03">Images</a></h2>
+											<div id="collapse-03" class="panel-collapse collapse">
+												<div class="slideshow slide" id="slideshow-01" data-ride="carousel" data-interval="false">
+													<div class="carousel-inner">
+														<div class="item active">
+															<img src="images/img-08.jpg" alt="#">
+														</div>
+														<div class="item">
+															<img src="images/img-09.jpg" alt="#">
+														</div>
+													</div>
+													<a class="loupe fancybox" href="#popup-02">loupe</a>
+													<a class="prev-btn" href="#slideshow-01" data-slide="prev">&#60;</a>
+													<a class="next-btn" href="#slideshow-01" data-slide="next">&#62;</a>
+												</div><!-- slideshow -->
+											</div>
+										</div>
+									</div><!-- accordion -->
+								</div>
+							</div><!-- details-bar -->
+						</aside><!-- aside -->
+						<section class="tabs">
+							<ul class="nav nav-tabs">
+								<li class="active"><a href="#tab-01" data-toggle="tab">Material</a></li>
+								<li><a href="#tab-02" data-toggle="tab">Measurements</a></li>
+								<li><a href="#tab-03" data-toggle="tab">Decoration</a></li>
+								<li><a href="#tab-04" data-toggle="tab">Wear / <span>Condition</span></a></li>
+								<li><a href="#tab-05" data-toggle="tab">Base Mark</a></li>
+								<li><a href="#tab-06" data-toggle="tab">Coarse <span>Earthenware</span></a></li>
+								<li><a href="#tab-07" data-toggle="tab">Images</a></li>
+								<li><a href="#tab-08" data-toggle="tab">Objects</a></li>
+								<li><a href="#tab-09" data-toggle="tab">Mends</a></li>
+							</ul><!-- nav-tabs -->
+							<div class="tab-content">
+								<div class="tab-pane active" id="tab-01">
+									<section class="section">
+										<div class="heading">
+											<h2>General</h2>
+										</div>
+										<div class="material-form">
+											<div class="row-area">
+												<div class="col">
+													<label for="lbl-29">Artifact Count:</label>
+													<div class="frame">
+														<input type="text" class="form-control" value="" id="lbl-29">
+													</div>
+												</div>
+												<div class="col">
+													<label for="lbl-30">Ware:</label>
+													<div class="frame">
+														<select data-placeholder="Select Ware" class="form-control" id="lbl-30">
+                                                            <option value=""></option>
+															<option value="2">Creamware</option>
+															<option value="3">Another Value Here</option>
+														</select>
+													</div>
+												</div>
+											</div><!-- row-area -->
+											<div class="row-area">
+												<div class="col">
+													<label for="lbl-31">Material:</label>
+													<div class="frame">
+                                                        <select data-placeholder="Select Material" class="form-control" id="lbl-31">
+                                                            <option value=""></option>
+															<option>Refined EW</option>
+														</select>
+													</div>
+												</div>
+												<div class="col">
+													<label for="lbl-32">Manufacturing Technique:</label>
+													<div class="frame">
+                                                        <select data-placeholder="Select Manufacturing Technique" class="form-control" id="lbl-32">
+                                                            <option value=""></option>
+															<option>Press Molded</option>
+														</select>
+													</div>
+												</div>
+											</div><!-- row-area -->
+											<div class="row-area">
+												<div class="col">
+													<label for="lbl-33">Vessel Category:</label>
+													<div class="frame">
+                                                        <select data-placeholder="Select Vessel Category" class="form-control" id="lbl-33">
+                                                            <option value=""></option>
+															<option>Flat</option>
+														</select>
+													</div>
+												</div>
+												<div class="col">
+													<label for="lbl-34">Form:</label>
+													<div class="frame">
+                                                        <select data-placeholder="Select Form" class="form-control" id="lbl-34">
+                                                            <option value=""></option>
+															<option value="">Unidentifiable</option>
+														</select>
+													</div>
+												</div>
+											</div><!-- row-area -->
+											<div class="row-area">
+												<div class="col">
+													<label for="lbl-35">Completeness:</label>
+													<div class="frame">
+                                                        <select data-placeholder="Select Completeness" class="form-control" id="lbl-35">
+                                                            <option value=""></option>
+															<option>Unidentifiable</option>
+														</select>
+													</div>
+												</div>
+												<div class="col">
+													<label for="lbl-36">Decoration?</label>
+													<div class="frame">
+                                                            <select data-placeholder="Select Yes or No" class="form-control" id="lbl-36">
+                                                            <option value=""></option>
+                                                            <option value="yes">Yes</option>
+															<option value="no">No</option>
+														</select>
+													</div>
+												</div>
+											</div><!-- row-area -->
+											<div class="row-area">
+												<div class="col">
+													<label for="lbl-37">Mended?</label>
+													<div class="frame">
+                                                        <select data-placeholder="Select Yes or No" class="form-control" id="lbl-37">
+                                                            <option value=""></option>
+                                                            <option value="yes">Yes</option>
+                                                            <option value="no">No</option>
+														</select>
+													</div>
+												</div>
+											</div><!-- row-area -->
+										</div><!-- material-form -->
+									</section><!-- section -->
+									<section class="section">
+										<div class="heading">
+											<h2>Surfaces</h2>
+										</div>
+										<div class="surfaces-form">
+											<div class="row-area">
+												<div class="col">
+													<label for="lbl-38">Exterior Surface:</label>
+                                                    <select data-placeholder="Select Exterior Surface" class="form-control" id="lbl-38">
+                                                        <option value=""></option>
+														<option>Lead Glaze</option>
+													</select>
+												</div>
+												<div class="col">
+													<label for="lbl-39">Exterior Color:</label>
+                                                    <select data-placeholder="Select Exterior Color" class="form-control" id="lbl-39">
+                                                        <option value=""></option>
+														<option>5Y 9/2</option>
+													</select>
+												</div>
+												<div class="col">
+													<label for="lbl-40">Exterior Glaze Opacity:</label>
+                                                    <select data-placeholder="Select Exterior Glaze Opacity" class="form-control" id="lbl-40">
+                                                        <option value=""></option>
+														<option>Not Applicable</option>
+													</select>
+												</div>
+											</div><!-- row-area -->
+											<div class="row-area">
+												<div class="col">
+													<label for="lbl-41">Interior Surface:</label>
+                                                    <select data-placeholder="Select Interior Surface" class="form-control" id="lbl-41">
+                                                        <option value=""></option>
+														<option>Lead Glaze</option>
+													</select>
+												</div>
+												<div class="col">
+													<label for="lbl-42">Interior Color:</label>
+                                                    <select data-placeholder="Select Interior Color" class="form-control" id="lbl-42">
+                                                        <option value=""></option>
+														<option>5Y 9/2</option>
+													</select>
+												</div>
+												<div class="col">
+													<label for="lbl-43">Interior Glaze Opacity:</label>
+                                                    <select data-placeholder="Select Interior Glaze Opacity" class="form-control" id="lbl-43">
+                                                        <option value=""></option>
+														<option>Not Applicable</option>
+													</select>
+												</div>
+											</div><!-- row-area -->
+										</div><!-- surfaces-form -->
+									</section><!-- section -->
+									<section class="section">
+										<div class="heading">
+											<h2>Notes</h2>
+										</div>
+										<div class="notes">
+											<textarea class="form-control" cols="1" rows="1"></textarea>
+										</div>
+									</section><!-- section -->
+								</div><!-- tab-01 -->
+								<div class="tab-pane" id="tab-02">
+									<div class="measurements">
+										<div class="holder">
+											<section class="section">
+												<div class="heading">
+													<h2>Sherd</h2>
+												</div>
+												<div class="row-area">
+													<label for="lbl-44"><span>Sherd <br />Thickness:</span></label>
+													<input type="text" class="form-control" value="" id="lbl-44">
+													<label class="lbl" for="lbl-44">mm</label>
+												</div><!-- row-area -->
+												<div class="row-area">
+													<label for="lbl-45"><span>Maximum Sherd Measurement:</span></label>
+													<input type="text" class="form-control" value="" id="lbl-45">
+													<label class="lbl" for="lbl-45">mm</label>
+												</div><!-- row-area -->
+												<div class="row-area">
+													<label for="lbl-46">Sherd Weight:</label>
+													<input type="text" class="form-control" value="" id="lbl-46">
+													<label class="lbl" for="lbl-46">g</label>
+												</div><!-- row-area -->
+												<div class="row-area">
+													<label for="lbl-47"><span>Mended Sherd Weight:</span></label>
+													<input type="text" class="form-control" value="" id="lbl-47">
+													<label class="lbl" for="lbl-47">g</label>
+												</div><!-- row-area -->
+											</section><!-- section -->
+											<section class="section">
+												<div class="heading">
+													<h2>Rim</h2>
+												</div>
+												<div class="row-area">
+													<label for="lbl-48">Rim Length:</label>
+													<input type="text" class="form-control" value="" id="lbl-48">
+													<label class="lbl" for="lbl-48">mm</label>
+												</div><!-- row-area -->
+												<div class="row-area">
+													<label for="lbl-49">Rim Diameter:</label>
+													<input type="text" class="form-control" value="" id="lbl-49">
+													<label class="lbl" for="lbl-49">mm</label>
+												</div><!-- row-area -->
+												<div class="row-area">
+													<label for="lbl-50"><span>Mended Rim Diameter:</span></label>
+													<input type="text" class="form-control" value="" id="lbl-50">
+												</div><!-- row-area -->
+											</section><!-- section -->
+										</div>
+										<div class="holder">
+											<section class="section">
+												<div class="heading">
+													<h2>Base</h2>
+												</div>
+												<div class="row-area">
+													<label for="lbl-51">Base Length:</label>
+													<input type="text" class="form-control" value="" id="lbl-51">
+													<label class="lbl" for="lbl-51">mm</label>
+												</div><!-- row-area -->
+												<div class="row-area">
+													<label for="lbl-52">Base Diameter:</label>
+													<input type="text" class="form-control" value="" id="lbl-52">
+													<label class="lbl" for="lbl-52">mm</label>
+												</div><!-- row-area -->
+												<div class="row-area">
+													<label for="lbl-53"><span>Mended Base Diameter:</span></label>
+													<input type="text" class="form-control" value="" id="lbl-53">
+													<label class="lbl" for="lbl-53">mm</label>
+												</div><!-- row-area -->
+											</section><!-- section -->
+										</div>
+									</div><!-- measurements -->
+								</div><!-- tab-02 -->
+								<div class="tab-pane" id="tab-03">
+									<section class="section">
+										<div class="heading">
+											<h2>General</h2>
+										</div>
+										<div class="info-form">
+											<div class="frame">
+												<div class="col">
+													<label for="lbl-14">Genre:</label>
+                                                    <select data-placeholder="Select Genre" class="form-control" id="lbl-14">
+                                                        <option value=""></option>
+														<option value="1">Genre 1</option>
+														<option value="2">Genre 2</option>
+														<option value="3">Genre 3</option>
+														<option value="4">Genre 4</option>
+														<option value="5">Genre 5</option>
+														<option value="6">Genre 6</option>
+														<option value="7">Genre 7</option>
+														<option value="8">Genre 8</option>
+														<option value="9">Genre 9</option>
+														<option value="10">Genre 10</option>
+														<option value="11">Genre 11</option>
+														<option value="12">Genre 12</option>
+													</select>
+												</div>
+												<div class="col">
+													<label for="lbl-15">Pattern Name:</label>
+                                                    <select data-placeholder="Select Pattern Name" class="form-control" id="lbl-15">
+                                                        <option value=""></option>
+													</select>
+												</div>
+											</div>
+											<label for="lbl-16">Pattern Notes:</label>
+											<textarea class="form-control" id="lbl-16" cols="1" rows="1"></textarea>
+										</div><!-- info-form -->
+									</section><!-- section -->
+									<section class="section">
+										<div class="heading">
+											<a href="#" class="link">Search for Stylistic Elements</a>
+											<h2>Stylistic elements</h2>
+										</div>
+										<div class="stylistic-elements">
+											<div class="clearfix stylistic-before-holder">
+												<span id="stylistic-add-measurement" class="btn btn-info btn-add">Add stylistic element</span>
+											</div>
+										</div><!-- stylistic-elements -->
+                                        <div id="stylistic-measurement-holder" style="display:none">
+                                            <div class="block">
+                                                <div class="selects">
+													<div class="clearfix">
+														<a href="#" data-toggle="modal" data-target="#alert-modal" class="delete">Delete</a>
+													</div>
+                                                    <div class="row-area">
+                                                        <div class="col">
+                                                            <label for="se-ie-_NUM_">Interior / Exterior:</label>
+                                                            <select data-placeholder="Select Interior / Exterior" class="form-control" id="se-ie-_NUM_">
+                                                                <option value=""></option>
+                                                                <option value="1">Exterior</option>
+																<option value="2">Another Value</option>
+																<option value="3">Another Value 2</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col">
+                                                            <label for="se-location-_NUM_">Location:</label>
+                                                            <select data-placeholder="Select Location" class="form-control" id="se-location-_NUM_">
+                                                                <option value=""></option>
+                                                                <option>Base</option>
+                                                            </select>
+                                                        </div>
+														<div class="col">
+                                                            <label for="se-dt-_NUM_">Decorative Technique:</label>
+                                                            <select data-placeholder="Select Decorative Technique" class="form-control" id="se-dt-_NUM_">
+                                                                <option value=""></option>
+                                                                <option>Applied Clay</option>
+                                                            </select>
+                                                        </div>
+                                                    </div><!-- row-area -->
+                                                    <div class="row-area">
+                                                        <div class="col">
+                                                            <label for="se-dc-_NUM_">Decoration Color:</label>
+                                                            <select data-placeholder="Select Decoration Color" class="form-control" id="se-dc-_NUM_">
+                                                                <option value=""></option>
+                                                                <option>10R 3/6 - Dark Red</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col">
+                                                            <label for="se-se-_NUM_">Stylistic Element:</label>
+                                                            <select data-placeholder="Select Stylistic Element" class="form-control" id="se-se-_NUM_">
+                                                                <option value=""></option>
+<option value="182">Acanthus Leaves</option>
+<option value="480">Angular Edge</option>
+<option value="19">Animal, unid.</option>
+<option value="685">Bamboo</option>
+<option value="29">Bamboo 01</option>
+<option value="623">Bamboo 02</option>
+<option value="111">Band, unidentified</option>
+<option value="42">Barley</option>
+<option value="380">Basket Weave 01</option>
+<option value="381">Basket Weave 02</option>
+<option value="401">Basket Weave 03</option>
+<option value="206">Basketwork</option>
+<option value="41">Bead and Reel</option>
+<option value="109">Beaded Band 01</option>
+<option value="566">Beaded Band 02</option>
+<option value="605">Beaded Band 03</option>
+<option value="607">Beaded Band 04</option>
+<option value="21">Bird</option>
+<option value="20">Bird, stylized</option>
+<option value="168">Boat</option>
+<option value="75">Botanical Band 01</option>
+<option value="170">Botanical Band 02</option>
+<option value="191">Botanical Band 03</option>
+<option value="251">Botanical Band 04</option>
+<option value="258">Botanical Band 05</option>
+<option value="270">Botanical Band 06</option>
+<option value="276">Botanical Band 07</option>
+<option value="316">Botanical Band 08</option>
+<option value="322">Botanical Band 09</option>
+<option value="339">Botanical Band 10</option>
+<option value="374">Botanical Band 11</option>
+<option value="375">Botanical Band 12</option>
+<option value="376">Botanical Band 13</option>
+<option value="377">Botanical Band 14</option>
+<option value="378">Botanical Band 15</option>
+<option value="379">Botanical Band 16</option>
+<option value="383">Botanical Band 17</option>
+<option value="384">Botanical Band 18</option>
+<option value="409">Botanical Band 19</option>
+<option value="412">Botanical Band 20</option>
+<option value="413">Botanical Band 21</option>
+<option value="414">Botanical Band 22</option>
+<option value="415">Botanical Band 23</option>
+<option value="430">Botanical Band 24</option>
+<option value="438">Botanical Band 25</option>
+<option value="440">Botanical Band 26</option>
+<option value="441">Botanical Band 27</option>
+<option value="444">Botanical Band 28</option>
+<option value="446">Botanical Band 29</option>
+<option value="447">Botanical Band 30</option>
+<option value="449">Botanical Band 31</option>
+<option value="455">Botanical Band 32</option>
+<option value="557">Botanical Band 33</option>
+<option value="486">Botanical Band 34</option>
+<option value="489">Botanical Band 35</option>
+<option value="492">Botanical Band 36</option>
+<option value="493">Botanical Band 37</option>
+<option value="513">Botanical Band 38</option>
+<option value="519">Botanical Band 39</option>
+<option value="535">Botanical Band 40</option>
+<option value="554">Botanical Band 41</option>
+<option value="576">Botanical Band 42</option>
+<option value="577">Botanical Band 43</option>
+<option value="578">Botanical Band 44</option>
+<option value="579">Botanical Band 45</option>
+<option value="590">Botanical Band 46</option>
+<option value="594">Botanical Band 47</option>
+<option value="597">Botanical Band 48</option>
+<option value="600">Botanical Band 49</option>
+<option value="602">Botanical Band 50</option>
+<option value="617">Botanical Band 51</option>
+<option value="619">Botanical Band 52</option>
+<option value="651">Botanical Band 53</option>
+<option value="627">Botanical Band 54</option>
+<option value="655">Botanical Band 55</option>
+<option value="656">Botanical Band 56</option>
+<option value="672">Botanical Band 57</option>
+<option value="673">Botanical Band 58</option>
+<option value="686">Botanical Band 59</option>
+<option value="687">Botanical Band 60</option>
+<option value="226">Botanical Band, unid.</option>
+<option value="26">Botanical, composite</option>
+<option value="25">Botanical, sprig</option>
+<option value="36">Botanical, unidentified</option>
+<option value="17">Bridge</option>
+<option value="2">Bull&#39;s Eye</option>
+<option value="105">Butterfly</option>
+<option value="184">Cable Band 01</option>
+<option value="133">Cable Band 02</option>
+<option value="391">Cable Band 03</option>
+<option value="237">Cable Band 04</option>
+<option value="156">Cartouche 01</option>
+<option value="538">Cartouche 02</option>
+<option value="572">Cartouche 03</option>
+<option value="622">Cat&#39;s Eye, combed</option>
+<option value="458">Cat&#39;s Eye, single</option>
+<option value="162">Checkerboard Band 01</option>
+<option value="417">Checkerboard Band 02</option>
+<option value="506">Checkerboard Band 03</option>
+<option value="556">Checkerboard Band 04</option>
+<option value="620">Checkerboard Band 05</option>
+<option value="589">Checkerboard Band, unid.</option>
+<option value="282">Checkerboard/Diamonds</option>
+<option value="450">Checkerboard Dot</option>
+<option value="207">Child</option>
+<option value="504">Chinese Characters</option>
+<option value="148">Church, christian</option>
+<option value="76">Circle 01</option>
+<option value="134">Circle Band 01</option>
+<option value="227">Circle Band 02</option>
+<option value="236">Circle Band 03</option>
+<option value="318">Circle Band 04</option>
+<option value="86">Circle Band 05</option>
+<option value="536">Circle Band 06</option>
+<option value="544">Circle Band 07</option>
+<option value="558">Circle Band 08</option>
+<option value="559">Circle Band 09</option>
+<option value="583">Circle Band 10</option>
+<option value="631">Circle Band 11</option>
+<option value="641">Circle Band 12</option>
+<option value="654">Circle Band 13</option>
+<option value="690">Circle Band 14</option>
+<option value="691">Circle Band 15</option>
+<option value="692">Circle Band, unid.</option>
+<option value="186">Circle, open</option>
+<option value="304">Cloud Band 01</option>
+<option value="347">Clouded</option>
+<option value="82">Columns</option>
+<option value="5">Combed</option>
+<option value="462">Common Cable</option>
+<option value="571">Cord and Hanging Fern</option>
+<option value="52">Cord and Herringbone</option>
+<option value="385">Cordoned</option>
+<option value="338">Cordoned, wavy</option>
+<option value="183">Crab Stock</option>
+<option value="240">Crenelated Edge</option>
+<option value="307">Dart Band 01</option>
+<option value="525">Dart Band 02</option>
+<option value="164">Dash Band 01</option>
+<option value="165">Dash Band 02</option>
+<option value="283">Dash Band 03</option>
+<option value="300">Dash Band 04</option>
+<option value="301">Dash Band 05</option>
+<option value="402">Dash Band 06</option>
+<option value="411">Dash Band 07</option>
+<option value="461">Dash Band 08</option>
+<option value="476">Dash Band 09</option>
+<option value="515">Dash Band 10</option>
+<option value="527">Dash Band 11</option>
+<option value="545">Dash Band 12</option>
+<option value="387">Dash Band, unid</option>
+<option value="6">Dendritic</option>
+<option value="154">Dentil Band 01</option>
+<option value="684">Dentil Band 02</option>
+<option value="390">Diamond Band 01</option>
+<option value="393">Diamond Band 02</option>
+<option value="403">Diamond Band 03</option>
+<option value="507">Diamond Band 04</option>
+<option value="508">Diamond Band 05</option>
+<option value="561">Diamond Band 06</option>
+<option value="586">Diamond Band 07</option>
+<option value="587">Diamond Band 08</option>
+<option value="595">Diamond Band 09</option>
+<option value="160">Diaper/1 Dot</option>
+<option value="460">Diaper/4 Dot</option>
+<option value="353">Diaper/5 Dot</option>
+<option value="96">Diaper/Dot Band 01</option>
+<option value="352">Diaper/Star</option>
+<option value="77">Diced Squares</option>
+<option value="425">Diced Squares 01</option>
+<option value="277">Dogtooth Band 01</option>
+<option value="284">Dogtooth Band 02</option>
+<option value="389">Dogtooth Band 03</option>
+<option value="497">Dogtooth Band 04</option>
+<option value="529">Dogtooth Band 05</option>
+<option value="549">Dogtooth Band 06</option>
+<option value="552">Dogtooth Band, unid.</option>
+<option value="101">Dot Band 01</option>
+<option value="102">Dot Band 02</option>
+<option value="319">Dot Band 03</option>
+<option value="331">Dot Band 04</option>
+<option value="419">Dot Band 05</option>
+<option value="472">Dot Band 06</option>
+<option value="487">Dot Band 07</option>
+<option value="498">Dot Band 08</option>
+<option value="604">Dot Band 09</option>
+<option value="608">Dot Band 10</option>
+<option value="495">Dot Band, unid.</option>
+<option value="136">Dot Cluster</option>
+<option value="454">Dot Dash Band 01</option>
+<option value="418">Dot Plume Edge</option>
+<option value="83">Dots</option>
+<option value="57">Dotted/Terraced Rectangle</option>
+<option value="505">Facet/Panel</option>
+<option value="7">Fanning</option>
+<option value="45">Feather Edge</option>
+<option value="16">Fence</option>
+<option value="27">Fish</option>
+<option value="369">Fish Roe 01</option>
+<option value="106">Fish Roe Band 01</option>
+<option value="209">Fish Roe Band 02</option>
+<option value="217">Fish Roe Band 03</option>
+<option value="250">Fish Roe Band 04</option>
+<option value="615">Fish Roe Band 05</option>
+<option value="646">Fish Roe Band 06</option>
+<option value="257">Fish Roe Band, unid</option>
+<option value="151">Fish Roe, unid.</option>
+<option value="488">Flag/Banner</option>
+<option value="290">Floral Medallion</option>
+<option value="115">Floral, radiating bloom 01</option>
+<option value="539">Floral, radiating bloom 02</option>
+<option value="149">Fluted</option>
+<option value="501">Folded Rim</option>
+<option value="171">Fruit</option>
+<option value="267">Garland 01</option>
+<option value="268">Garland 02</option>
+<option value="320">Garland 03</option>
+<option value="330">Garland 04</option>
+<option value="337">Garland 05</option>
+<option value="399">Garland 06</option>
+<option value="429">Garland 07</option>
+<option value="634">Garland 08</option>
+<option value="652">Garland 09</option>
+<option value="653">Garland 10</option>
+<option value="661">Garland 11</option>
+<option value="670">Garland 12</option>
+<option value="679">Garland 13</option>
+<option value="218">Garland, unid.</option>
+<option value="65">Geometric Band 01</option>
+<option value="66">Geometric Band 02</option>
+<option value="67">Geometric Band 03</option>
+<option value="68">Geometric Band 04</option>
+<option value="69">Geometric Band 05</option>
+<option value="64">Geometric Band 06</option>
+<option value="90">Geometric Band 07</option>
+<option value="163">Geometric Band 08</option>
+<option value="212">Geometric Band 09</option>
+<option value="233">Geometric Band 10</option>
+<option value="252">Geometric Band 11</option>
+<option value="296">Geometric Band 12</option>
+<option value="305">Geometric Band 13</option>
+<option value="335">Geometric Band 14</option>
+<option value="398">Geometric Band 15</option>
+<option value="416">Geometric Band 16</option>
+<option value="439">Geometric Band 17</option>
+<option value="485">Geometric Band 18</option>
+<option value="523">Geometric Band 19</option>
+<option value="541">Geometric Band 20</option>
+<option value="550">Geometric Band 21</option>
+<option value="555">Geometric Band 22</option>
+<option value="562">Geometric Band 23</option>
+<option value="563">Geometric Band 24</option>
+<option value="581">Geometric Band 25</option>
+<option value="588">Geometric Band 26</option>
+<option value="591">Geometric Band 27</option>
+<option value="603">Geometric Band 28</option>
+<option value="649">Geometric Band 29</option>
+<option value="665">Geometric Band 30</option>
+<option value="675">Geometric Band 31</option>
+<option value="677">Geometric Band 32</option>
+<option value="682">Geometric Band 33</option>
+<option value="224">Geometric Band, unid.</option>
+<option value="371">Geometric Circle</option>
+<option value="213">Geometric Column 01</option>
+<option value="85">Geometric, unidentified</option>
+<option value="205">Granulated Band</option>
+<option value="38">Grass</option>
+<option value="626">Grasses and Leaves Molded Edge</option>
+<option value="31">Half-Circle Band 01</option>
+<option value="32">Half-Circle Band 02</option>
+<option value="33">Half-Circle Band 03</option>
+<option value="144">Half-Circle Band 04</option>
+<option value="143">Half-Circle Band 05</option>
+<option value="259">Half-Circle Band 06</option>
+<option value="362">Half-Circle Band 07</option>
+<option value="424">Half-Circle Band 08</option>
+<option value="565">Half-Circle Band 09</option>
+<option value="575">Half-Circle Band 10</option>
+<option value="640">Half-Circle Band 11</option>
+<option value="644">Half-Circle Band 12</option>
+<option value="660">Half-Circle Band 13</option>
+<option value="669">Half-Circle Band 14</option>
+<option value="688">Half-Circle Band 15</option>
+<option value="533">Half-Circle Band, unid.</option>
+<option value="530">Heart</option>
+<option value="475">Herringbone and Bow</option>
+<option value="8">House</option>
+<option value="342">Hunt Scene</option>
+<option value="139">Husk Chain Band 01</option>
+<option value="158">Husk Chain Band 02</option>
+<option value="234">Husk Chain Band 03</option>
+<option value="255">Husk Chain Band 04</option>
+<option value="262">Husk Chain Band 05</option>
+<option value="569">Husk Chain Band 06</option>
+<option value="292">Husk Chain Band 07</option>
+<option value="324">Husk Chain Band 08</option>
+<option value="265">Husk Chain Band 09</option>
+<option value="405">Husk Chain Band 10</option>
+<option value="452">Husk Chain Band 11</option>
+<option value="582">Husk Chain Band 12</option>
+<option value="484">Husk Chain Band, unid.</option>
+<option value="122">Landscape/Hills</option>
+<option value="278">Lettering</option>
+<option value="196">Man</option>
+<option value="10">Marbleized</option>
+<option value="350">Medallion, GR</option>
+<option value="400">Medallion, unid.</option>
+<option value="173">Molded Band 01</option>
+<option value="175">Molded Band 02</option>
+<option value="521">Mythical Creature</option>
+<option value="59">Not Applicable</option>
+<option value="510">Notched</option>
+<option value="408">Peacock</option>
+<option value="34">Plain Band 01</option>
+<option value="72">Plain Band 02</option>
+<option value="73">Plain Band 03</option>
+<option value="39">Plain Band 04</option>
+<option value="56">Plain Band 05</option>
+<option value="79">Plain Band 06</option>
+<option value="99">Plain Band 07</option>
+<option value="221">Plain Band 08</option>
+<option value="271">Plain Band 09</option>
+<option value="273">Plain Band 10</option>
+<option value="297">Plain Band 11</option>
+<option value="332">Plain Band 12</option>
+<option value="463">Plain Band 13</option>
+<option value="474">Plain Band 14</option>
+<option value="223">Plain Band, unid.</option>
+<option value="11">Plain Edge</option>
+<option value="351">Plume, botanical</option>
+<option value="394">Plume, feather</option>
+<option value="43">Queen&#39;s Shape 01</option>
+<option value="516">Queen&#39;s Shape 02</option>
+<option value="517">Queen&#39;s Shape, unid.</option>
+<option value="548">Quiver</option>
+<option value="445">Radiating Lines</option>
+<option value="178">Ribbed</option>
+<option value="238">Ribbed, three lines</option>
+<option value="281">Ribbon</option>
+<option value="309">Rope Band 01</option>
+<option value="81">Roulette Band 01</option>
+<option value="286">Roulette Band 02</option>
+<option value="325">Roulette Band 03</option>
+<option value="177">Roulette Band 04</option>
+<option value="448">Roulette Band 05</option>
+<option value="456">Roulette Band 06</option>
+<option value="459">Roulette Band 07</option>
+<option value="483">Roulette Band 08</option>
+<option value="524">Roulette Band 09</option>
+<option value="531">Roulette Band 10</option>
+<option value="532">Roulette Band 11</option>
+<option value="568">Roulette Band 12</option>
+<option value="593">Roulette Band 13</option>
+<option value="616">Roulette Band 14</option>
+<option value="624">Roulette Band 15</option>
+<option value="386">Roulette Band, unid.</option>
+<option value="44">Royal Pattern 01</option>
+<option value="567">Scales 01</option>
+<option value="614">Scales 02</option>
+<option value="407">Scallop and Dot</option>
+<option value="78">Scallop Band 01</option>
+<option value="98">Scallop Band 02</option>
+<option value="142">Scallop Band 03</option>
+<option value="222">Scallop Band 04</option>
+<option value="230">Scallop Band 05</option>
+<option value="245">Scallop Band 06</option>
+<option value="326">Scallop Band 07</option>
+<option value="279">Scallop Band 08</option>
+<option value="308">Scallop Band 09</option>
+<option value="442">Scallop Band 10</option>
+<option value="499">Scallop Band 11</option>
+<option value="520">Scallop Band 12</option>
+<option value="543">Scallop Band 13</option>
+<option value="585">Scallop Band 14</option>
+<option value="648">Scallop Band 15</option>
+<option value="667">Scallop Band 16</option>
+<option value="137">Scallop Band, unid.</option>
+<option value="80">Scalloped Edge</option>
+<option value="423">Scalloped Edge 01, slanted</option>
+<option value="420">Scalloped Edge 01, straight</option>
+<option value="421">Scalloped Edge 02, straight</option>
+<option value="422">Scalloped Edge 03, straight</option>
+<option value="354">Scalloped Edge, spiked</option>
+<option value="512">Scalloped Edge, unid.</option>
+<option value="443">Scallop Pattern 01</option>
+<option value="130">Scroll 01</option>
+<option value="437">Scroll 02</option>
+<option value="428">Scroll Band 01</option>
+<option value="434">Scroll Band 02</option>
+<option value="435">Scroll Band 03</option>
+<option value="436">Scroll Band 04</option>
+<option value="542">Scroll Band 05</option>
+<option value="633">Scroll Band 06</option>
+<option value="647">Scroll Band 07</option>
+<option value="451">Scroll Band, unid.</option>
+<option value="157">Scroll, trellis</option>
+<option value="180">Setting Sun</option>
+<option value="28">Shading</option>
+<option value="48">Shell Edge 01</option>
+<option value="49">Shell Edge 02</option>
+<option value="50">Shell Edge 03</option>
+<option value="51">Shell Edge 04</option>
+<option value="333">Shell Edge 05</option>
+<option value="334">Shell Edge 06</option>
+<option value="388">Shell Edge 07</option>
+<option value="395">Shell Edge 08</option>
+<option value="453">Shell Edge 09</option>
+<option value="481">Shell Edge 10</option>
+<option value="526">Shell Edge 11</option>
+<option value="528">Shell Edge 12</option>
+<option value="540">Shell Edge 13</option>
+<option value="547">Shell Edge 14</option>
+<option value="574">Shell Edge 15</option>
+<option value="580">Shell Edge 16</option>
+<option value="598">Shell Edge 17</option>
+<option value="599">Shell Edge 18</option>
+<option value="601">Shell Edge 19</option>
+<option value="606">Shell Edge 20</option>
+<option value="610">Shell Edge 21</option>
+<option value="612">Shell Edge 22</option>
+<option value="618">Shell Edge 23</option>
+<option value="664">Shell Edge 24</option>
+<option value="47">Shell Edge, unidentified</option>
+<option value="100">Solid</option>
+<option value="88">Spearhead Band 01</option>
+<option value="103">Spearhead Band 02</option>
+<option value="104">Spearhead Band 03</option>
+<option value="146">Spearhead Band 04</option>
+<option value="167">Spearhead Band 05</option>
+<option value="203">Spearhead Band 06</option>
+<option value="317">Spearhead Band 07</option>
+<option value="341">Spearhead Band 08</option>
+<option value="477">Spearhead Band 09</option>
+<option value="490">Spearhead Band 10</option>
+<option value="596">Spearhead Band 11</option>
+<option value="657">Spearhead Band 12</option>
+<option value="683">Spearhead Band 13</option>
+<option value="107">Spearhead Band, unid.</option>
+<option value="46">Spearhead, unid.</option>
+<option value="345">Squares</option>
+<option value="95">Star</option>
+<option value="198">Star Band 01</option>
+<option value="197">Star Band 02</option>
+<option value="302">Stippled</option>
+<option value="169">Structure, unid.</option>
+<option value="91">Swag 01</option>
+<option value="92">Swag 02</option>
+<option value="93">Swag 03</option>
+<option value="94">Swag 04</option>
+<option value="289">Swag 05</option>
+<option value="313">Swag 06</option>
+<option value="397">Swag 07</option>
+<option value="410">Swag 08</option>
+<option value="466">Swag 09</option>
+<option value="469">Swag 10</option>
+<option value="534">Swag 11</option>
+<option value="666">Swag 12</option>
+<option value="668">Swag 13</option>
+<option value="676">Swag 15</option>
+<option value="689">Swag 16</option>
+<option value="467">Swag, unid.</option>
+<option value="564">Swastika</option>
+<option value="153">T Band 01</option>
+<option value="310">T Band 02</option>
+<option value="509">T Band 03</option>
+<option value="248">Textured</option>
+<option value="511">Tick Mark</option>
+<option value="348">Tortoiseshell</option>
+<option value="14">Trailed</option>
+<option value="23">Tree</option>
+<option value="145">Trellis 01</option>
+<option value="194">Trellis 02</option>
+<option value="433">Trellis 03</option>
+<option value="60">Trellis Band 01</option>
+<option value="61">Trellis Band 02</option>
+<option value="62">Trellis Band 03</option>
+<option value="63">Trellis Band 04</option>
+<option value="70">Trellis Band 05</option>
+<option value="71">Trellis Band 06</option>
+<option value="74">Trellis Band 07</option>
+<option value="112">Trellis Band 08</option>
+<option value="89">Trellis Band 09</option>
+<option value="124">Trellis Band 10</option>
+<option value="125">Trellis Band 11</option>
+<option value="126">Trellis Band 12</option>
+<option value="138">Trellis Band 13</option>
+<option value="176">Trellis Band 14</option>
+<option value="231">Trellis Band 15</option>
+<option value="272">Trellis Band 16</option>
+<option value="293">Trellis Band 17</option>
+<option value="349">Trellis Band 18</option>
+<option value="404">Trellis Band 19</option>
+<option value="426">Trellis Band 20</option>
+<option value="427">Trellis Band 21</option>
+<option value="470">Trellis Band 23</option>
+<option value="471">Trellis Band 24</option>
+<option value="482">Trellis Band 25</option>
+<option value="491">Trellis Band 26</option>
+<option value="514">Trellis Band 27</option>
+<option value="553">Trellis Band 29</option>
+<option value="570">Trellis Band 30</option>
+<option value="611">Trellis Band 31</option>
+<option value="621">Trellis Band 32</option>
+<option value="628">Trellis Band 33</option>
+<option value="629">Trellis Band 34</option>
+<option value="630">Trellis Band 35</option>
+<option value="632">Trellis Band 36</option>
+<option value="635">Trellis Band 37</option>
+<option value="636">Trellis Band 38</option>
+<option value="637">Trellis Band 39</option>
+<option value="638">Trellis Band 40</option>
+<option value="642">Trellis Band 41</option>
+<option value="643">Trellis Band 42</option>
+<option value="650">Trellis Band 43</option>
+<option value="658">Trellis Band 44</option>
+<option value="659">Trellis Band 45</option>
+<option value="662">Trellis Band 46</option>
+<option value="141">Trellis Band, unid.</option>
+<option value="368">Trellis, unid.</option>
+<option value="551">Twig</option>
+<option value="18">Umbrella</option>
+<option value="58">Unidentified</option>
+<option value="323">Vertical Lines</option>
+<option value="172">Vessel, ceramic</option>
+<option value="155">Wall</option>
+<option value="121">Water, body of</option>
+<option value="116">Wavy Band 01</option>
+<option value="117">Wavy Band 02</option>
+<option value="119">Wavy Band 03</option>
+<option value="123">Wavy Band 04</option>
+<option value="295">Wavy Band 05</option>
+<option value="241">Wavy Band 06</option>
+<option value="260">Wavy Band 07</option>
+<option value="263">Wavy Band 08</option>
+<option value="274">Wavy Band 09</option>
+<option value="275">Wavy Band 10</option>
+<option value="546">Wavy Band 11</option>
+<option value="584">Wavy Band 12</option>
+<option value="592">Wavy Band 13</option>
+<option value="613">Wavy Band 14</option>
+<option value="680">Wavy Band 15</option>
+<option value="468">Wavy Band, unid.</option>
+<option value="457">Wings</option>
+<option value="199">Woman</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col">
+                                                            <label for="se-motif-_NUM_">Motif:</label>
+                                                            <select data-placeholder="Select Motif" class="form-control" id="se-motif-_NUM_">
+                                                                <option value=""></option>
+                                                                <option>Adjacent Combinati-</option>
+                                                            </select>
+                                                        </div>
+                                                    </div><!-- row-area -->
+                                                </div><!-- selects -->
+												<div class="number" style="display:none">_NUM_</div>
+                                            </div><!-- block -->
+                                        </div>
+									</section><!-- section -->
+								</div>
+								<div class="tab-pane" id="tab-04">
+                                    Wear / Condition form here.
+                                </div>
+								<div class="tab-pane" id="tab-05">
+                                    Base Mark form here.
+                                </div>
+								<div class="tab-pane" id="tab-06">
+									<section class="section">
+										<div class="heading">
+											<h2>General</h2>
+										</div>
+										<div class="general-options">
+											<div class="row-area">
+												<div class="col">
+													<label for="lbl-01">Paste Color:</label>
+													<select class="form-control" id="lbl-01">
+														<option value="">-- select -- </option>
+													</select>
+												</div><!-- col -->
+												<div class="col">
+													<label for="lbl-02">Oxidized vs. Reduced Fabric:</label>
+													<select class="form-control" id="lbl-02">
+														<option value="">-- select -- </option>
+													</select>
+												</div><!-- col -->
+												<div class="col">
+													<label for="lbl-03">Earthenware Type:</label>
+													<select class="form-control" id="lbl-03">
+														<option value="">-- select -- </option>
+													</select>
+												</div><!-- col -->
+											</div><!-- row-area -->
+											<div class="row-area">
+												<div class="col">
+													<label for="lbl-04">Decoration Mode:</label>
+													<select class="form-control" id="lbl-04">
+														<option value="">-- select -- </option>
+													</select>
+												</div><!-- col -->
+												<div class="col">
+													<label for="lbl-05">Base Form:</label>
+													<select class="form-control" id="lbl-05">
+														<option value="">-- select -- </option>
+													</select>
+												</div><!-- col -->
+												<div class="col">
+													<label for="lbl-06">Footring Form:</label>
+													<select class="form-control" id="lbl-06">
+														<option value="">-- select -- </option>
+													</select>
+												</div><!-- col -->
+											</div><!-- row-area -->
+											<div class="row-area">
+												<div class="col">
+													<label for="lbl-07">Rim Form:</label>
+													<select class="form-control" id="lbl-07">
+														<option value="">-- select -- </option>
+													</select>
+												</div><!-- col -->
+												<div class="col">
+													<label for="lbl-08">Rim Angle:</label>
+													<select class="form-control" id="lbl-08">
+														<option value="">-- select -- </option>
+													</select>
+												</div><!-- col -->
+												<div class="col">
+													<label for="lbl-09">Maximum Rim Width:</label>
+													<div class="clearfix">
+														<input type="text" class="form-control" value="" id="lbl-09">
+														<label class="lbl" for="lbl-09">mm</label>
+													</div>
+												</div><!-- col -->
+											</div><!-- row-area -->
+										</div><!-- general-options -->
+									</section><!-- section -->
+									<section class="section">
+										<div class="heading">
+											<h2>Sherd</h2>
+										</div>
+										<div class="sherd-area">
+											<div class="total">
+												<label for="lbl-10">Total Paste Inclusion Density:</label>
+												<div class="select">
+													<select class="form-control" id="lbl-10">
+														<option value="">-- select --</option>
+													</select>
+												</div>
+											</div><!-- total -->
+											<div class="clearfix">
+												<div class="left-col">
+													<h3>Completeness</h3>
+                                                    <div class="completeness"></div>
+													<div id="completeness-measurement-holder" style="display:none">
+														<div class="options-box">
+															<div class="col">
+																<label for="completeness-_NUM_">Completeness:</label>
+																<select class="form-control" id="completeness-_NUM_">
+																	<option value="">-- select --</option>
+																	<option value="">Complete</option>
+																</select>
+															</div><!-- col -->
+															<div class="col">
+																<label for="thickness-_NUM_">Thickness:</label>
+																<div class="clearfix">
+																	<input type="text" class="form-control" value="" id="thickness-_NUM_">
+																	<label class="lbl" for="thickness-_NUM_">mm</label>
+																</div>
+															</div><!-- col -->
+															<a href="#" data-toggle="modal" data-target="#alert-modal" class="delete">Delete</a>
+                                                            <div class="number" style="display:none">_NUM_</div>
+														</div><!-- options-box -->
+													</div>
+													<div class="clearfix">
+														<span id="completeness-add-measurement" class="btn btn-info btn-add">Add Measurement</span>
+													</div>
+												</div><!-- left-col -->
+												<div class="right-col">
+													<h3>Inclusions</h3>
+													<div class="inclusions"></div>
+                                                    <div id="inclusions-measurement-holder" style="display:none">
+														<div class="options-box">
+															<div class="col">
+																<label for="inclusions-_NUM_">Inclusions:</label>
+																<select class="form-control" id="inclusions-_NUM_">
+                                                                    <option value="">-- select -- </option>
+																	<option>2</option>
+																</select>
+															</div><!-- col -->
+															<a href="#" data-toggle="modal" data-target="#alert-modal" class="delete">Delete</a>
+                                                            <div class="number" style="display:none">_NUM_</div>
+														</div><!-- options-box -->
+													</div>
+													<div class="clearfix">
+														<span id="inclusions-add-measurement" class="btn btn-info btn-add">Add Inclusion</span>
+													</div>
+												</div><!-- right-col -->
+											</div>
+										</div><!-- sherd-area -->
+									</section><!-- section -->
+								</div><!-- tab-06 -->
+								<div class="tab-pane" id="tab-07">
+									<ul class="images">
+										<li>
+											<div class="img">
+												<img src="images/img-14.jpg" width="91" height="91" alt="#">
+											</div>
+											<div class="desc">
+												<dl>
+													<dt>Image Name:</dt><dd>p_1302-76A-U24-2-DRS--00037a.jpg</dd>
+													<dt>Image Type:</dt><dd>Artifact</dd>
+													<dt>Image Description:</dt><dd>Paste Jewel</dd>
+													<dt>Insitution/Source:</dt><dd>SCIAA</dd>
+												</dl>
+												<dl>
+													<dt>Catalog Number:</dt><dd>1302-76A-U24-2-DRS--00037</dd>
+													<dt>Document ID:</dt><dd>&#160;</dd>
+													<dt>Added By:</dt><dd>Sawyer</dd>
+													<dt>Date Added:</dt><dd>10/10/2012</dd>
+												</dl>
+												<a href="#" data-toggle="modal" data-target="#edit-image" class="btn btn-edit">Edit</a>
+												<a href="#" data-toggle="modal" data-target="#alert-modal" class="delete">Delete</a>
+											</div>
+										</li>
+									</ul>
+									<div class="btn-area">
+										<a class="btn btn-info btn-add" data-toggle="modal" data-target="#new-image">Add</a>
+									</div>
+								</div>
+								<div class="tab-pane" id="tab-08">
+                                    Objects form here.
+                                </div>
+								<div class="tab-pane" id="tab-09">
+                                    Mends form here.
+                                </div>
+							</div><!-- tab-content -->
+						</section><!-- tabs -->
+					</fieldset>
+				</form>
+			</div>
+		</div><!-- main-area -->
+		<footer>
+			<div class="container">
+				<ul class="logos">
+					<li><span><a href="http://www.daacs.org/"><img class="logo-01" src="images/logo-01.png" alt="#"></a></span></li>
+					<li><span><a href="http://www.iath.virginia.edu/"><img class="logo-02" src="images/logo-02.png" alt="#"></a></span></li>
+					<li><span><a href="http://www.monticello.org/"><img class="logo-03" src="images/logo-03.png" alt="#"></a></span></li>
+					<li><span><a href="http://www.mellon.org/"><img class="logo-04" src="images/logo-04.png" alt="#"></a></span></li>
+				</ul>
+				<div class="frame">
+					<ul class="footer-nav">
+						<li><a href="about.html">About</a></li>
+						<li><a href="project-team.html">Project Team</a></li>
+						<li><a href="partners.html">Partners</a></li>
+						<li><a href="sponsors.html">Sponsors</a></li>
+						<li><a href="research.html">Research</a></li>
+					</ul>
+					<p class="copy">Copyright 2013 Thomas Jefferson Foundation.  This work is licensed under a Creative Commons Attribution-NoDerivs 3.0 United States License</p>
+				</div>
+			</div><!-- container -->
+		</footer><!-- footer -->
+	</div><!-- wrapper -->
+	<div class="modal fade" id="add-new" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Add New Ceramic Artifact</h4>
+				</div>
+				<form action="#">
+					<fieldset>
+						<div class="modal-body">
+							<ul class="steps">
+								<li>
+									<strong class="ttl">Step 1:</strong>
+									<label for="lbl01">Choose artifact type</label>
+									<select class="form-control" id="lbl01">
+										<option value="">Ceramic</option>
+										<option value="">-- select -- </option>
+										<option value="">-- select -- </option>
+									</select>
+								</li>
+								<li>
+									<strong class="ttl">Step 2:</strong>
+									<label for="lbl02">Choose Project Name</label>
+									<select class="form-control" id="lbl02">
+<option value="170">38BK75</option>
+<option value="169">38BK76</option>
+<option value="167">44FX0223 Colono Study</option>
+<option value="147">44FX1328 Colono Study</option>
+<option value="19">44JC298</option>
+<option value="18">44JC546</option>
+<option value="143">44PW1199 Colono Study</option>
+<option value="102">Alfred&#39;s Cabin</option>
+<option value="213">Andrew Pitman Pottery</option>
+<option value="212">Anthony Baecher</option>
+<option value="59">Ashcombs Quarter</option>
+<option value="140">Bonny Shore Slave Row Colono Study</option>
+<option value="183">Brookhill</option>
+<option value="83">Building C (Joiner&#39;s Shop)</option>
+<option value="79">Building D/j (Smith/Nailers Shop)</option>
+<option value="80">Building e</option>
+<option value="109">Building i (Carpenter&#39;s Shop)</option>
+<option value="77">Building j (Nailery)</option>
+<option value="5">Building l</option>
+<option value="78">Building m (Smoke House/Dairy) &amp; MRS 4</option>
+<option value="82">Building n (Wash House) &amp; 1809 Stone House</option>
+<option value="1">Building o</option>
+<option value="2">Building r</option>
+<option value="3">Building s</option>
+<option value="4">Building t</option>
+<option value="120">Cabrits Garrison Village</option>
+<option value="144">Camden Area 1 Colono Study</option>
+<option value="145">Camden Area 2 Colono Study</option>
+<option value="146">Camden Area 3 Colono Study</option>
+<option value="200">Carters Mead</option>
+<option value="99">Catherine Brown Cowpen Colono Study</option>
+<option value="60">Chapline Place</option>
+<option value="163">Charcoal Site</option>
+<option value="39">CHP Cold Frames</option>
+<option value="41">CHP Compost Beds</option>
+<option value="40">CHP Iris Beds</option>
+<option value="32">CHP Parking</option>
+<option value="161">CHP Testing 2010</option>
+<option value="168">Clifts Plantation Colono Study</option>
+<option value="142">Colleton River Colono Study</option>
+<option value="55">Corner Terrace</option>
+<option value="135">Curriboo Colono Study</option>
+<option value="165">Dabney Site</option>
+<option value="132">Dean Hall Colono Study</option>
+<option value="57">Dickenson Site</option>
+<option value="180">Drax Hall Feature 01</option>
+<option value="181">Drax Hall Feature 15</option>
+<option value="182">Drax Hall Feature 52</option>
+<option value="173">Drax Hall Main House</option>
+<option value="172">Drax Hall Village</option>
+<option value="48">East Kitchen Yard</option>
+<option value="34">East Lawn Water Tank</option>
+<option value="187">Eden Street Kiln</option>
+<option value="6">Elizabeth Hemings Site</option>
+<option value="218">Emmanuel Suter</option>
+<option value="49">Fairfield Quarter</option>
+<option value="64">Fake</option>
+<option value="197">Farnborough Hill</option>
+<option value="130">Field Quarter Cabin 1</option>
+<option value="111">Field Quarter Cabin 2</option>
+<option value="127">Field Quarter Cabin 3</option>
+<option value="131">Field Quarter Cabin 4</option>
+<option value="126">Field Quarter KES</option>
+<option value="156">Field Quarter STP Survey</option>
+<option value="215">Fincastle</option>
+<option value="214">Firebaugh</option>
+<option value="115">First Hermitage South Cabin</option>
+<option value="188">Fisher Pottery</option>
+<option value="158">Free State</option>
+<option value="75">Gardens &amp; Grounds Plantings</option>
+<option value="189">Gloucester</option>
+<option value="98">Halidon Hill Colono Study</option>
+<option value="63">Hampton Plantation, Colono Study I</option>
+<option value="138">Hampton Plantation Colono Study II</option>
+<option value="153">Harborview III</option>
+<option value="216">Heatwole</option>
+<option value="207">Henry Loy/Jacob Albright</option>
+<option value="190">Henry Piercy</option>
+<option value="7">Home Farm Quarter</option>
+<option value="23">Home Farm Quarter Site 6</option>
+<option value="42">Home Farm Quarter Site 7</option>
+<option value="22">Home Farm Quarter Site 8</option>
+<option value="10">House for Families</option>
+<option value="150">Inner Loop Road</option>
+<option value="106">Jefferson Lake</option>
+<option value="162">Jefferson Library Quadrats</option>
+<option value="90">Jessups I</option>
+<option value="91">Jessups II</option>
+<option value="208">Joseph Loy</option>
+<option value="159">Kenwood STPs</option>
+<option value="123">Kitchen Road</option>
+<option value="37">Kitchen Yard Pipe Repair</option>
+<option value="84">Kitchen Yard Utility Pipe</option>
+<option value="201">Latton Street Scout Hall</option>
+<option value="191">Lawnes Creek</option>
+<option value="26">Lewis and Clark Memorial</option>
+<option value="192">Linton-Perine Pottery</option>
+<option value="51">Marquis Tract</option>
+<option value="155">MBY STP Survey</option>
+<option value="95">Middleburg</option>
+<option value="139">Middleton Place Colono Study</option>
+<option value="199">Mill Street</option>
+<option value="151">Mona Great House</option>
+<option value="122">Mona Village</option>
+<option value="121">Montalto Survey</option>
+<option value="65">Montpelier House 14</option>
+<option value="66">Montpelier House 24</option>
+<option value="67">Montpelier House 26</option>
+<option value="68">Montpelier House 37</option>
+<option value="71">Montpelier Yard Contexts</option>
+<option value="166">Moore Site</option>
+<option value="193">Morgan Jones</option>
+<option value="205">Morris</option>
+<option value="119">Morven Survey</option>
+<option value="107">MRS 2</option>
+<option value="61">NAVAIR</option>
+<option value="114">New River Village I</option>
+<option value="112">New River Village II</option>
+<option value="43">North Dependencies</option>
+<option value="157">North Flanker</option>
+<option value="8">North Hill</option>
+<option value="52">North Privy Restoration</option>
+<option value="62">Old Dorchester, SC Colono Colono Study</option>
+<option value="93">Orchard Water Line</option>
+<option value="148">Outer Cabrits Soldiers&#39; Barracks</option>
+<option value="12">Palace Lands Site</option>
+<option value="164">Papine Cemetery</option>
+<option value="108">Papine Village</option>
+<option value="28">PawPaw Valley Alignment</option>
+<option value="184">Pinfold Lane</option>
+<option value="30">Plantation Survey-Monticello Home Farm</option>
+<option value="160">Plantation Survey-Shadwell</option>
+<option value="149">Plantation Survey-Tufton Quarter Farm</option>
+<option value="194">Plum Pottery</option>
+<option value="17">Pope Site</option>
+<option value="185">Prescot</option>
+<option value="105">Proposed Parking Lot</option>
+<option value="50">Quarry Site</option>
+<option value="9">Quarter</option>
+<option value="186">Rainford</option>
+<option value="13">Richneck Quarter</option>
+<option value="154">Road Restoration Archaeology Fall 2011</option>
+<option value="217">Rockbridge Baths</option>
+<option value="203">Royal Arsenal</option>
+<option value="198">S1 Latton Ridding</option>
+<option value="92">Secar Testing</option>
+<option value="58">Septic Field Survey</option>
+<option value="72">Seville House 15</option>
+<option value="73">Seville House 16</option>
+<option value="176">Seville House 32</option>
+<option value="177">Seville House 35</option>
+<option value="31">Shadwell Watering Troughs</option>
+<option selected="selected" value="24">Shuttle Sta Burial Ground</option>
+<option value="94">Shuttle Station Survey</option>
+<option value="116">Site 17</option>
+<option value="124">Site A</option>
+<option value="125">Site D</option>
+<option value="35">Slate Branch Alignment</option>
+<option value="136">Smoky Hill Colono Study</option>
+<option value="209">Solomon Loy</option>
+<option value="141">Southall Quarter Colono Study</option>
+<option value="175">South Flanker</option>
+<option value="11">South Grove</option>
+<option value="137">South Grove Colono Study</option>
+<option value="85">South Privy Tunnel Vent</option>
+<option value="25">ST116</option>
+<option value="104">Stewart Castle Main House</option>
+<option value="103">Stewart Castle Village</option>
+<option value="56">Stewart-Watkins</option>
+<option value="206">Swan Bank Pottery</option>
+<option value="195">Swan-Smith-Milburn</option>
+<option value="211">Sycolin Road</option>
+<option value="204">Thameslink</option>
+<option value="113">The Spring</option>
+<option value="196">Tildon Easton</option>
+<option value="100">Triplex</option>
+<option value="38">Tufton Dead Cow</option>
+<option value="152">Tufton Testing</option>
+<option value="33">Tufton Yard</option>
+<option value="89">Upper Rawlins</option>
+<option value="54">Utopia Burials</option>
+<option value="45">Utopia II</option>
+<option value="46">Utopia III</option>
+<option value="47">Utopia IV</option>
+<option value="27">Water Pipe Trench</option>
+<option value="36">Weavers&#39; Cottage South</option>
+<option value="76">West Kitchen Yard, Dry Well, &amp; MRS 1</option>
+<option value="118">Willcox 1804 House</option>
+<option value="117">Willcox Quarter</option>
+<option value="210">William and Thomas Dennis</option>
+<option value="20">Wilton Quarter</option>
+<option value="74">Wine Cellar</option>
+<option value="202">Woolrich Teardrop</option>
+<option value="101">Yard Cabin</option>
+<option value="133">Yaughan East Colono Study</option>
+<option value="134">Yaughan West Colono Study</option>
+									</select>
+								</li>
+								<li>
+									<strong class="ttl">Step 3:</strong>
+									<label for="lbl03">Choose Context Sample</label>
+									<select class="form-control" id="lbl03">
+										<option value="">1000-186-NOS-</option>
+										<option value="">-- select -- </option>
+										<option value="">-- select -- </option>
+									</select>
+								</li>
+							</ul>
+						</div>
+						<div class="modal-footer">
+							<button class="btn btn-warning">CREATE</button>
+						</div>
+					</fieldset>
+				</form>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- add-new -->
+	<div class="modal modal-01 fade" id="image-library" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Image Library</h4>
+				</div>
+				<div class="modal-body">
+					<div class="img-library">
+						<div class="headline">
+							<a href="#" data-toggle="modal" data-target="#new-image" class="add-new">Add New Image</a>
+							<div class="search">
+								<form action="#">
+									<fieldset>
+										<input type="text" class="form-control" value="Search">
+										<input type="submit" class="btn btn-default" value="Submit">
+									</fieldset>
+								</form>
+							</div>
+						</div><!-- headline -->
+						<form action="#">
+							<fieldset>
+								<div class="images">
+									<div class="scroll-area">
+										<ul class="list">
+											<li>
+												<input type="checkbox" class="checkbox">
+												<div class="img">
+													<img src="images/img-14.jpg" width="91" height="91" alt="#">
+												</div>
+												<div class="desc">
+													<dl>
+														<dt>Image Name:</dt><dd>p_1302-76A-U24-2-DRS--00037a.jpg</dd>
+														<dt>Image Type:</dt><dd>Artifact</dd>
+														<dt>Image Description:</dt><dd>Paste Jewel</dd>
+														<dt>Insitution/Source:</dt><dd>SCIAA</dd>
+													</dl>
+													<dl>
+														<dt>Catalog Number:</dt><dd>1302-76A-U24-2-DRS--00037</dd>
+														<dt>Document ID:</dt><dd>&#160;</dd>
+														<dt>Added By:</dt><dd>Sawyer</dd>
+														<dt>Date Added:</dt><dd>10/10/2012</dd>
+													</dl>
+													<a href="#" data-toggle="modal" data-target="#edit-image" class="btn btn-success btn-edit">Edit</a>
+												</div>
+											</li>
+											<li>
+												<input type="checkbox" class="checkbox">
+												<div class="img">
+													<img src="images/img-14.jpg" width="91" height="91" alt="#">
+												</div>
+												<div class="desc">
+													<dl>
+														<dt>Image Name:</dt><dd>p_1302-76A-U24-2-DRS--00037a.jpg</dd>
+														<dt>Image Type:</dt><dd>Artifact</dd>
+														<dt>Image Description:</dt><dd>Paste Jewel</dd>
+														<dt>Insitution/Source:</dt><dd>SCIAA</dd>
+													</dl>
+													<dl>
+														<dt>Catalog Number:</dt><dd>1302-76A-U24-2-DRS--00037</dd>
+														<dt>Document ID:</dt><dd>&#160;</dd>
+														<dt>Added By:</dt><dd>Sawyer</dd>
+														<dt>Date Added:</dt><dd>10/10/2012</dd>
+													</dl>
+													<a href="#" data-toggle="modal" data-target="#edit-image" class="btn btn-success btn-edit">Edit</a>
+												</div>
+											</li>
+										</ul>
+									</div>
+								</div><!-- images -->
+								<div class="clearfix">
+									<button class="btn btn-info btn-add">link Selected Images</button>
+								</div>
+							</fieldset>
+						</form>
+					</div><!-- img-library -->
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- add-new -->
+	<div class="modal modal-02 fade" id="new-image" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Add Image</h4>
+				</div>
+				<div class="modal-body">
+					<div class="new-image">
+						<form action="#">
+							<fieldset>
+								<div class="frame">
+									<input type="file">
+									<label for="lbl-001">Image Type *</label>
+									<select class="form-control" id="lbl-001">
+										<option value="">-- select -- </option>
+										<option value="">-- select -- </option>
+										<option value="">-- select -- </option>
+									</select>
+									<label for="lbl-002">Description</label>
+									<textarea id="lbl-002" class="form-control" cols="1" rows="1"></textarea>
+									<label for="lbl-003">Institution / Source</label>
+									<select class="form-control" id="lbl-003">
+										<option value="">-- select -- </option>
+										<option value="">-- select -- </option>
+										<option value="">-- select -- </option>
+									</select>
+									<label for="lbl-004">Catalog Number</label>
+									<input type="text" class="form-control" value="" id="lbl-004">
+									<label for="lbl-005">Document ID</label>
+									<input type="text" class="form-control" value="" id="lbl-005">
+								</div>
+								<div class="clearfix">
+									<button class="btn btn-info btn-add">Add New Image</button>
+								</div>
+							</fieldset>
+						</form>
+					</div><!-- new-image -->
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- new-image -->
+	<div class="modal modal-02 fade" id="edit-image" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Edit Image</h4>
+				</div>
+				<div class="modal-body">
+					<div class="new-image">
+						<form action="#">
+							<fieldset>
+								<div class="frame">
+									<div class="replace fade-block">
+										<div class="img">
+											<img src="images/img-14.jpg" alt="#">
+										</div>
+										<a class="open-close" href="#">Replace Photo</a>
+										<div class="drop-file slide-block">
+											<input type="file">
+										</div>
+									</div><!-- replace -->
+									<label for="lbl-006">Image Type *</label>
+									<select class="form-control" id="lbl-006">
+										<option value="">-- select -- </option>
+										<option value="">-- select -- </option>
+										<option value="">-- select -- </option>
+									</select>
+									<label for="lbl-007">Description</label>
+									<textarea id="lbl-007" class="form-control" cols="1" rows="1"></textarea>
+									<label for="lbl-008">Institution / Source</label>
+									<select class="form-control" id="lbl-008">
+										<option value="">-- select -- </option>
+										<option value="">-- select -- </option>
+										<option value="">-- select -- </option>
+									</select>
+									<label for="lbl-009">Catalog Number</label>
+									<input type="text" class="form-control" value="" id="lbl-009">
+									<label for="lbl-010">Document ID</label>
+									<input type="text" class="form-control" value="" id="lbl-010">
+								</div>
+								<div class="bottom clearfix">
+									<a href="#" data-toggle="modal" data-target="#alert-modal" class="delete">Delete</a>
+									<button class="btn btn-info btn-save">Save</button>
+								</div>
+							</fieldset>
+						</form>
+					</div><!-- new-image -->
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- edit-image -->
+	<div class="modal alert-modal fade" id="alert-modal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Alert</h4>
+				</div>
+				<div class="modal-body">
+					<p class="txt">Are you sure you want to delete?</p>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-default" data-dismiss="modal">Cancel</button>
+					<button class="btn btn-warning delete">Delete</button>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- alert-modal -->
+    <div class="modal alert-modal fade" id="alert-modal-main" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Alert</h4>
+                </div>
+                <div class="modal-body">
+                    <p class="txt">Are you sure you want to delete?</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button id="button-record-delete" class="btn btn-warning">Delete</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- alert-modal -->
+	<div class="popup-mask">
+		<div id="popup-01" class="popup">
+			<img src="images/img-10.jpg" alt="#">
+		</div>
+		<div id="popup-02" class="popup">
+			<img src="images/img-11.jpg" alt="#">
+		</div>
+	</div>
+    <script type="text/javascript" src="js/handlebars.js"></script>
+	<script type="text/javascript" src="js/jquery-1-10-2-min.js"></script>
+	<script type="text/javascript" src="js/chosen.jquery.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/custom-form.js"></script>
+    <script type="text/javascript" src="js/custom-form.scrollable.js"></script>
+    <script type="text/javascript" src="js/custom-form.file.js"></script>
+    <script type="text/javascript" src="js/jquery.mousewheel-3.0.6.pack.js"></script>
+    <script type="text/javascript" src="js/jquery.fancybox.pack.js"></script>
+    <script type="text/javascript" src="js/scripts.js"></script>
+    <script type="text/javascript">
+        customForm.customForms.replaceAll();
+    </script>
+</body>
+</html>

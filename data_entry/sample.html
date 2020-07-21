@@ -1,0 +1,363 @@
+<html>
+    <head>
+        <style>
+
+            body {
+                font-size: 12pt;
+                font-family: Verdana;
+            }
+
+            p {
+                vertical-align: top;
+            }
+
+            table {
+                border: 0px; /*1px solid black;*/
+                vertical-align: top;
+                padding: 0px;
+            }
+
+            tr {
+                vertical-align: top;
+                border: 1px solid black;
+                margin: 0px;
+            }
+
+            td { border: 1px solid black;
+                margin: 0px;
+                padding: 3px;}
+
+            .nametable {
+                display: inline-table;
+            }
+
+            .nametable, .nametable td, .nametable tr {
+                border: 0px;
+            }
+
+            .infotext td {
+                border-top: 1px solid black;
+                text-align: center;
+                font-size: 7pt;
+            }
+
+            #altnames {
+                margin-left: 20px;
+            }
+
+            #pagebody {
+                float:left;
+                clear:none;
+            }
+
+            #notes {
+                float:right;
+                clear:none;
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                width: 400px;
+                border: 1px solid black;
+                background-color: #cccccc;
+                margin: 5px;
+                padding: 10px;
+            }
+        </style>
+
+    </head>
+
+
+    <body>
+        <div id="pagebody">
+            <h3>Personal Information</h3>
+            <div id="name">
+                <p>
+                Authoritative Name: 
+                <table class="nametable">
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>Brigham</td>
+                        <td>&nbsp;</td>
+                        <td>Young</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr class="infotext">
+                        <td>Prefix</td>
+                        <td>First</td>
+                        <td>Middle</td>
+                        <td>Last</td>
+                        <td>Suffix</td>
+                    </tr>
+                </table>
+                </p>
+            </div>
+            <div id="altnames">
+                <p>
+                Alternate Names: 
+                <table class="nametable">
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>B</td>
+                        <td>&nbsp;</td>
+                        <td>Young</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>Mr</td>
+                        <td>Brigham</td>
+                        <td>&nbsp;</td>
+                        <td>Young</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>Brigham Young</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr class="infotext">
+                        <td>Prefix</td>
+                        <td>First</td>
+                        <td>Middle</td>
+                        <td>Last</td>
+                        <td>Suffix</td>
+                    </tr>
+                </table>
+                <br/>
+                Boxes to add another Alternate Name
+                <br/><i>Maybe a checkbox to denote which name is the display name</i>
+                </p>
+            </div>
+            <div id="otherinfo">
+                <p>
+                Birth Information:
+                <table class="nametable">
+                    <tr><td>Date </td><td>YYYY-MM-DD</td></tr>
+                    <tr><td>Place </td><td>
+                        <table class="nametable">
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>Nauvoo</td>
+                                <td>Illinois</td>
+                                <td>&nbsp;</td>
+                                <td>United States</td>
+                            </tr>
+                            <tr class="infotext">
+                                <td>Official Name</td>
+                                <td>City/County</td>
+                                <td>State/Province</td>
+                                <td>Zipcode</td>
+                                <td>Country</td>
+                            </tr>
+                        </table>
+                    </td></tr>
+                    <tr><td>Birth Parent Marriage </td><td>Brigham Young to Mary Angell (civil) YYYY-MM-DD</td></tr>
+                </table><br/></p>
+                <p>Death Information:
+                <table class="nametable">
+                    <tr><td>Date </td><td>YYYY-MM-DD</td></tr>
+                    <tr><td>Place </td><td>
+                        <table class="nametable">
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>Nauvoo</td>
+                                <td>Illinois</td>
+                                <td>&nbsp;</td>
+                                <td>United States</td>
+                            </tr>
+                            <tr class="infotext">
+                                <td>Official Name</td>
+                                <td>City/County</td>
+                                <td>State/Province</td>
+                                <td>Zipcode</td>
+                                <td>Country</td>
+                            </tr>
+                        </table>
+                    </td></tr>
+                </table></p>
+                </p>
+            </div>
+
+            <h3>Sealings and Rites</h3>
+            <div id="rites">
+                <h4>Temple Rites</h4>
+                <table>
+                    <tr>
+                        <th>Type</th>
+                        <th>Officiator</th>
+                        <th>Officiator Role</th>
+                        <th>Date</th>
+                        <th>Place</th>
+                        <th>Proxy</th>
+                        <th>Annointed To</th>
+                        <th>Proxy Annointed To</th>
+                        <th>Name as Performed</th>
+                    </tr>
+                    <tr>
+                        <td>Baptism</td>
+                        <td>Joseph Smith</td>
+                        <td>&nbsp;</td>
+                        <td>YYYY-MM-DD</td>
+                        <td>Place (as above)</td>
+                        <td>Proxy for this person</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td><select><option>Brigham Young</option><option>Mr. B. Young</option></select></td>
+                    </tr>
+                    <tr>
+                        <td>Endowment</td>
+                        <td>Joseph Smith</td>
+                        <td>&nbsp;</td>
+                        <td>YYYY-MM-DD</td>
+                        <td>Place (as above)</td>
+                        <td>Proxy for this person</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td><select><option>Brigham Young</option><option>Mr. B. Young</option></select></td>
+                    </tr>
+                    <tr>
+                        <td>Second Annointing</td>
+                        <td>Joseph Smith</td>
+                        <td>&nbsp;</td>
+                        <td>YYYY-MM-DD</td>
+                        <td>Place (as above)</td>
+                        <td>Proxy for this person</td>
+                        <td>Person annointed to</td>
+                        <td>Proxy if Applicable</td>
+                        <td><select><option>Brigham Young</option><option>Mr. B. Young</option></select></td>
+                    </tr>
+                </table>
+            </div>
+            <div id="nonmarital">
+                <h4>Non-Marital Sealings</h4>
+                <table>
+                    <tr>
+                        <th>Type</th>
+                        <th>Sealed</th>
+                        <th>Officiator</th>
+                        <th>Date</th>
+                        <th>Place</th>
+                        <th>Proxy</th>
+                        <th>Sealed Proxy</th>
+                        <th>Name as Sealed</th>
+                    </tr>
+                    <tr>
+                        <td>Adoption</td>
+                        <td>Marriage Sealed to</td>
+                        <td>Joseph Smith</td>
+                        <td>YYYY-MM-DD</td>
+                        <td>Place (as above)</td>
+                        <td>Proxy for this person</td>
+                        <td>Proxy for the marriage</td>
+                        <td><select><option>Brigham Young</option><option>Mr. B. Young</option></select></td>
+                    </tr>
+                    <tr>
+                        <td>Second Annointing</td>
+                        <td>Marriage Sealed to</td>
+                        <td>Joseph Smith</td>
+                        <td>YYYY-MM-DD</td>
+                        <td>Place (as above)</td>
+                        <td>Proxy for this person</td>
+                        <td>Proxy for the marriage</td>
+                        <td><select><option>Brigham Young</option><option>Mr. B. Young</option></select></td>
+                    </tr>
+                </table>
+            </div>
+            <div id="marital">
+                <h4>Marital Sealings and Marriages</h4>
+                <table>
+                    <tr>
+                        <th>Type</th>
+                        <th>Spouse</th>
+                        <th>Officiator</th>
+                        <th>Date</th>
+                        <th>Place</th>
+                        <th>Proxy</th>
+                        <th>Spouse Proxy</th>
+                        <th>Divorce Date</th>
+                        <th>Cancellation Date</th>
+                        <th>Name as Sealed</th>
+                    </tr>
+                    <tr>
+                        <td>Eternity</td>
+                        <td>Official Name</td>
+                        <td>Joseph Smith</td>
+                        <td>YYYY-MM-DD</td>
+                        <td>Place (as above)</td>
+                        <td>Proxy for this person</td>
+                        <td>Proxy for the spouse</td>
+                        <td>YYYY-MM-DD</td>
+                        <td>YYYY-MM-DD</td>
+                        <td><select><option>Brigham Young</option><option>Mr. B. Young</option></select></td>
+                    </tr>
+                    <tr>
+                        <td>Time</td>
+                        <td>Official Name</td>
+                        <td>Joseph Smith</td>
+                        <td>YYYY-MM-DD</td>
+                        <td>Place (as above)</td>
+                        <td>Proxy for this person</td>
+                        <td>Proxy for the spouse</td>
+                        <td>YYYY-MM-DD</td>
+                        <td>YYYY-MM-DD</td>
+                        <td><select><option>Brigham Young</option><option>Mr. B. Young</option></select></td>
+                    </tr>
+                    <tr>
+                        <td>Civil</td>
+                        <td>Official Name</td>
+                        <td>Joseph Smith</td>
+                        <td>YYYY-MM-DD</td>
+                        <td>Place (as above)</td>
+                        <td>Proxy for this person</td>
+                        <td>Proxy for the spouse</td>
+                        <td>YYYY-MM-DD</td>
+                        <td>YYYY-MM-DD</td>
+                        <td><select><option>Brigham Young</option><option>Mr. B. Young</option></select></td>
+                    </tr>
+                </table>
+            </div>
+            <p style="align: center;">
+            <button>Search / Pre-fill</button>
+            &nbsp;
+            <button>Save</button>
+            </p>
+        </div>
+        <!-- Maybe put the notes in a box on the right-side of the page -->
+        <div id="notes">
+            <h3>Notes</h3>
+            <p>Notes from Brown</p>
+            <table>
+                <tr>
+                    <td>Name:</td>
+                    <td>Notes on the name</td>
+                </tr>
+                <tr>
+                    <td>Birth Date:</td>
+                    <td>Notes on the birth date</td>
+                </tr>
+                <tr>
+                    <td>Priesthood Office:</td>
+                    <td>Notes on the PH office</td>
+                </tr>
+                <tr>
+                    <td>Endowment:</td>
+                    <td>Notes on the endowment</td>
+                </tr>
+                <tr>
+                    <td>Sealed in Marriage:</td>
+                    <td>Notes on the marriage sealing</td>
+                </tr>
+                <tr>
+                    <td>Adoption:</td>
+                    <td>Notes on the adoption A/SC</td>
+                </tr>
+                <tr>
+                    <td>Second Annointing:</td>
+                    <td>Notes on the second annointing</td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>
+

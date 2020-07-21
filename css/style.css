@@ -1,0 +1,119 @@
+
+body {
+	font-family: sans-serif;
+	padding-left: 40px;
+	padding-right: 40px;
+}
+
+h1 {
+	margin-bottom: 2px;
+	padding-bottom: 2px;
+}
+
+h4 {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	font-weight: normal;
+	padding: 0px;
+	padding-left: 25px;
+	font-style: italic;
+}
+
+dt {
+	font-weight: bold;
+}
+
+dd {
+	font-size: -1;
+}
+
+dd dt {
+	font-size: -1;
+}
+
+dd dt dd {
+	font-size: -2;
+}
+
+a {
+	text-decoration: none;
+}
+
+.href {
+	cursor: pointer;
+	color: blue;
+}
+.href:hover {
+	text-decoration: underline;
+}	
+.form {
+	font-size: -1;
+	background: #EEEEEE;
+	padding: 24px;
+	padding-top: 10px;
+	margin-left: 40px;
+	margin-right: 40px;
+	border: 1px solid #CCCCCC;
+}
+
+.form h4 {
+	line-height: 1em;
+	padding: 0px;
+	color: #999999;
+	border-bottom: 1px solid #CCCCCC;
+	font-size: 14px;
+}
+
+.form h5 {
+	line-height: 1em;
+	padding: 0px;
+	color: #999999;
+	border-bottom: 1px solid #CCCCCC;
+	font-size: 12px;
+	margin: 0px;
+}
+
+.form h6 {
+	line-height: 1em;
+	padding: 2px;
+	color: #999999;
+	font-size: 12px;
+	margin: 0px;
+	margin-top: 5px;
+}
+.form p {
+	padding: 2px;
+	margin: 0px;
+	font-size: 12px;
+}
+
+.form table, .form table tr, .form table td {
+	border: 0px;
+	vertical-align: top;
+}
+
+.form table {
+	margin-left: 10px;
+	}
+
+hr {
+	width: 85%;
+	height: 0px;
+	border: 1px solid #AAAAAA;
+}
+
+li {
+    margin-bottom: 9px;
+}
+
+li ul li {
+    margin-bottom: 1px;
+}
+
+.callout-box {
+    background: #EEEEEE;
+    padding: 24px;
+    padding-top: 24px;
+    margin: 40px;
+    border: 1px solid #CCCCCC;
+}
