@@ -36,6 +36,7 @@ function goChord() {
 <body>
 <h1>Nauvoo Dataviews</h1>
 <h4>Robbie Hott, <a href="http://www.cs.virginia.edu/~jh2jf/">www.cs.virginia.edu/~jh2jf</a></h4>
+<h4>Ryan Pope, <a href="mailto:rcp3by@virginia.edu">rcp3by@virginia.edu</a></h4>
 <h4>Notes <a href="http://www.cs.virginia.edu/~jh2jf/notes/">www.cs.virginia.edu/~jh2jf/notes/</a></h4>
 
 <div class="callout-box">
@@ -84,6 +85,7 @@ function goChord() {
 	<li><a href="plural_1852.php">Plural (Male) Marriages Before 1852 (No Duplicates)</a>: List of all men and their plural wives before 1852. <em>All duplicate sealings and marriages to the same wife have been removed.</em></li>
 	<li><a href="plural_women_before_1852.php">Plural (Female) Marriages Before 1852</a>: List of all women and their plural husbands before 1852.</li>
 	<li><a href="plural_women_1852.php">Plural (Female) Marriages Before 1852 (No Duplicates)</a>: List of all women and their plural husbands before 1852. <em>All duplicate sealings and marriages to the same wife have been removed.</em></li>
+	<li><a href="sealings_under18.php">Marriages with Participants Under 18</a>: List of all civil, time and eternity sealings with one or more participants under the age of 18.</li>
 </ul>
 
 <h2>Static Views of Marriage Graphs</h2>
