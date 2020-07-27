@@ -43,13 +43,16 @@ ini_set("display_errors", 1);
     }
 
     function display($kind, $val, $label, $isdate=false) {
-        if (isset($kind[$val]) && !empty(trim($kind[$val]))) {
-            echo "<p class='card-text'>$label: ";
-            if ($isdate)
-                displayDate($kind[$val], "", "");
-            else
-                echo $kind[$val];
-            echo "</p>\n";
+        if (isset($kind[$val])) {
+            $trimmed = trim($kind[$val]);
+            if (!empty($trimmed)) {
+                echo "<p class='card-text'>$label: ";
+                if ($isdate)
+                    displayDate($kind[$val], "", "");
+                else
+                    echo $kind[$val];
+                echo "</p>\n";
+            }
         }
     }
 
@@ -324,15 +327,9 @@ ini_set("display_errors", 1);
                                 <?php if ($marriage["OfficiatorName"]) { ?>
                                 <p class="card-text">Officiator: <?=$marriage["OfficiatorName"]?></p>
                                 <?php } ?>
-                                <?php if (!empty(trim($marriage["ProxyName"]))) { ?>
-                                <p class="card-text">Proxy: <?=$marriage["ProxyName"]?></p>
-                                <?php } ?>
-                                <?php if (!empty(trim($marriage["SpouseProxyName"]))) { ?>
-                                <p class="card-text">Spouse Proxy: <?=$marriage["SpouseProxyName"]?></p>
-                                <?php } ?>
-                                <?php if (!empty(trim($marriage["NameUsed"]))) { ?>
-                                <p class="card-text">Name as Sealed: <?=$marriage["NameUsed"]?></p>
-                                <?php } ?>
+                                <?php display($marriage, "ProxyName", "Proxy"); ?>
+                                <?php display($marriage, "SpouseProxyName", "Spouse Proxy"); ?>
+                                <?php display($marriage, "NameUsed", "Name as Sealed"); ?>
                                 <?php if ($marriage["PrivateNotes"]) { ?>
                                 <p class="card-text">Notes: <?=$marriage["PrivateNotes"]?></p>
                                 <?php } ?>
