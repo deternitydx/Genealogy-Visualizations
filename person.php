@@ -11,16 +11,7 @@ ini_set("display_errors", 1);
         die("Missing UVA Person ID.  Cannot continue.");
     }
     // load the person
-    $person = json_decode(file_get_contents("sample.json"), true);
-    //$person = json_decode(file_get_contents($base_url . "api/edit_person.php?id=".$_GET["id"]), true);
-    // load the brown data
-    $brown = array();
-    if (isset($_GET["brown"])) {
-        $brown_id = $_GET["brown"];
-        $brown = json_decode(file_get_contents($base_url . "api/brown_individual.php?id=".$brown_id), true);
-        $brown = $brown[0];
-    } else
-        $brown_id = "UNKNOWN";
+    $person = json_decode(file_get_contents($base_url . "api/edit_person.php?id=".$_GET["id"]), true);
 
     /*
      * Display Dates
