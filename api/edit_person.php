@@ -273,6 +273,37 @@ include("../database.php");
             $person["marriages"][$i]["adoptees"] = $arr["count"];
     }
 
+    $result = pg_query("SELECT n.\"First\", n.\"Middle\", n.\"Last\", cp.\"ID\", cp.\"Gender\", cp.\"BirthDate\", cp.\"DeathDate\", cp.\"Modified\"  
+    from public.\"Person\" p, public.\"Marriage\" m, public.\"PersonMarriage\" pm, \"Person\" cp, \"Name\" n
+    where p.\"ID\" = {$id}
+    and pm.\"PersonID\" = p.\"ID\"
+    and pm.\"MarriageID\" = m.\"ID\"
+    and cp.\"BiologicalChildOfMarriage\" = m.\"ID\"
+    and n.\"PersonID\" = cp.\"ID\" AND n.\"Type\" = 'authoritative'");
+
+    if (!$result) {
+        die("Error finding children.");
+        exit;
+    }
+
+    $person["natural_children"] = pg_fetch_all($result);
+
+    $result = pg_query("SELECT n.\"First\", n.\"Middle\", n.\"Last\", cp.\"ID\", cp.\"Gender\", cp.\"BirthDate\", cp.\"DeathDate\", cp.\"Modified\", nms.\"Type\" as \"AdoptionType\"
+    from public.\"Person\" p, public.\"Marriage\" m, public.\"PersonMarriage\" pm, \"Person\" cp, \"Name\" n, \"NonMaritalSealings\" nms
+    where p.\"ID\" = {$id}
+    and pm.\"PersonID\" = p.\"ID\"
+    and pm.\"MarriageID\" = m.\"ID\"
+    and (nms.\"AdopteeID\" = cp.\"ID\" or nms.\"AdopteeProxyID\" = cp.\"ID\")
+    and (nms.\"MarriageID\" = m.\"ID\" or nms.\"MarriageProxyID\" = m.\"ID\")
+    and n.\"PersonID\" = cp.\"ID\" AND n.\"Type\" = 'authoritative'");
+
+    if (!$result) {
+        die("Error finding adopted children.");
+        exit;
+    }
+
+    $person["adopted_children"] = pg_fetch_all($result);
+
     // Get the Offices for this person
     $result = pg_query("SELECT DISTINCT po.\"ID\", po.\"OfficeID\", o.\"Name\" as \"OfficeName\", po.\"From\", po.\"FromStatus\", po.\"To\", 
                             po.\"ToStatus\", po.\"PrivateNotes\", po.\"OfficiatorID1\", po.\"OfficiatorID2\", po.\"OfficiatorID3\",
