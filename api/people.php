@@ -37,7 +37,7 @@ foreach ($arr as $person) {
         if ($first) array_push($firsta, "\"$k\"");
     }
 
-    array_push($resa, "\"<a href='../data_entry/individual.php?id={$person["ID"]}'>Edit</a>\"");
+    array_push($resa, "\"<a href='../person.php?id={$person["ID"]}'>View</a> - <a href='../data_entry/individual.php?id={$person["ID"]}'>Edit</a>\"");
 
     array_push($json, "[" . implode(", ", $resa) . "]");
     $first = false;
