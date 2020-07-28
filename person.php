@@ -11,8 +11,8 @@ ini_set("display_errors", 1);
         die("Missing UVA Person ID.  Cannot continue.");
     }
     // load the person
-    //$person = json_decode(file_get_contents($base_url . "api/edit_person.php?id=".$_GET["id"]), true);
-    $person = json_decode(file_get_contents("sample.json"), true);
+    $person = json_decode(file_get_contents($base_url . "api/edit_person.php?id=".$_GET["id"]), true);
+    //$person = json_decode(file_get_contents("sample.json"), true);
 
     /*
      * Display Dates
