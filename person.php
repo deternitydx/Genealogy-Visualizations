@@ -42,15 +42,21 @@ ini_set("display_errors", 1);
 
     }
 
-    function display($kind, $val, $label, $isdate=false) {
+    function display($kind, $val, $label, $isdate=false, $ismarriage=false) {
         if (isset($kind[$val])) {
             $trimmed = trim($kind[$val]);
             if (!empty($trimmed)) {
-                echo "<p class='card-text'>$label: ";
+                echo "<p class='card-text'><span style='width: 150px; font-weight: bold;'>$label: </span> ";
                 if ($isdate)
                     displayDate($kind[$val], "", "");
-                else
-                    echo $kind[$val];
+                else {
+                    $parts = explode(' ', $kind[$val]);
+                    $last = array_pop($parts);
+                    if (!$ismarriage && is_numeric($last)) 
+                        echo "<a href='?id=$last'>".implode(" ", $parts)."</a>";
+                    else
+                        echo $kind[$val];
+                }
                 echo "</p>\n";
             }
         }
@@ -67,6 +73,7 @@ ini_set("display_errors", 1);
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
+    <link rel="stylesheet" href="css/font-awesome.min.css">
     <style>
         h1 {
             margin-top: 30px;
@@ -107,8 +114,12 @@ ini_set("display_errors", 1);
                     <span>{$name["First"]}</span>
                     <span>{$name["Middle"]}</span>
                     <span>{$name["Last"]}</span>
-                    <span>{$name["Suffix"]}</span>
-                    </h1>";
+                    <span>{$name["Suffix"]}</span>";
+                if ($person["information"]["Gender"] == "Male")
+                    echo "<i class='fa fa-male' aria-hidden='true'></i>";
+                else
+                    echo "<i class='fa fa-female' aria-hidden='true'></i>";
+                echo "</h1>";
                 $n_i++;
             } // endif
         } // end foreach
@@ -150,6 +161,33 @@ ini_set("display_errors", 1);
               <div class="card-body text-left">
                 <div class="tab-content" id="myTabContent">
                   <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="card text-center">
+                              <div class="card-header">
+                                Birth
+                              </div>
+                              <div class="card-body">
+                                <h5 class="card-title"><?php displayDate($person["information"]["BirthDate"], "birth", ""); ?></h5>
+                                <h6 class="card-subtitle"><?=$person["information"]["BirthPlaceName"]?></h6>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 text-center align-middle">
+                            <p class="align-middle" style="margin-top: 30px;">&mdash;</p>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="card text-center">
+                              <div class="card-header">
+                                Death
+                              </div>
+                              <div class="card-body">
+                                <h5 class="card-title"><?php displayDate($person["information"]["DeathDate"], "birth", ""); ?></h5>
+                                <h6 class="card-subtitle"><?=$person["information"]["DeathPlaceName"]?></h6>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="card">
                       <div class="card-header">
                         Alternative Names (Also Known As) 
@@ -175,22 +213,10 @@ ini_set("display_errors", 1);
                     </div>
                     <div class="card">
                       <div class="card-header">
-                        Birth Information
+                        Parent Marriage 
                       </div>
-                      <div class="card-body">
-                        <p class="card-text">Gender: <?=$person["information"]["Gender"]?></p>
-                        <p class="card-text">Birth Date: <?php displayDate($person["information"]["BirthDate"], "birth", ""); ?></p>
-                        <p class="card-text">Birth Place: <?=$person["information"]["BirthPlaceName"]?></p>
-                        <p class="card-text">Birth Parent Marriage: <?=$person["information"]["ParentMarriageString"]?></p>
-                      </div>
-                    </div>
-                    <div class="card">
-                      <div class="card-header">
-                        Death Information
-                      </div>
-                      <div class="card-body">
-                        <p class="card-text">Death Date: <?php displayDate($person["information"]["DeathDate"], "death", ""); ?></p>
-                        <p class="card-text">Death Place: <?=$person["information"]["DeathPlaceName"]?></p>
+                      <div class="card-body text-center">
+                        <p class="card-text"><?=$person["information"]["ParentMarriageString"]?></p>
                       </div>
                     </div>
                     <div class="card">
@@ -222,17 +248,24 @@ ini_set("display_errors", 1);
                                         <?php if ($rite["Type"] == "secondAnnointing")  echo "Second Anointing";?>
                                         <?php if ($rite["Type"] == "secondAnnointingTime")  echo "Second Anointing (for time)";?>
                                         <?php if ($rite["Type"] == "firstAnnointing")  echo "First Anointing";?>
+                                        - <?php displayDate($rite["Date"], "tr_date_", "_".$r_i); ?>
                               </div>
                               <div class="card-body">
-                                <p class="card-text">Date: <?php displayDate($rite["Date"], "tr_date_", "_".$r_i); ?></p>
-                                <p class="card-text">Place: <?=$rite["PlaceName"]?></p>
-                                <p class="card-text">Officiator: <?=$rite["OfficiatorName"]?></p>
-                                <p class="card-text">Proxy: <?=$rite["ProxyName"]?></p>
-                                <p class="card-text">Anointed To: <?=$rite["AnnointedToName"]?></p>
-                                <p class="card-text">Anointed To (Proxy): <?=$rite["AnnointedToProxyName"]?></p>
-                                <p class="card-text">Name as Performed: <?=$rite["NameUsed"]?></p>
-                                <p class="card-text">Notes: <?=$rite["PrivateNotes"]?></p>
+                                <?php display($rite, "PlaceName", "Place"); ?>
+                                <?php display($rite, "OfficiatorName", "Officiator"); ?>
+                                <?php display($rite, "ProxyName", "Proxy"); ?>
+                                <?php display($rite, "AnnointedToName", "Anoinged To"); ?>
+                                <?php display($rite, "AnnointedToProxyName", "Anointed To (Proxy)"); ?>
+                                <?php display($rite, "NameUsed", "Name as Performed"); ?>
                               </div>
+                                <?php
+                                    if (isset($rite["PrivateNotes"])) {
+                                        $trimmed = trim($rite["PrivateNotes"]);
+                                        if (!empty($trimmed)) {
+                                            echo "<div class=\"card-footer text-muted\">$trimmed</div>";
+                                        }
+                                    }
+                                ?>
                             </div>
                         <?php
                             $r_i++;
@@ -263,18 +296,25 @@ ini_set("display_errors", 1);
                               <div class="card-header">
                                     <?php if ($sealing["Type"] == "adoption")  echo "Adoption";?>
                                     <?php if ($sealing["Type"] == "natural")  echo "Natural";?>
+                                    - <?php displayDate($sealing["Date"], "nms_date_", "_".$r_i); ?>
                               </div>
                               <div class="card-body">
-                                <p class="card-text">Date: <?php displayDate($sealing["Date"], "nms_date_", "_".$r_i); ?></p>
-                                <p class="card-text">Place: <?=$sealing["PlaceName"]?></p>
-                                <p class="card-text">Proxy: <?=$sealing["ProxyName"]?></p>
-                                <p class="card-text">Officiator: <?=$sealing["OfficiatorName"]?></p>
-                                <p class="card-text">Sealed to Marriage: <?=$sealing["MarriageString"]?></p>
-                                <p class="card-text">Proxy Father: <?=$sealing["ProxyFatherName"]?></p>
-                                <p class="card-text">Proxy Mother: <?=$sealing["ProxyMotherName"]?></p>
-                                <p class="card-text">Name as Sealed: <?=$sealing["NameUsed"]?></p>
-                                <p class="card-text">Notes: <?=$sealing["PrivateNotes"]?></p>
+                                <?php display($sealing, "PlaceName", "Place"); ?>
+                                <?php display($sealing, "ProxyName", "Proxy"); ?>
+                                <?php display($sealing, "OfficiatorName", "Officiator"); ?>
+                                <?php display($sealing, "MarriageString", "Sealed to Marriage"); ?>
+                                <?php display($sealing, "ProxyFatherName", "Proxy Father"); ?>
+                                <?php display($sealing, "ProxyMotherName", "Proxy Mother"); ?>
+                                <?php display($sealing, "NameUsed", "Name as Sealed"); ?>
                               </div>
+                                <?php
+                                    if (isset($sealing["PrivateNotes"])) {
+                                        $trimmed = trim($sealing["PrivateNotes"]);
+                                        if (!empty($trimmed)) {
+                                            echo "<div class=\"card-footer text-muted\">$trimmed</div>";
+                                        }
+                                    }
+                                ?>
                             </div>
                         <?php
                             $s_i++;
@@ -321,12 +361,10 @@ ini_set("display_errors", 1);
                                 <?php if ($marriage["CancelledDate"]) { ?>
                                 <p class="card-text">Canceled Date: <?php displayDate($marriage["CancelledDate"], "mar_date_", "_".$m_i); ?></p>
                                 <?php } ?>
-                                <?php if ($marriage["PlaceName"]) { ?>
-                                <p class="card-text">Place: <?=$marriage["PlaceName"]?></p>
-                                <?php } ?>
-                                <?php if ($marriage["OfficiatorName"]) { ?>
-                                <p class="card-text">Officiator: <?=$marriage["OfficiatorName"]?></p>
-                                <?php } ?>
+                                <?php display($marriage, "DivorceDate", "Divorce Date, true"); ?>
+                                <?php display($marriage, "CancelledDate", "Canceled Date, true"); ?>
+                                <?php display($marriage, "PlaceName", "Place"); ?>
+                                <?php display($marriage, "OfficiatorName", "Officiator"); ?>
                                 <?php display($marriage, "ProxyName", "Proxy"); ?>
                                 <?php display($marriage, "SpouseProxyName", "Spouse Proxy"); ?>
                                 <?php display($marriage, "NameUsed", "Name as Sealed"); ?>
@@ -334,6 +372,14 @@ ini_set("display_errors", 1);
                                 <p class="card-text">Notes: <?=$marriage["PrivateNotes"]?></p>
                                 <?php } ?>
                               </div>
+                                <?php
+                                    if (isset($marriage["PrivateNotes"])) {
+                                        $trimmed = trim($marriage["PrivateNotes"]);
+                                        if (!empty($trimmed)) {
+                                            echo "<div class=\"card-footer text-muted\">$trimmed</div>";
+                                        }
+                                    }
+                                ?>
                             </div>
                         <?php
                                 $m_i++;
