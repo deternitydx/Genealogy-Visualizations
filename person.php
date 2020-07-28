@@ -351,8 +351,9 @@ ini_set("display_errors", 1);
                                         <?php if ($marriage["Type"] == "civil")  echo "Civil Marriage";?>
                                 </span> - 
                                 <?php displayDate($marriage["MarriageDate"], "mar_date_", "_".$m_i); ?>
+                                <span class="pull-right"><button class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#marriage<?=$m_i?>" aria-expanded="false" aria-controls="marriage<?=$m_i?>">More</button></span>
                               </div>
-                              <div class="card-body">
+                              <div class="card-body collapse" id="marriage<?=$m_i?>">
                                 <?php
                                     if (is_numeric($marriage["children"]) && $marriage["children"] > 0)
                                         echo '<p class="card-text marinfo">This marriage has '.$marriage["children"]. ' child(ren) in the database</p>';
@@ -372,9 +373,6 @@ ini_set("display_errors", 1);
                                 <?php display($marriage, "ProxyName", "Proxy"); ?>
                                 <?php display($marriage, "SpouseProxyName", "Spouse Proxy"); ?>
                                 <?php display($marriage, "NameUsed", "Name as Sealed"); ?>
-                                <?php if ($marriage["PrivateNotes"]) { ?>
-                                <p class="card-text">Notes: <?=$marriage["PrivateNotes"]?></p>
-                                <?php } ?>
                               </div>
                                 <?php
                                     if (isset($marriage["PrivateNotes"])) {
