@@ -106,7 +106,7 @@ include("../database.php");
         is_numeric($person["information"]["BiologicalChildOfMarriage"])) {
         
         $query = "
-            SELECT DISTINCT m.*, pl.\"OfficialName\" as \"PlaceName\", hn.\"First\" as \"HusbandFirst\", hn.\"Last\" as \"HusbandLast\", wn.\"First\" as \"WifeFirst\", wn.\"Last\" as \"WifeLast\" 
+            SELECT DISTINCT m.*, pl.\"OfficialName\" as \"PlaceName\", hn.\"First\" as \"HusbandFirst\", hn.\"Last\" as \"HusbandLast\", wn.\"First\" as \"WifeFirst\", wn.\"Last\" as \"WifeLast\", hn.\"PersonID\" as \"HusbandID\",  wn.\"PersonID\" as \"WifeID\"
             FROM public.\"Marriage\" m
             LEFT JOIN public.\"PersonMarriage\" hpm ON hpm.\"MarriageID\" = m.\"ID\" AND hpm.\"Role\" = 'Husband'
             LEFT JOIN public.\"PersonMarriage\" wpm ON wpm.\"MarriageID\" = m.\"ID\" AND wpm.\"Role\" = 'Wife'
@@ -123,6 +123,13 @@ include("../database.php");
         foreach($results as $res) {
             if (!isset($person["information"])) $person["information"] = array();
             $person["information"]["ParentMarriageString"] = $res["HusbandLast"] . ", " . $res["HusbandFirst"] . " to " . $res["WifeLast"] . ", " . $res["WifeFirst"] . " (" . $res["MarriageDate"] . " : " . $res["Type"] . ") " . $res["ID"];
+            $person["information"]["FatherName"] = $res["HusbandFirst"]." ".$res["HusbandLast"];
+            $person["information"]["MotherName"] = $res["WifeFirst"]." ".$res["WifeLast"];
+            $person["information"]["FatherID"] = $res["HusbandID"];
+            $person["information"]["MotherID"] = $res["WifeID"];
+            $person["information"]["ParentMarriageDate"] = $res["MarriageDate"];
+            $person["information"]["ParentMarriageType"] = $res["Type"];
+
         }
     }
 
@@ -259,18 +266,20 @@ include("../database.php");
     $person["marriages"] = pg_fetch_all($result);
 
     // Get the number of children for each marriage
-    foreach ($person["marriages"] as $i => $marriage) {
-        $result = pg_query("SELECT count(*) from public.\"Person\" where \"BiologicalChildOfMarriage\"={$marriage["ID"]};");
+    if($person["marriages"] != null){
+        foreach ($person["marriages"] as $i => $marriage) {
+            $result = pg_query("SELECT count(*) from public.\"Person\" where \"BiologicalChildOfMarriage\"={$marriage["ID"]};");
 
-        $arr = pg_fetch_array($result);
-        if ($arr != null && !empty($arr))
-            $person["marriages"][$i]["children"] = $arr["count"];
-        
-        $result = pg_query("SELECT count(*) from public.\"NonMaritalSealings\" where \"MarriageID\"={$marriage["ID"]};");
+            $arr = pg_fetch_array($result);
+            if ($arr != null && !empty($arr))
+                $person["marriages"][$i]["children"] = $arr["count"];
+            
+            $result = pg_query("SELECT count(*) from public.\"NonMaritalSealings\" where \"MarriageID\"={$marriage["ID"]};");
 
-        $arr = pg_fetch_array($result);
-        if ($arr != null && !empty($arr))
-            $person["marriages"][$i]["adoptees"] = $arr["count"];
+            $arr = pg_fetch_array($result);
+            if ($arr != null && !empty($arr))
+                $person["marriages"][$i]["adoptees"] = $arr["count"];
+        }
     }
 
     $result = pg_query("SELECT n.\"First\", n.\"Middle\", n.\"Last\", cp.\"ID\", cp.\"Gender\", cp.\"BirthDate\", cp.\"DeathDate\", cp.\"Modified\"  
@@ -278,6 +287,7 @@ include("../database.php");
     where p.\"ID\" = {$id}
     and pm.\"PersonID\" = p.\"ID\"
     and pm.\"MarriageID\" = m.\"ID\"
+    and pm.\"Role\" not in ('Officiator', 'ProxyHusband', 'ProxyWife')
     and cp.\"BiologicalChildOfMarriage\" = m.\"ID\"
     and n.\"PersonID\" = cp.\"ID\" AND n.\"Type\" = 'authoritative'");
 
@@ -295,6 +305,7 @@ include("../database.php");
     and pm.\"MarriageID\" = m.\"ID\"
     and (nms.\"AdopteeID\" = cp.\"ID\" or nms.\"AdopteeProxyID\" = cp.\"ID\")
     and (nms.\"MarriageID\" = m.\"ID\" or nms.\"MarriageProxyID\" = m.\"ID\")
+    and pm.\"Role\" not in ('Officiator', 'ProxyHusband', 'ProxyWife')
     and n.\"PersonID\" = cp.\"ID\" AND n.\"Type\" = 'authoritative'");
 
     if (!$result) {
@@ -338,6 +349,7 @@ include("../database.php");
     $person["brown_ids"] = array();
     foreach (pg_fetch_all($result) as $res)
         array_push($person["brown_ids"], $res["id"]);
+    $person["brown_ids"] = pg_fetch_all($result);
 
 
     // Return the person array as json to be used by the editor:

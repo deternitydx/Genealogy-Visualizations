@@ -143,13 +143,10 @@ ini_set("display_errors", 1);
               <div class="card-header">
                 <ul class="nav nav-tabs card-header-tabs">
                   <li class="nav-item" role="presentation">
-                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Personal Information</a>
+                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Personal Info</a>
                   </li>
                   <li class="nav-item" role="presentation">
                     <a class="nav-link" id="nso-tab" data-toggle="tab" href="#nso" role="tab" aria-controls="profile" aria-selected="false">Non-Sealing Ordinances (NSO)</a>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="sc-tab" data-toggle="tab" href="#sc" role="tab" aria-controls="profile" aria-selected="false">Sealed Child (SC)</a>
                   </li>
                   <li class="nav-item" role="presentation">
                     <a class="nav-link" id="m-tab" data-toggle="tab" href="#m" role="tab" aria-controls="profile" aria-selected="false">Marriages (M)</a>
@@ -158,7 +155,13 @@ ini_set("display_errors", 1);
                     <a class="nav-link" id="c-tab" data-toggle="tab" href="#c" role="tab" aria-controls="profile" aria-selected="false">Children (C)</a>
                   </li>
                   <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="a-tab" data-toggle="tab" href="#a" role="tab" aria-controls="profile" aria-selected="false">Adoptions (A)</a>
+                  </li>
+                  <li class="nav-item" role="presentation">
                     <a class="nav-link" id="o-tab" data-toggle="tab" href="#o" role="tab" aria-controls="profile" aria-selected="false">Offices (O)</a>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="sc-tab" data-toggle="tab" href="#sc" role="tab" aria-controls="profile" aria-selected="false">Sealings as Child (SC)</a>
                   </li>
                 </ul>
               </div>
@@ -192,6 +195,11 @@ ini_set("display_errors", 1);
                             </div>
                         </div>
                     </div>
+                    <?php
+                    $hasAltName = false;
+                    if(count($person["names"]) > 1) $hasAltName = true;
+                    if($hasAltName){
+                    ?>
                     <div class="card">
                       <div class="card-header">
                         Alternative Names (Also Known As) 
@@ -215,12 +223,18 @@ ini_set("display_errors", 1);
                         ?>
                       </div>
                     </div>
+                          <?php }?>
                     <div class="card">
                       <div class="card-header">
                         Parent Marriage 
                       </div>
                       <div class="card-body text-center">
-                        <p class="card-text"><?=$person["information"]["ParentMarriageString"]?></p>
+                        <!-- <p class="card-text"><?=$person["information"]["ParentMarriageString"]?></p> -->
+                        <?php if(array_key_exists("MotherName", $person["information"]) && array_key_exists("MotherName", $person["information"])){?>
+                        <p class="card-text"><a href='person.php?id=<?=$person["information"]["FatherID"]?>'><?=$person["information"]["FatherName"]?></a> to <a href='person.php?id=<?=$person["information"]["MotherID"]?>'><?=$person["information"]["MotherName"]?></a></p>
+                        <?php }?>
+                        <?php display($person["information"], "ParentMarriageDate", "Date", true)?>
+                        <?php display($person["information"], "ParentMarriageType", "Marriage Type")?>
                       </div>
                     </div>
                     <div class="card">
@@ -229,6 +243,16 @@ ini_set("display_errors", 1);
                       </div>
                       <div class="card-body">
                         <p class="card-text"><?=$person["notes"]["personal"]?></p>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-header">
+                        Visualizations
+                      </div>
+                      <div class="card-body">
+                        <p class="card-text"><a href='http://nauvoo.iath.virginia.edu/viz/chord.html?id=<?=$_GET["id"]?>'>Marriage Chord Diagram</a><br>
+                        <a href="http://nauvoo.iath.virginia.edu/viz/marriageflow.html?id=<?=$_GET["id"]?>&levels=1">Lineage Flow Network</a>
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -282,55 +306,6 @@ ini_set("display_errors", 1);
                       </div>
                       <div class="card-body">
                         <p class="card-text"><?=$person["notes"]["rites"]?></p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="tab-pane fade" id="sc" role="tabpanel" aria-labelledby="sc-tab">
-                        <?php
-                            $s_i = 1;
-                        if ($person["non_marital_sealings"] != null && $person["non_marital_sealings"] != false) {
-                            foreach ($person["non_marital_sealings"] as $sealing) {
-
-                                if ($sealing["AdopteeProxyID"] == null)
-                                    $sealing["ProxyName"] = "";
-                                if ($sealing["MarriageProxyID"] == null)
-                                    $sealing["ProxyMarriageString"] = "";
-                        ?>
-                            <div class="card">
-                              <div class="card-header">
-                                    <?php if ($sealing["Type"] == "adoption")  echo "Adoption";?>
-                                    <?php if ($sealing["Type"] == "natural")  echo "Natural";?>
-                                    - <?php displayDate($sealing["Date"], "nms_date_", "_".$r_i); ?>
-                              </div>
-                              <div class="card-body">
-                                <?php display($sealing, "PlaceName", "Place"); ?>
-                                <?php display($sealing, "ProxyName", "Proxy"); ?>
-                                <?php display($sealing, "OfficiatorName", "Officiator"); ?>
-                                <?php display($sealing, "MarriageString", "Sealed to Marriage"); ?>
-                                <?php display($sealing, "ProxyFatherName", "Proxy Father"); ?>
-                                <?php display($sealing, "ProxyMotherName", "Proxy Mother"); ?>
-                                <?php display($sealing, "NameUsed", "Name as Sealed"); ?>
-                              </div>
-                                <?php
-                                    if (isset($sealing["PrivateNotes"])) {
-                                        $trimmed = trim($sealing["PrivateNotes"]);
-                                        if (!empty($trimmed)) {
-                                            echo "<div class=\"card-footer text-muted\">$trimmed</div>";
-                                        }
-                                    }
-                                ?>
-                            </div>
-                        <?php
-                            $s_i++;
-                            } // Non marital Sealing for loop
-                        }
-                        ?>
-                    <div class="card">
-                      <div class="card-header">
-                        Notes 
-                      </div>
-                      <div class="card-body">
-                        <p class="card-text"><?=$person["notes"]["nms"]?></p>
                       </div>
                     </div>
                   </div>
@@ -398,7 +373,51 @@ ini_set("display_errors", 1);
                     </div>
                   </div>
                   <div class="tab-pane fade" id="c" role="tabpanel" aria-labelledby="c-tab">
-                    Coming Soon!
+                    <?php
+                          $c_i = 1;
+                          if ($person["natural_children"] != null && $person["natural_children"] != false) {
+                              foreach ($person["natural_children"] as $natchild) {
+                                $child_name = $natchild["First"]." ".$natchild["Middle"]." ".$natchild["Last"];
+                                $child_id = $natchild["ID"];
+                          ?>
+                              <div class="card">
+                                <div class="card-header">
+                                  <a href='person.php?id=<?=$child_id?>'><?=$child_name?></a>
+                                </div>
+                                <div class="card-body">
+                                  <?php display($natchild, "BirthDate", "Birth Date", true); ?>
+                                  <?php display($natchild, "DeathDate", "Death Date", true); ?>
+                                </div>
+                              </div>
+                          <?php
+                              $c_i++;
+                              } // Natural children for loop
+                          }
+                          ?>
+                  </div>
+                  <div class="tab-pane fade" id="a" role="tabpanel" aria-labelledby="a-tab">
+                    <?php
+                          $ac_i = 1;
+                          if ($person["adopted_children"] != null && $person["adopted_children"] != false) {
+                              foreach ($person["adopted_children"] as $adchild) {
+                                $child_name = $adchild["First"]." ".$adchild["Middle"]." ".$adchild["Last"];
+                                $child_id = $adchild["ID"];
+                          ?>
+                              <div class="card">
+                                <div class="card-header">
+                                  <a href='person.php?id=<?=$child_id?>'><?=$child_name?></a>
+                                </div>
+                                <div class="card-body">
+                                  <?php display($adchild, "BirthDate", "Birth Date", true); ?>
+                                  <?php display($adchild, "DeathDate", "Death Date", true); ?>
+                                  <?php display($adchild, "AdoptionType", "Type"); ?>
+                                </div>
+                              </div>
+                          <?php
+                              $ac_i++;
+                              } // Adopted children for loop
+                          }
+                          ?>
                   </div>
                   <div class="tab-pane fade" id="o" role="tabpanel" aria-labelledby="o-tab">
                         <?php
@@ -412,15 +431,19 @@ ini_set("display_errors", 1);
                               </div>
                               <div class="card-body">
                                 <?php display($office, "From", "Start Date", true); ?>
+                                    <?php if($office["From"] != null) { ?>
                                         <?php if ($office["FromStatus"] == "exact")  echo "<p class='card-text datetype'>Specific Known Date</p>";?>
                                         <?php if ($office["FromStatus"] == "notBefore")  echo "<p class='card-text datetype'>Not Before This Date</p>";?>
                                         <?php if ($office["FromStatus"] == "atLeastBy")  echo "<p class='card-text datetype'>At Least By This Date</p>";?>
                                         <?php if ($office["FromStatus"] == "other")  echo "<p class='card-text datetype'>Other (Unusual)</p>";?>
+                                    <?php } ?>
                                 <?php display($office, "To", "End Date", true); ?>
+                                    <?php if($office["To"] != null) { ?>
                                         <?php if ($office["ToStatus"] == "exact")  echo "<p class='card-text datetype'>Specific Known Date</p>";?>
                                         <?php if ($office["ToStatus"] == "notBefore")  echo "<p class='card-text datetype'>Not Before This Date</p>";?>
                                         <?php if ($office["ToStatus"] == "atLeastBy")  echo "<p class='card-text datetype'>At Least By This Date</p>";?>
                                         <?php if ($office["ToStatus"] == "other")  echo "<p class='card-text datetype'>Other (Unusual)</p>";?>
+                                    <?php } ?>
                                 <?php display($office, "OfficiatorName1", "Officiator"); ?>
                                 <?php display($office, "OfficiatorName2", "Officiator"); ?>
                                 <?php display($office, "OfficiatorName3", "Officiator"); ?>
@@ -432,6 +455,56 @@ ini_set("display_errors", 1);
                             } // Offices for loop
                         }
                         ?>
+                        
+                  </div>
+                  <div class="tab-pane fade" id="sc" role="tabpanel" aria-labelledby="sc-tab">
+                        <?php
+                            $s_i = 1;
+                        if ($person["non_marital_sealings"] != null && $person["non_marital_sealings"] != false) {
+                            foreach ($person["non_marital_sealings"] as $sealing) {
+
+                                if ($sealing["AdopteeProxyID"] == null)
+                                    $sealing["ProxyName"] = "";
+                                if ($sealing["MarriageProxyID"] == null)
+                                    $sealing["ProxyMarriageString"] = "";
+                        ?>
+                            <div class="card">
+                              <div class="card-header">
+                                    <?php if ($sealing["Type"] == "adoption")  echo "Adoption";?>
+                                    <?php if ($sealing["Type"] == "natural")  echo "Natural";?>
+                                    - <?php displayDate($sealing["Date"], "nms_date_", "_".$r_i); ?>
+                              </div>
+                              <div class="card-body">
+                                <?php display($sealing, "PlaceName", "Place"); ?>
+                                <?php display($sealing, "ProxyName", "Proxy"); ?>
+                                <?php display($sealing, "OfficiatorName", "Officiator"); ?>
+                                <?php display($sealing, "MarriageString", "Sealed to Marriage"); ?>
+                                <?php display($sealing, "ProxyFatherName", "Proxy Father"); ?>
+                                <?php display($sealing, "ProxyMotherName", "Proxy Mother"); ?>
+                                <?php display($sealing, "NameUsed", "Name as Sealed"); ?>
+                              </div>
+                                <?php
+                                    if (isset($sealing["PrivateNotes"])) {
+                                        $trimmed = trim($sealing["PrivateNotes"]);
+                                        if (!empty($trimmed)) {
+                                            echo "<div class=\"card-footer text-muted\">$trimmed</div>";
+                                        }
+                                    }
+                                ?>
+                            </div>
+                        <?php
+                            $s_i++;
+                            } // Non marital Sealing for loop
+                        }
+                        ?>
+                    <div class="card">
+                      <div class="card-header">
+                        Notes 
+                      </div>
+                      <div class="card-body">
+                        <p class="card-text"><?=$person["notes"]["nms"]?></p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
