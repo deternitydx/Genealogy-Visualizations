@@ -204,6 +204,7 @@ include("../database.php");
                                     m.\"CancelledDate\", m.\"Type\", m.\"PrivateNotes\", w.\"PersonID\" as \"SpouseID\", 
                                     wn.\"First\", wn.\"Middle\", wn.\"Last\",
                                     CONCAT(wn.\"Prefix\", ' ', wn.\"First\", ' ', wn.\"Middle\" , ' ', wn.\"Last\", ' ', wn.\"Suffix\", ' ', wn.\"PersonID\") as \"SpouseName\",
+                                    wps.\"DeathDate\" as \"SpouseDeath\",
                                     h.\"PersonID\" as \"HusbandID\", h.\"NameUsedID\", m.\"Root\",
                                     h.\"OfficeWhenPerformed\", w.\"OfficeWhenPerformed\" as \"SpouseOfficeWhenPerformed\",
                                     CONCAT(nas.\"Prefix\", ' ', nas.\"First\", ' ', nas.\"Middle\" , ' ', nas.\"Last\", ' ', nas.\"Suffix\") as \"NameUsed\",
@@ -226,6 +227,7 @@ include("../database.php");
                             LEFT OUTER JOIN public.\"PersonMarriage\" wp ON wp.\"MarriageID\" = m.\"ID\" AND wp.\"Role\" = 'ProxyWife'
                             LEFT OUTER JOIN public.\"Name\" wpn 
                                         ON wp.\"PersonID\" = wpn.\"PersonID\" AND wpn.\"Type\" = 'authoritative'
+                            LEFT JOIN public.\"Person\" wps ON wps.\"ID\" = wn.\"PersonID\"
                                     WHERE h.\"PersonID\"=$id ORDER BY m.\"MarriageDate\" ASC");
     else
         $result = pg_query($db, "
@@ -233,7 +235,7 @@ include("../database.php");
                                     m.\"CancelledDate\", m.\"Type\", m.\"PrivateNotes\",  w.\"PersonID\" as \"WifeID\", w.\"NameUsedID\",
                                     hn.\"First\", hn.\"Middle\", hn.\"Last\",
                                     CONCAT(hn.\"Prefix\", ' ', hn.\"First\", ' ', hn.\"Middle\" , ' ', hn.\"Last\", ' ', hn.\"Suffix\", ' ', hn.\"PersonID\") as \"SpouseName\",
-
+                                    hps.\"DeathDate\" as \"SpouseDeath\",
                                     h.\"PersonID\" as \"SpouseID\", m.\"Root\",
                                     w.\"OfficeWhenPerformed\", h.\"OfficeWhenPerformed\" as \"SpouseOfficeWhenPerformed\",
                                     CONCAT(nas.\"Prefix\", ' ', nas.\"First\", ' ', nas.\"Middle\" , ' ', nas.\"Last\", ' ', nas.\"Suffix\") as \"NameUsed\",
@@ -256,6 +258,7 @@ include("../database.php");
                             LEFT OUTER JOIN public.\"PersonMarriage\" wp ON wp.\"MarriageID\" = m.\"ID\" AND wp.\"Role\" = 'ProxyWife'
                             LEFT OUTER JOIN public.\"Name\" wpn 
                                         ON wp.\"PersonID\" = wpn.\"PersonID\" AND wpn.\"Type\" = 'authoritative'
+                            LEFT JOIN public.\"Person\" hps ON hps.\"ID\" = hn.\"PersonID\"
                                     WHERE w.\"PersonID\"=$id ORDER BY m.\"MarriageDate\" ASC");
     
     if (!$result) {
