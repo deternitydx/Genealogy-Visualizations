@@ -85,18 +85,28 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 <?=fetchMarriagesBefore($plurals[0]["MarriageDate"], $plurals[0]["SpouseID"], $_GET["id"])?>
 
 <h3>Subsequent Plural Marriages</h3>
+<dl>
 <?php
     $i = 0;
-    foreach($plurals as $p){
-        if($i > 0){ ?>
-            <p><?=$p["MarriageDate"]?><br>
-            <a href="http://nauvoo.iath.virginia.edu/viz/person.php?id=<?=$p["SpouseID"]?>"><?=substr($p["SpouseName"], 0, strrpos($p["SpouseName"], " "))?></a></p>
-            <?=($p["children"]!="0" && $p["children"] != null)?$p["children"]." child(ren)<br>":""?>
-            <?=fetchMarriagesBefore($p["MarriageDate"], $p["SpouseID"], $_GET["id"])?>
-            <hr>
-        <?php }
+    $spouses = [];
+    foreach($plurals as $m){
+        if($i > 0){
+            if(!isset($spouses[$m["SpouseID"]]))
+                $spouses[$m["SpouseID"]] = [];
+            array_push($spouses[$m["SpouseID"]], $m);
+        }
         $i++;
     }
-
-
+    foreach ($spouses as $s) {?>
+    <dt><a href="http://nauvoo.iath.virginia.edu/viz/person.php?id=<?=$s[0]["SpouseID"]?>"><?=substr($s[0]["SpouseName"], 0, strrpos($s[0]["SpouseName"], " "))?></a></dt>
+    <?php foreach ($s as $m) {?>
+        <dd><?=$m["MarriageDate"].(($m["Type"] != null)?" <em>(".$m["Type"].")</em>":"")?></dd>
+        <?=($m["CancelledDate"] != null)?"Cancelled: ".$m["CancelledDate"]:""?>
+        <?=($m["CancelledDate"] != null)?"Cancelled: ".$m["CancelledDate"]:""?>
+        <?=($m["DivorceDate"] != null)?"Divorced: ".$m["DivorceDate"]:""?>
+    <?php }
+}   
 ?>
+
+
+</dl>
