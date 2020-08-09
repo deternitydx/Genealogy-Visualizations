@@ -352,7 +352,6 @@ include("../database.php");
     $person["brown_ids"] = array();
     foreach (pg_fetch_all($result) as $res)
         array_push($person["brown_ids"], $res["id"]);
-    $person["brown_ids"] = pg_fetch_all($result);
 
 
     // Return the person array as json to be used by the editor:
