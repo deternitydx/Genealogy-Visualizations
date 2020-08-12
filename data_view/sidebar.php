@@ -100,11 +100,11 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                     $divdate = ($marriage["DivorceDate"] == null)?"9999-99-99":$marriage["DivorceDate"];
                     $cncdate = ($marriage["CancelledDate"] == null)?"9999-99-99":$marriage["CancelledDate"];
                     $earliest_marriage_restriction = min($divdate, $cncdate, $marriage["SpouseDeath"]);
-                    $out = $out."<a href=http://nauvoo.iath.virginia.edu/viz/person.php?id=".$marriage["HusbandID"].">".$marriage["HusbandName"]."</a>, ".explode("-", $marriage["MarriageDate"])[0];//."-".explode("-", $earliest_marriage_restriction)[0]."), ";
+                    $out = $out."<a href=http://nauvoo.iath.virginia.edu/viz/person.php?id=".$marriage["HusbandID"].">".$marriage["HusbandName"]."</a>, ".explode("-", $marriage["MarriageDate"])[0]."; ";//."-".explode("-", $earliest_marriage_restriction)[0]."), ";
                     array_push($seen, $marriage["HusbandID"]);
                 }
             }
-            return ($out=="Subsequent Marriages: ")?"":$out;//substr($out, 0, -2);
+            return ($out=="Subsequent Marriages: ")?"":substr($out, 0, -2);
         }
         return "";
     }
