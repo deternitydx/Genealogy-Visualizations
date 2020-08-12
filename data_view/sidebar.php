@@ -74,6 +74,41 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         return "";
     }
 
+    function fetchMarriagesAfter($date, $wifeID, $currentHusbandID){
+        global $seen;
+        include("../database.php");
+        $db = pg_connect($db_conn_string);
+        $result = pg_query($db, "
+            select CONCAT(hn.\"First\", ' ', hn.\"Middle\", ' ', hn.\"Last\") as \"HusbandName\", hp.\"ID\" as \"HusbandID\", hp.\"DeathDate\" as \"SpouseDeath\", m.\"MarriageDate\", m.\"DivorceDate\", m.\"CancelledDate\"
+            from \"Marriage\" m, \"PersonMarriage\" wpm, \"PersonMarriage\" hpm, \"Name\" hn, \"Person\" wp, \"Person\" hp
+            where wpm.\"PersonID\" = ".$wifeID."
+            and m.\"ID\" = wpm.\"MarriageID\"
+            and hpm.\"MarriageID\" = m.\"ID\" and not hpm.\"PersonID\" = ".$wifeID."
+            and hn.\"PersonID\" = hpm.\"PersonID\"
+            and hp.\"ID\" = hpm.\"PersonID\"
+            and wp.\"ID\" = wpm.\"PersonID\"
+            and hpm.\"Role\" = 'Husband'
+            and wpm.\"Role\" = 'Wife'
+            and m.\"MarriageDate\" >= '".$date."';
+        ");
+
+        $ms = pg_fetch_all($result);
+        $out = "Subsequent Marriages: ";
+        if(!empty($ms)){
+            foreach($ms as $marriage){
+                if($marriage["HusbandID"] != $currentHusbandID && !in_array($marriage["HusbandID"], $seen)){
+                    $divdate = ($marriage["DivorceDate"] == null)?"9999-99-99":$marriage["DivorceDate"];
+                    $cncdate = ($marriage["CancelledDate"] == null)?"9999-99-99":$marriage["CancelledDate"];
+                    $earliest_marriage_restriction = min($divdate, $cncdate, $marriage["SpouseDeath"]);
+                    $out = $out."<a href=http://nauvoo.iath.virginia.edu/viz/person.php?id=".$marriage["HusbandID"].">".$marriage["HusbandName"]."</a>, ".explode("-", $marriage["MarriageDate"])[0];//."-".explode("-", $earliest_marriage_restriction)[0]."), ";
+                    array_push($seen, $marriage["HusbandID"]);
+                }
+            }
+            return ($out=="Subsequent Marriages: ")?"":$out;//substr($out, 0, -2);
+        }
+        return "";
+    }
+
     $first_nondup = 0;
     foreach($plurals as $p){
         if(!in_array($p["SpouseID"], $seen)) break;
@@ -94,7 +129,8 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 <p><?=$plurals[$first_nondup]["MarriageDate"]?><br>
 <a href="http://nauvoo.iath.virginia.edu/viz/person.php?id=<?=$plurals[$first_nondup]["SpouseID"]?>"><?=substr($plurals[$first_nondup]["SpouseName"], 0, strrpos($plurals[$first_nondup]["SpouseName"], " "))?></a></p>
 <?=($plurals[$first_nondup]["children"]!="0")?$plurals[$first_nondup]["child(ren)"]." children<br>":""?>
-<?=fetchMarriagesBefore($plurals[$first_nondup]["MarriageDate"], $plurals[$first_nondup]["SpouseID"], $_GET["id"])?>
+<?=fetchMarriagesBefore($plurals[$first_nondup]["MarriageDate"], $plurals[$first_nondup]["SpouseID"], $_GET["id"])?><br>
+<?=fetchMarriagesAfter($plurals[$first_nondup]["MarriageDate"], $plurals[$first_nondup]["SpouseID"], $_GET["id"])?>
 
 <h3>Subsequent Plural Marriages</h3>
 <dl>
