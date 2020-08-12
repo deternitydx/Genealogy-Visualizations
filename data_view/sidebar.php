@@ -11,16 +11,20 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
     $person = json_decode(file_get_contents($base_url . "api/edit_person.php?id=".$_GET["id"]), true);
     $marriages = $person["marriages"];
 
-    $root = null;
-    foreach($marriages as $m){
-        if($m["Type"] != "civil" and $root == null){
-            $root = $m;
-        }
-    }
-    if($root == null) $root = $marriages[0];
+    // $root = null;
+    // foreach($marriages as $m){
+    //     if( and $root == null){
+    //         $root = $m;
+    //     }
+    // }
+    // if($root == null) $root = $marriages[0];
+    $seen = [];
+    $root = $marriages[0];
+    array_push($seen, $root["SpouseID"]);
 
     $plurals = array();
     $latest_restriction = "0000-00-00";
+
 
     foreach($marriages as $m1){
         if($m1["MarriageDate"] < $latest_restriction) array_push($plurals, $m1);
@@ -36,6 +40,7 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
     }
 
     function fetchMarriagesBefore($date, $wifeID, $currentHusbandID){
+        global $seen;
         include("../database.php");
         $db = pg_connect($db_conn_string);
         $result = pg_query($db, "
@@ -56,16 +61,23 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         $out = "Previous Marriages: ";
         if(!empty($ms)){
             foreach($ms as $marriage){
-                if($marriage["HusbandID"] != $currentHusbandID){
+                if($marriage["HusbandID"] != $currentHusbandID && !in_array($marriage["HusbandID"], $seen)){
                     $divdate = ($marriage["DivorceDate"] == null)?"9999-99-99":$marriage["DivorceDate"];
                     $cncdate = ($marriage["CancelledDate"] == null)?"9999-99-99":$marriage["CancelledDate"];
                     $earliest_marriage_restriction = min($divdate, $cncdate, $marriage["SpouseDeath"]);
-                    $out = $out."<a href=http://nauvoo.iath.virginia.edu/viz/person.php?id=".$marriage["HusbandID"].">".$marriage["HusbandName"]."</a> (".explode("-", $marriage["MarriageDate"])[0]."-".explode("-", $earliest_marriage_restriction)[0]."), ";
+                    $out = $out."<a href=http://nauvoo.iath.virginia.edu/viz/person.php?id=".$marriage["HusbandID"].">".$marriage["HusbandName"]."</a>, ".explode("-", $marriage["MarriageDate"])[0];//."-".explode("-", $earliest_marriage_restriction)[0]."), ";
+                    array_push($seen, $marriage["HusbandID"]);
                 }
             }
-            return ($out=="Previous Marriages: ")?"":substr($out, 0, -2);
+            return ($out=="Previous Marriages: ")?"":$out;//substr($out, 0, -2);
         }
         return "";
+    }
+
+    $first_nondup = 0;
+    foreach($plurals as $p){
+        if(!in_array($p["SpouseID"], $seen)) break;
+        $first_nondup++;
     }
 
 ?>
@@ -79,10 +91,10 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
 <h3>First Plural Marriage</h3>
 
-<p><?=$plurals[0]["MarriageDate"]?><br>
-<a href="http://nauvoo.iath.virginia.edu/viz/person.php?id=<?=$plurals[0]["SpouseID"]?>"><?=substr($plurals[0]["SpouseName"], 0, strrpos($plurals[0]["SpouseName"], " "))?></a></p>
-<?=($plurals[0]["children"]!="0")?$plurals[0]["child(ren)"]." children<br>":""?>
-<?=fetchMarriagesBefore($plurals[0]["MarriageDate"], $plurals[0]["SpouseID"], $_GET["id"])?>
+<p><?=$plurals[$first_nondup]["MarriageDate"]?><br>
+<a href="http://nauvoo.iath.virginia.edu/viz/person.php?id=<?=$plurals[$first_nondup]["SpouseID"]?>"><?=substr($plurals[$first_nondup]["SpouseName"], 0, strrpos($plurals[$first_nondup]["SpouseName"], " "))?></a></p>
+<?=($plurals[$first_nondup]["children"]!="0")?$plurals[$first_nondup]["child(ren)"]." children<br>":""?>
+<?=fetchMarriagesBefore($plurals[$first_nondup]["MarriageDate"], $plurals[$first_nondup]["SpouseID"], $_GET["id"])?>
 
 <h3>Subsequent Plural Marriages</h3>
 <dl>
@@ -90,23 +102,20 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
     $i = 0;
     $spouses = [];
     foreach($plurals as $m){
-        if($i > 0){
-            if(!isset($spouses[$m["SpouseID"]]))
-                $spouses[$m["SpouseID"]] = [];
-            array_push($spouses[$m["SpouseID"]], $m);
+        if(!in_array($m["SpouseID"], $seen)){
+            if($i > 0){
+                if(!isset($spouses[$m["SpouseID"]]))
+                    $spouses[$m["SpouseID"]] = [];
+                array_push($spouses[$m["SpouseID"]], $m);
+            }
+            $i++;
+            array_push($seen, $m["SpouseID"]);
         }
-        $i++;
     }
     foreach ($spouses as $s) {?>
     <dt><a href="http://nauvoo.iath.virginia.edu/viz/person.php?id=<?=$s[0]["SpouseID"]?>"><?=substr($s[0]["SpouseName"], 0, strrpos($s[0]["SpouseName"], " "))?></a></dt>
-    <?php foreach ($s as $m) {?>
-        <dd><?=$m["MarriageDate"].(($m["Type"] != null)?" <em>(".$m["Type"].")</em>":"")?></dd>
-        <?=($m["CancelledDate"] != null)?"Cancelled: ".$m["CancelledDate"]:""?>
-        <?=($m["CancelledDate"] != null)?"Cancelled: ".$m["CancelledDate"]:""?>
-        <?=($m["DivorceDate"] != null)?"Divorced: ".$m["DivorceDate"]:""?>
-    <?php }
-}   
-?>
+    <dd><?=($s[0]["SpouseDeath"] != null)?"(".explode("-", $s[0]["SpouseBirth"])[0]."-".explode("-", $s[0]["SpouseDeath"])[0].")":"b. ".explode("-", $s[0]["SpouseBirth"])[0]?></dd>
+    <?php } ?>
 
 
 </dl>

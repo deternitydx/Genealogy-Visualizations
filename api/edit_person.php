@@ -204,6 +204,7 @@ include("../database.php");
                                     m.\"CancelledDate\", m.\"Type\", m.\"PrivateNotes\", w.\"PersonID\" as \"SpouseID\", 
                                     wn.\"First\", wn.\"Middle\", wn.\"Last\",
                                     CONCAT(wn.\"Prefix\", ' ', wn.\"First\", ' ', wn.\"Middle\" , ' ', wn.\"Last\", ' ', wn.\"Suffix\", ' ', wn.\"PersonID\") as \"SpouseName\",
+                                    wps.\"BirthDate\" as \"SpouseBirth\",
                                     wps.\"DeathDate\" as \"SpouseDeath\",
                                     h.\"PersonID\" as \"HusbandID\", h.\"NameUsedID\", m.\"Root\",
                                     h.\"OfficeWhenPerformed\", w.\"OfficeWhenPerformed\" as \"SpouseOfficeWhenPerformed\",
@@ -235,6 +236,7 @@ include("../database.php");
                                     m.\"CancelledDate\", m.\"Type\", m.\"PrivateNotes\",  w.\"PersonID\" as \"WifeID\", w.\"NameUsedID\",
                                     hn.\"First\", hn.\"Middle\", hn.\"Last\",
                                     CONCAT(hn.\"Prefix\", ' ', hn.\"First\", ' ', hn.\"Middle\" , ' ', hn.\"Last\", ' ', hn.\"Suffix\", ' ', hn.\"PersonID\") as \"SpouseName\",
+                                    hps.\"BirthDate\" as \"SpouseBirth\",
                                     hps.\"DeathDate\" as \"SpouseDeath\",
                                     h.\"PersonID\" as \"SpouseID\", m.\"Root\",
                                     w.\"OfficeWhenPerformed\", h.\"OfficeWhenPerformed\" as \"SpouseOfficeWhenPerformed\",
@@ -352,6 +354,7 @@ include("../database.php");
     $person["brown_ids"] = array();
     foreach (pg_fetch_all($result) as $res)
         array_push($person["brown_ids"], $res["id"]);
+    $person["brown_ids"] = pg_fetch_all($result);
 
 
     // Return the person array as json to be used by the editor:
