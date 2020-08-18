@@ -61,18 +61,18 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         ");
 
         $ms = pg_fetch_all($result);
-        $out = "Previous Marriages: ";
+        $out = "<dt>Previous Marriages:</dt>";
         if(!empty($ms)){
             foreach($ms as $marriage){
                 if($marriage["HusbandID"] != $currentHusbandID && !in_array($marriage["HusbandID"], $seen)){
                     $divdate = ($marriage["DivorceDate"] == null)?"9999-99-99":$marriage["DivorceDate"];
                     $cncdate = ($marriage["CancelledDate"] == null)?"9999-99-99":$marriage["CancelledDate"];
                     $earliest_marriage_restriction = min($divdate, $cncdate, $marriage["SpouseDeath"]);
-                    $out = $out."<a href=http://nauvoo.iath.virginia.edu/viz/person.php?id=".$marriage["HusbandID"].">".$marriage["HusbandName"]."</a>";//, ".explode("-", $marriage["MarriageDate"])[0];//."-".explode("-", $earliest_marriage_restriction)[0]."), ";
+                    $out = $out."<dd><a href=http://nauvoo.iath.virginia.edu/viz/person.php?id=".$marriage["HusbandID"].">".$marriage["HusbandName"]."</a></dd>";//, ".explode("-", $marriage["MarriageDate"])[0];//."-".explode("-", $earliest_marriage_restriction)[0]."), ";
                     array_push($seen, $marriage["HusbandID"]);
                 }
             }
-            return ($out=="Previous Marriages: ")?"":$out;//substr($out, 0, -2);
+            return ($out=="<dt>Previous Marriages:</dt>")?"":$out;//substr($out, 0, -2);
         }
         return "";
     }
@@ -96,18 +96,18 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         ");
 
         $ms = pg_fetch_all($result);
-        $out = "Subsequent Marriages: ";
+        $out = "<dt>Subsequent Marriages:</dt>";
         if(!empty($ms)){
             foreach($ms as $marriage){
                 if($marriage["HusbandID"] != $currentHusbandID && !in_array($marriage["HusbandID"], $seen)){
                     $divdate = ($marriage["DivorceDate"] == null)?"9999-99-99":$marriage["DivorceDate"];
                     $cncdate = ($marriage["CancelledDate"] == null)?"9999-99-99":$marriage["CancelledDate"];
                     $earliest_marriage_restriction = min($divdate, $cncdate, $marriage["SpouseDeath"]);
-                    $out = $out."<a href=http://nauvoo.iath.virginia.edu/viz/person.php?id=".$marriage["HusbandID"].">".$marriage["HusbandName"]."</a>";//, ".explode("-", $marriage["MarriageDate"])[0]."; ";//."-".explode("-", $earliest_marriage_restriction)[0]."), ";
+                    $out = $out."<dd><a href=http://nauvoo.iath.virginia.edu/viz/person.php?id=".$marriage["HusbandID"].">".$marriage["HusbandName"]."</a></dd>";//, ".explode("-", $marriage["MarriageDate"])[0]."; ";//."-".explode("-", $earliest_marriage_restriction)[0]."), ";
                     array_push($seen, $marriage["HusbandID"]);
                 }
             }
-            return ($out=="Subsequent Marriages: ")?"":substr($out, 0, -2);
+            return ($out=="<dt>Subsequent Marriages:</dt>")?"":$out;
         }
         return "";
     }
