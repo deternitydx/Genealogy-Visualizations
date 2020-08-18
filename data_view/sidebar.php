@@ -131,7 +131,7 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
 <dl><dt><a href="http://nauvoo.iath.virginia.edu/viz/person.php?id=<?=$plurals[$first_nondup]["SpouseID"]?>"><?=trim(substr($plurals[$first_nondup]["SpouseName"], 0, strrpos($plurals[$first_nondup]["SpouseName"], " ")))?></a><?=", ".years_between($plurals[$first_nondup]["SpouseBirth"], $plurals[$first_nondup]["MarriageDate"])?></dt>
 <dd><?=$plurals[$first_nondup]["MarriageDate"]?></dd>
-<?=($plurals[$first_nondup]["children"]!="0")?$plurals[$first_nondup]["children"]." child(ren)<br>":""?>
+<?=($plurals[$first_nondup]["children"]!="0")?($plurals[$first_nondup]["children"]!="1")?"<dd>".$plurals[$first_nondup]["children"]." children</dd>":"<dd>".$plurals[$first_nondup]["children"]." child</dd>":""?>
 <?=fetchMarriagesBefore($plurals[$first_nondup]["MarriageDate"], $plurals[$first_nondup]["SpouseID"], $_GET["id"])?>
 <?=fetchMarriagesAfter($plurals[$first_nondup]["MarriageDate"], $plurals[$first_nondup]["SpouseID"], $_GET["id"])?></dl>
 
