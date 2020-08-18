@@ -34,9 +34,12 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         $latest_restriction = max($latest_restriction, $earliest_marriage_restriction);
     }
 
-    function spellout($number){
-        $f = new NumberFormatter("en", NumberFormatter::SPELLOUT);
-        return $f->format($number);
+    function years_between($date1, $date2){
+        $d1d = strtotime((strlen($date1) == 4)?$date1."-01-01":$date1);
+        $d2d = strtotime((strlen($date2) == 4)?$date2."-01-01":$date2);
+
+        $diff = abs($d1d-$d2d);
+        return floor($diff / (365*60*60*24));
     }
 
     function fetchMarriagesBefore($date, $wifeID, $currentHusbandID){
@@ -65,7 +68,7 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                     $divdate = ($marriage["DivorceDate"] == null)?"9999-99-99":$marriage["DivorceDate"];
                     $cncdate = ($marriage["CancelledDate"] == null)?"9999-99-99":$marriage["CancelledDate"];
                     $earliest_marriage_restriction = min($divdate, $cncdate, $marriage["SpouseDeath"]);
-                    $out = $out."<a href=http://nauvoo.iath.virginia.edu/viz/person.php?id=".$marriage["HusbandID"].">".$marriage["HusbandName"]."</a>, ".explode("-", $marriage["MarriageDate"])[0];//."-".explode("-", $earliest_marriage_restriction)[0]."), ";
+                    $out = $out."<a href=http://nauvoo.iath.virginia.edu/viz/person.php?id=".$marriage["HusbandID"].">".$marriage["HusbandName"]."</a>";//, ".explode("-", $marriage["MarriageDate"])[0];//."-".explode("-", $earliest_marriage_restriction)[0]."), ";
                     array_push($seen, $marriage["HusbandID"]);
                 }
             }
@@ -100,7 +103,7 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                     $divdate = ($marriage["DivorceDate"] == null)?"9999-99-99":$marriage["DivorceDate"];
                     $cncdate = ($marriage["CancelledDate"] == null)?"9999-99-99":$marriage["CancelledDate"];
                     $earliest_marriage_restriction = min($divdate, $cncdate, $marriage["SpouseDeath"]);
-                    $out = $out."<a href=http://nauvoo.iath.virginia.edu/viz/person.php?id=".$marriage["HusbandID"].">".$marriage["HusbandName"]."</a>, ".explode("-", $marriage["MarriageDate"])[0]."; ";//."-".explode("-", $earliest_marriage_restriction)[0]."), ";
+                    $out = $out."<a href=http://nauvoo.iath.virginia.edu/viz/person.php?id=".$marriage["HusbandID"].">".$marriage["HusbandName"]."</a>";//, ".explode("-", $marriage["MarriageDate"])[0]."; ";//."-".explode("-", $earliest_marriage_restriction)[0]."), ";
                     array_push($seen, $marriage["HusbandID"]);
                 }
             }
@@ -119,16 +122,16 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
 <h3>Root Marriage</h3>
 
-<p><a href="http://nauvoo.iath.virginia.edu/viz/person.php?id=<?=$_GET["id"]?>"><?=$person["names"][0]["First"]." ".$person["names"][0]["Middle"]." ".$person["names"][0]["Last"]." "?></a><br>
-<?=$root["MarriageDate"]?><br>
-<a href="http://nauvoo.iath.virginia.edu/viz/person.php?id=<?=$root["SpouseID"]?>"><?=substr($root["SpouseName"], 0, strrpos($root["SpouseName"], " "))?></a></p>
+<dt><a href="http://nauvoo.iath.virginia.edu/viz/person.php?id=<?=$_GET["id"]?>"><?=$person["names"][0]["First"]." ".$person["names"][0]["Middle"]." ".$person["names"][0]["Last"]?></a><?=", ".years_between($person["information"]["BirthDate"], $root["MarriageDate"])?><br>
+<a href="http://nauvoo.iath.virginia.edu/viz/person.php?id=<?=$root["SpouseID"]?>"><?=substr($root["SpouseName"], 0, strrpos($root["SpouseName"], " "))?></a><?=", ".years_between($root["SpouseBirth"], $root["MarriageDate"])?></dt>
+<?=$root["MarriageDate"]?>
 
 
 <h3>First Plural Marriage</h3>
 
-<p><?=$plurals[$first_nondup]["MarriageDate"]?><br>
-<a href="http://nauvoo.iath.virginia.edu/viz/person.php?id=<?=$plurals[$first_nondup]["SpouseID"]?>"><?=substr($plurals[$first_nondup]["SpouseName"], 0, strrpos($plurals[$first_nondup]["SpouseName"], " "))?></a></p>
-<?=($plurals[$first_nondup]["children"]!="0")?$plurals[$first_nondup]["child(ren)"]." children<br>":""?>
+<p><a href="http://nauvoo.iath.virginia.edu/viz/person.php?id=<?=$plurals[$first_nondup]["SpouseID"]?>"><?=substr($plurals[$first_nondup]["SpouseName"], 0, strrpos($plurals[$first_nondup]["SpouseName"], " "))?></a><?=", ".years_between($plurals[$first_nondup]["SpouseBirth"], $plurals[$first_nondup]["MarriageDate"])?><br>
+<?=$plurals[$first_nondup]["MarriageDate"]?>
+<?=($plurals[$first_nondup]["children"]!="0")?$plurals[$first_nondup]["children"]." child(ren)<br>":""?></p>
 <?=fetchMarriagesBefore($plurals[$first_nondup]["MarriageDate"], $plurals[$first_nondup]["SpouseID"], $_GET["id"])?><br>
 <?=fetchMarriagesAfter($plurals[$first_nondup]["MarriageDate"], $plurals[$first_nondup]["SpouseID"], $_GET["id"])?>
 
@@ -149,8 +152,9 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         }
     }
     foreach ($spouses as $s) {?>
-    <dt><a href="http://nauvoo.iath.virginia.edu/viz/person.php?id=<?=$s[0]["SpouseID"]?>"><?=substr($s[0]["SpouseName"], 0, strrpos($s[0]["SpouseName"], " "))?></a></dt>
-    <dd><?=($s[0]["SpouseDeath"] != null)?"(".explode("-", $s[0]["SpouseBirth"])[0]."-".explode("-", $s[0]["SpouseDeath"])[0].")":"b. ".explode("-", $s[0]["SpouseBirth"])[0]?></dd>
+    <dt><a href="http://nauvoo.iath.virginia.edu/viz/person.php?id=<?=$s[0]["SpouseID"]?>"><?=substr($s[0]["SpouseName"], 0, strrpos($s[0]["SpouseName"], " "))?></a><?=($s[0]["MarriageDate"] != null && $s[0]["MarriageDate"] != "" && $s[0]["SpouseBirth"] != null && $s[0]["SpouseBirth"] != "")?", ".years_between($s[0]["SpouseBirth"], $s[0]["MarriageDate"]):""?></dt>
+    <dd><?=($s[0]["MarriageDate"] != null && $s[0]["MarriageDate"] != "")?$s[0]["MarriageDate"]:"UNK"?></dd>
+    <!-- <dd><?=($s[0]["SpouseDeath"] != null)?"(".explode("-", $s[0]["SpouseBirth"])[0]."-".explode("-", $s[0]["SpouseDeath"])[0].")":"b. ".explode("-", $s[0]["SpouseBirth"])[0]?></dd> -->
     <?php } ?>
 
 
