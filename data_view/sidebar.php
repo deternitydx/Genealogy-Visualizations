@@ -127,15 +127,15 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 <?=$root["MarriageDate"]?>
 
 
-<h3>First Plural Marriage</h3>
+<h3>First Plural</h3>
 
-<p><dt><a href="http://nauvoo.iath.virginia.edu/viz/person.php?id=<?=$plurals[$first_nondup]["SpouseID"]?>"><?=trim(substr($plurals[$first_nondup]["SpouseName"], 0, strrpos($plurals[$first_nondup]["SpouseName"], " ")))?></a><?=", ".years_between($plurals[$first_nondup]["SpouseBirth"], $plurals[$first_nondup]["MarriageDate"])?></dt>
+<dl><dt><a href="http://nauvoo.iath.virginia.edu/viz/person.php?id=<?=$plurals[$first_nondup]["SpouseID"]?>"><?=trim(substr($plurals[$first_nondup]["SpouseName"], 0, strrpos($plurals[$first_nondup]["SpouseName"], " ")))?></a><?=", ".years_between($plurals[$first_nondup]["SpouseBirth"], $plurals[$first_nondup]["MarriageDate"])?></dt>
 <dd><?=$plurals[$first_nondup]["MarriageDate"]?></dd>
-<?=($plurals[$first_nondup]["children"]!="0")?$plurals[$first_nondup]["children"]." child(ren)<br>":""?></p>
-<?=fetchMarriagesBefore($plurals[$first_nondup]["MarriageDate"], $plurals[$first_nondup]["SpouseID"], $_GET["id"])?><br>
-<?=fetchMarriagesAfter($plurals[$first_nondup]["MarriageDate"], $plurals[$first_nondup]["SpouseID"], $_GET["id"])?>
+<?=($plurals[$first_nondup]["children"]!="0")?$plurals[$first_nondup]["children"]." child(ren)<br>":""?>
+<?=fetchMarriagesBefore($plurals[$first_nondup]["MarriageDate"], $plurals[$first_nondup]["SpouseID"], $_GET["id"])?>
+<?=fetchMarriagesAfter($plurals[$first_nondup]["MarriageDate"], $plurals[$first_nondup]["SpouseID"], $_GET["id"])?></dl>
 
-<h3>Subsequent Plural Marriages</h3>
+<h3>Subsequent Plural</h3>
 <dl>
 <?php
     $i = 0;
