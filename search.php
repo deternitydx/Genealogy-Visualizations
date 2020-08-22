@@ -16,7 +16,7 @@ ini_set("display_errors", 1);
     $birthdate = (isset($_GET["birth"]))?$_GET["birth"]:"";
     $deathdate = (isset($_GET["death"]))?$_GET["death"]:"";
 
-    include("../database.php");
+    include("database.php");
     $db = pg_connect($db_conn_string);
 
     $query_start = "SELECT * FROM (SELECT distinct on (p.\"ID\") p.\"ID\", concat(n.\"First\", ' ', n.\"Middle\", ' ', n.\"Last\") as \"FullName\", p.\"BirthDate\", p.\"DeathDate\" from \"Person\" p, \"Name\" n where p.\"ID\" = n.\"PersonID\" and n.\"Type\" = 'authoritative'";
