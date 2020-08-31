@@ -19,7 +19,7 @@ ini_set("display_errors", 1);
     include("database.php");
     $db = pg_connect($db_conn_string);
 
-    $query_start = "SELECT * FROM (SELECT distinct on (p.\"ID\") p.\"ID\", concat(n.\"First\", ' ', n.\"Middle\", ' ', n.\"Last\") as \"FullName\", p.\"BirthDate\", p.\"DeathDate\" from \"Person\" p, \"Name\" n where p.\"ID\" = n.\"PersonID\" and n.\"Type\" = 'authoritative'";
+    $query_start = "SELECT * FROM (SELECT distinct on (p.\"ID\") p.\"ID\", concat(n.\"First\", ' ', n.\"Middle\", ' ', n.\"Last\", ' ', n.\"Suffix\") as \"FullName\", p.\"BirthDate\", p.\"DeathDate\" from \"Person\" p, \"Name\" n where p.\"ID\" = n.\"PersonID\" and n.\"Type\" = 'authoritative'";
     if($first != "") $query_start = $query_start."and n.\"First\" like '{$first}' ";
     if($last != "") $query_start = $query_start."and n.\"Last\" like '{$last}' ";
     if($birthdate != "") $query_start = $query_start."and p.\"BirthDate\" like '{$birthdate}%' ";
@@ -37,50 +37,52 @@ ini_set("display_errors", 1);
     $mars = [];
     $bchilds = [];
     $achilds = [];
-    foreach($arr as $p){
+    if($arr){
+        foreach($arr as $p){
 
-        $myID = $p["ID"];
-        $result = pg_query($db, "
-        
-        select count(*) from ( select distinct m.\"ID\" from \"Person\" p, \"Marriage\" m, \"PersonMarriage\" pm
-        where p.\"ID\" = {$myID}
-        and p.\"ID\" = pm.\"PersonID\"
-        and m.\"ID\" = pm.\"MarriageID\"
-        and pm.\"Role\" in ('Husband', 'Wife')) m;
-        
-        ");
+            $myID = $p["ID"];
+            $result = pg_query($db, "
+            
+            select count(*) from ( select distinct m.\"ID\" from \"Person\" p, \"Marriage\" m, \"PersonMarriage\" pm
+            where p.\"ID\" = {$myID}
+            and p.\"ID\" = pm.\"PersonID\"
+            and m.\"ID\" = pm.\"MarriageID\"
+            and pm.\"Role\" in ('Husband', 'Wife')) m;
+            
+            ");
 
-        $mars[$p["ID"]] = pg_fetch_all($result)[0]["count"];
+            $mars[$p["ID"]] = pg_fetch_all($result)[0]["count"];
 
-        $result = pg_query($db, "
+            $result = pg_query($db, "
 
-        SELECT count(cp.\"ID\")
-        from public.\"Person\" p, public.\"Marriage\" m, public.\"PersonMarriage\" pm, \"Person\" cp
-        where p.\"ID\" = {$myID}
-        and pm.\"PersonID\" = p.\"ID\"
-        and pm.\"MarriageID\" = m.\"ID\"
-        and pm.\"Role\" not in ('Officiator', 'ProxyHusband', 'ProxyWife')
-        and cp.\"BiologicalChildOfMarriage\" = m.\"ID\"
-        
-        ");
+            SELECT count(cp.\"ID\")
+            from public.\"Person\" p, public.\"Marriage\" m, public.\"PersonMarriage\" pm, \"Person\" cp
+            where p.\"ID\" = {$myID}
+            and pm.\"PersonID\" = p.\"ID\"
+            and pm.\"MarriageID\" = m.\"ID\"
+            and pm.\"Role\" not in ('Officiator', 'ProxyHusband', 'ProxyWife')
+            and cp.\"BiologicalChildOfMarriage\" = m.\"ID\"
+            
+            ");
 
-        $bchilds[$p["ID"]] = pg_fetch_all($result)[0]["count"];
+            $bchilds[$p["ID"]] = pg_fetch_all($result)[0]["count"];
 
-        $result = pg_query($db, "
+            $result = pg_query($db, "
 
-        SELECT count(cp.\"ID\")
-        from public.\"Person\" p, public.\"Marriage\" m, public.\"PersonMarriage\" pm, \"Person\" cp, \"NonMaritalSealings\" nms
-        where p.\"ID\" = {$myID}
-        and pm.\"PersonID\" = p.\"ID\"
-        and pm.\"MarriageID\" = m.\"ID\"
-        and (nms.\"AdopteeID\" = cp.\"ID\" or nms.\"AdopteeProxyID\" = cp.\"ID\")
-        and (nms.\"MarriageID\" = m.\"ID\" or nms.\"MarriageProxyID\" = m.\"ID\")
-        and pm.\"Role\" not in ('Officiator', 'ProxyHusband', 'ProxyWife')
+            SELECT count(cp.\"ID\")
+            from public.\"Person\" p, public.\"Marriage\" m, public.\"PersonMarriage\" pm, \"Person\" cp, \"NonMaritalSealings\" nms
+            where p.\"ID\" = {$myID}
+            and pm.\"PersonID\" = p.\"ID\"
+            and pm.\"MarriageID\" = m.\"ID\"
+            and (nms.\"AdopteeID\" = cp.\"ID\" or nms.\"AdopteeProxyID\" = cp.\"ID\")
+            and (nms.\"MarriageID\" = m.\"ID\" or nms.\"MarriageProxyID\" = m.\"ID\")
+            and pm.\"Role\" not in ('Officiator', 'ProxyHusband', 'ProxyWife')
 
-        ");
+            ");
 
-        $achilds[$p["ID"]] = pg_fetch_all($result)[0]["count"];
+            $achilds[$p["ID"]] = pg_fetch_all($result)[0]["count"];
 
+        }
     }
     /*
      * Display Dates
@@ -195,6 +197,7 @@ ini_set("display_errors", 1);
         <div class="col-md-12 themed-grid-col">
             <div class="card text-center">
               <div class="card-body text-left">
+            <?php if($arr){?>
               <?php foreach($arr as $res){ ?>
               <div class="card">
                               <div class="card-header">
@@ -204,11 +207,11 @@ ini_set("display_errors", 1);
                               <div class="card-body grid-container">
                                     <span style="grid-column: 1;"><b>Birth Date: </b><?=($res["BirthDate"] != null)?$res["BirthDate"]:"UNK"?></span>
                                     <span style="grid-column: 2;"><b>Death Date: </b><?=($res["DeathDate"] != null)?$res["DeathDate"]:"UNK"?></span>
-                                    <span style="grid-column: 3;"><b>Marriages: </b><?=$mars[$res["ID"]]?></span>
+                                    <span style="grid-column: 3;"><b>Spouses: </b><?=$mars[$res["ID"]]?></span>
                                     <span style="grid-column: 4;"><b>Children: </b><?=$bchilds[$res["ID"]]+$achilds[$res["ID"]]?></span>
                               </div>
                             </div>
-                                <?php } ?>
+                                <?php }}else echo "<h5 style='text-align:center'>Your search returned no results.</h2>"; ?>
               </div>
             </div>
         </div>
