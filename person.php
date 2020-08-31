@@ -63,6 +63,20 @@ ini_set("display_errors", 1);
         }
     }
 
+    function cmpDates($a, $b){
+      $ad = trim($a);
+      $bd = trim($b);
+      if(strlen($ad) == 4) $ad .= "-01-01";
+      if(strlen($bd) == 4) $bd .= "-01-01";
+      if(strlen($ad) == 7) $ad .= "-01";
+      if(strlen($bd) == 7) $bd .= "-01";
+      
+      if (strtotime($ad) == strtotime($bd)) {
+          return 0;
+      }
+      return (strtotime($ad) < strtotime($bd)) ? -1 : 1;
+  }
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -97,6 +111,24 @@ ini_set("display_errors", 1);
             padding-top: 0px;
             margin-left: 20px;
         }
+        #upper-container{
+          display: grid;
+          grid-template-columns: 95% 5%;
+        }
+        #bc{
+          grid-column: 1;
+        }
+        #edit-icon{
+          grid-column: 2;
+        }
+        .marriage-divider{
+          background-color: black;
+          border-radius: 5px;
+          text-align:center;
+          font-weight: bold;
+          color: white;
+          margin-bottom: 20px;
+        }
     </style>
     <title>View Person</title>
     <!-- Optional JavaScript -->
@@ -129,13 +161,16 @@ ini_set("display_errors", 1);
         } // end foreach
     ?>
 
-    <nav aria-label="breadcrumb">
+    <div id="upper-container">
+    <nav aria-label="breadcrumb" id="bc">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="index.php">Home</a></li>
         <li class="breadcrumb-item"><a href="data_view/people.php">All People</a></li>
         <li class="breadcrumb-item active" aria-current="page"><?=$fullname?></li>
       </ol>
     </nav>
+    <a href='./data_entry/individual.php?id=<?=$_GET["id"]?>'><i class='fa fa-pencil' aria-hidden='false'></i></a>
+    </div>
 
     <div class="row mb-3">
         <div class="col-md-12 themed-grid-col">
@@ -312,8 +347,15 @@ ini_set("display_errors", 1);
                   <div class="tab-pane fade" id="m" role="tabpanel" aria-labelledby="m-tab">
                         <?php
                             $m_i = 1;
+                            $reachedPosthumous = false;
                         if ($person["marriages"] != null && $person["marriages"] != false) {
                             foreach ($person["marriages"] as $marriage) {
+                              if(cmpDates($marriage["MarriageDate"], $person["information"]["DeathDate"]) > 0 && !$reachedPosthumous){
+                                $reachedPosthumous = true;
+                                echo "<div class='marriage-divider'>".$fullname." dies, ";
+                                displayDate($person["information"]["DeathDate"], "", "");
+                                echo "</div>";
+                              }
                                 $spouse_name = substr($marriage["SpouseName"],0,strrpos($marriage["SpouseName"], " "));
                                 $spouse_id = substr($marriage["SpouseName"],strrpos($marriage["SpouseName"], " ")+1);
                         ?>
