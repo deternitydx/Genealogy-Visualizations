@@ -42,6 +42,20 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         return floor($diff / (365*60*60*24));
     }
 
+    function cmpDates($a, $b){
+        $ad = trim($a);
+        $bd = trim($b);
+        if(strlen($ad) == 4) $ad .= "-01-01";
+        if(strlen($bd) == 4) $bd .= "-01-01";
+        if(strlen($ad) == 7) $ad .= "-01";
+        if(strlen($bd) == 7) $bd .= "-01";
+        
+        if (strtotime($ad) == strtotime($bd)) {
+            return 0;
+        }
+        return (strtotime($ad) < strtotime($bd)) ? -1 : 1;
+    }
+
     function fetchMarriagesBefore($date, $wifeID, $currentHusbandID){
         global $seen;
         include("../database.php");
@@ -127,7 +141,7 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 <?=$root["MarriageDate"]?>
 
 
-<h3>First Plural</h3>
+<h3><?=(count($plurals) > 1)?"First Plural":"First & Only Plural"?></h3>
 
 <dl><dt><a href="http://nauvoo.iath.virginia.edu/viz/person.php?id=<?=$plurals[$first_nondup]["SpouseID"]?>"><?=trim(substr($plurals[$first_nondup]["SpouseName"], 0, strrpos($plurals[$first_nondup]["SpouseName"], " ")))?></a><?=", ".years_between($plurals[$first_nondup]["SpouseBirth"], $plurals[$first_nondup]["MarriageDate"])?></dt>
 <dd><?=$plurals[$first_nondup]["MarriageDate"]?></dd>
@@ -153,6 +167,9 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
     }
     foreach ($spouses as $s) {?>
     <dt><a href="http://nauvoo.iath.virginia.edu/viz/person.php?id=<?=$s[0]["SpouseID"]?>"><?=trim(substr($s[0]["SpouseName"], 0, strrpos($s[0]["SpouseName"], " ")))?></a><?=($s[0]["MarriageDate"] != null && $s[0]["MarriageDate"] != "" && $s[0]["SpouseBirth"] != null && $s[0]["SpouseBirth"] != "")?", ".years_between($s[0]["SpouseBirth"], $s[0]["MarriageDate"]):""?></dt>
+    <?php if(cmpDates($s[0]["MarriageDate"], $person["information"]["DeathDate"]) > 0){ ?>
+        <dd>Posthumous</dd>
+    <?php } ?>
     <dd><?=($s[0]["MarriageDate"] != null && $s[0]["MarriageDate"] != "")?$s[0]["MarriageDate"]:"UNK"?></dd>
     <!-- <dd><?=($s[0]["SpouseDeath"] != null)?"(".explode("-", $s[0]["SpouseBirth"])[0]."-".explode("-", $s[0]["SpouseDeath"])[0].")":"b. ".explode("-", $s[0]["SpouseBirth"])[0]?></dd> -->
     <?php } ?>
