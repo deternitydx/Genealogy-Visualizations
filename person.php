@@ -114,12 +114,13 @@ ini_set("display_errors", 1);
         #upper-container{
           display: grid;
           grid-template-columns: 95% 5%;
+          vertical-align: center;
         }
         #bc{
           grid-column: 1;
         }
         #edit-icon{
-          grid-column: 2;
+          font-size: 2.5rem;
         }
         .marriage-divider{
           background-color: black;
@@ -169,7 +170,7 @@ ini_set("display_errors", 1);
         <li class="breadcrumb-item active" aria-current="page"><?=$fullname?></li>
       </ol>
     </nav>
-    <a href='./data_entry/individual.php?id=<?=$_GET["id"]?>'><i class='fa fa-pencil' aria-hidden='false'></i></a>
+    <!-- <a id="edit-icon" href='./data_entry/individual.php?id=<?=$_GET["id"]?>'><i class='fa fa-male' id="edit-icon" aria-hidden='false'></i></a> -->
     </div>
 
     <div class="row mb-3">
