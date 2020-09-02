@@ -172,7 +172,7 @@ ini_set("display_errors", 1);
         }
         .grid-container{
             display:grid;
-            grid-template-columns: repeat(4, 25%);
+            grid-template-columns: repeat(5, 20%);
         }
     </style>
     <title>View Person</title>
@@ -208,10 +208,11 @@ ini_set("display_errors", 1);
                                     <span style="grid-column: 1;"><b>Birth Date: </b><?=($res["BirthDate"] != null)?$res["BirthDate"]:"UNK"?></span>
                                     <span style="grid-column: 2;"><b>Death Date: </b><?=($res["DeathDate"] != null)?$res["DeathDate"]:"UNK"?></span>
                                     <span style="grid-column: 3;"><b>Spouses: </b><?=$mars[$res["ID"]]?></span>
-                                    <span style="grid-column: 4;"><b>Children: </b><?=$bchilds[$res["ID"]]+$achilds[$res["ID"]]?></span>
+                                    <span style="grid-column: 4;"><b>Children: </b><?=$bchilds[$res["ID"]]?></span>
+                                    <span style="grid-column: 5;"><b>Adoptions: </b><?=$achilds[$res["ID"]]?></span>
                               </div>
                             </div>
-                                <?php }}else echo "<h5 style='text-align:center'>Your search returned no results.</h2>"; ?>
+                                <?php }}else echo "<h5 style='text-align:center'>Your search returned no results.</h5>"; ?>
               </div>
             </div>
         </div>
