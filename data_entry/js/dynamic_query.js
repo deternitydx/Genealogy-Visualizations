@@ -113,6 +113,12 @@ function getResult() {
     })
     .toArray();
 
+  let isIsNot = $(".is-isnot")
+    .map(function () {
+      return $(this).val();
+    })
+    .toArray();
+
   let dates = $(".param-date")
     .map(function () {
       return $(this).val();
@@ -178,9 +184,10 @@ function getResult() {
       off: JSON.stringify(offices),
       lim: $("#limit-selector").val(),
       restrict: $("#db-restrictor").val(),
+      isisnot: JSON.stringify(isIsNot),
     },
     function (data) {
-      console.log(data);
+      //console.log(data);
       data = data.replace(/null/g, "\"<span class='null-result'>null</span>\"");
       d = JSON.parse(data);
       if (typeof d != "object") {
@@ -198,7 +205,7 @@ function getResult() {
           stats = d[0][0];
           $("#result-count").html(stats.ResultCount + " results (" + (d.length - 1) + " shown)");
           $("#result-count").show();
-          console.log(stats);
+          //console.log(stats);
           $("#stats-view").append("<tr><td></td><th>Lifespan</th><th>Spouses</th><th>Children</th></tr>");
 
           $("#stats-view").append(
@@ -260,13 +267,14 @@ function getResult() {
           });
         } else if (rtype == "Marriage") {
           $("#results-view").append(
-            "<tr><th>Husband's Name</th><th>Husband's Age at Marriage</th><th>Wife's Name</th><th>Wife's Age at Marriage</th><th>Marriage Date</th><th>Marriage Type</th><th>Age Difference</th></tr>"
+            "<tr><th>Marriage Date</th><th>Husband's Name</th><th>Husband's Age at Marriage</th><th>Wife's Name</th><th>Wife's Age at Marriage</th><th>Marriage Type</th><th>Age Difference</th></tr>"
           );
-
+          stats = d[0][0];
+          //console.log(stats.ResultCount);
           d.slice(1).forEach(function (el) {
             let tableout = "<tr>";
             for (const property in el) {
-              console.log(property, el[property]);
+              // console.log(property, el[property]);
               switch (property) {
                 case "WifeID":
                 case "HusbandID":
@@ -278,6 +286,8 @@ function getResult() {
                 case "CancelledDate":
                 case "WifeDeath":
                 case "HusbandDeath":
+                case "MarriageID":
+                case "ResultCount":
                   break; //ignore these columns, they won't appear in the table
 
                 case "HusbandName":
@@ -294,10 +304,23 @@ function getResult() {
                     tableout += "<td><a href=http://nauvoo.iath.virginia.edu/viz/person.php?id=" + el.WifeID + ">" + el[property] + "</a></td>";
                   }
                   break;
+                case "HusbandAge":
+                case "WifeAge":
+                case "AgeDiff":
+                  tableout +=
+                    "<td>" +
+                    el[property]
+                      .replace(/years|year/g, "y.")
+                      .replace(/mons|mon/g, "mo.")
+                      .replace(/days|day/g, "d.") +
+                    "</td>";
+                  break;
                 default:
                   tableout += "<td>" + el[property] + "</td>";
               }
             }
+            $("#result-count").html(stats.ResultCount + " results (" + (d.length - 1) + " shown)");
+            $("#result-count").show();
             $("#results-view").append(tableout + "</tr>");
           });
         }

@@ -57,8 +57,16 @@ let base_people = `
       </div>
 `;
 
+let is_isnot_selector = `
+<select id="is-isnot-ID" class="is-isnot">
+  <option value="is">is</option>
+  <option value="isnot">is not</option>
+</select>
+
+`;
+
 let date_selector = `
-        is
+  is
         <select id="constraint-ID" onchange="updateConstraint(ID)" class="param-date-classifier">
             <option value="before">before</option>
             <option value="on">on</option>
@@ -70,8 +78,9 @@ let date_selector = `
 
 `;
 
-let martype_selector = `
-        is
+let martype_selector =
+  is_isnot_selector +
+  `
         <select id="constraint-ID" class="param-martype">
             <option value="civil">Civil</option>
             <option value="eternity">Eternity</option>
@@ -131,6 +140,17 @@ is
 
 `;
 
+let inverse_martype_selector = `
+is
+        <select id="constraint-ID" class="param-martype">
+            <option value="civil">Civil</option>
+            <option value="eternity">Eternity</option>
+            <option value="time">Time</option>
+            <option value="byu">BYU</option>
+            <option value="unknown">unknown</option>
+        </select>
+`;
+
 let person_sort = `
           <option value="Last" selected>Last Name</option>
           <option value="First">First Name</option>
@@ -150,6 +170,9 @@ let marriage_sort = `
           <option value="HusbandFirst">Husband's First Name</option>
           <option value="WifeFirst">Wife's First Name</option>
           <option value="MarriageDate">Marriage Date</option>
+          <option value="HusbandAge">Husband's Age at Marriage</option>
+          <option value="WifeAge">Wife's Age at Marriage</option>
+          <option value="AgeDiff">Age Difference</option>
 `;
 
 let person_DB_restrict = `

@@ -18,6 +18,7 @@ $sort = $_POST["sort"];
 $dir = $_POST["dir"];
 $lim = $_POST["lim"];
 $restrict = $_POST["restrict"];
+$isisnot = json_decode($_POST["isisnot"]);
 
 $query_sel = "select ";
 $query_from = " from ";
@@ -25,7 +26,7 @@ $query_where = $query_joins = "";
 $query_before = "select * from (";
 $query_after = ") c where 1 = 1 ";
 $where_for_stats = "";
-$dateCount = $textCount = $numCount = $knCount = $offCount = 0;
+$dateCount = $iinCount = $textCount = $numCount = $knCount = $offCount = 0;
 $paramCount = 1;
 $params = [];
 $aq_query = "SELECT DISTINCT p.\"ID\" FROM \"Person\" p, \"ChurchOrgMembership\" m, \"ChurchOrganization\" c where m.\"PersonID\" = p.\"ID\" and m.\"ChurchOrgID\" = c.\"ID\" and c.\"Name\" = 'Annointed Quorum'";
@@ -197,11 +198,11 @@ if($restype == "Person"){
 }
 elseif($restype == "Marriage"){
     #MIN(AGE(TO_TIMESTAMP(wp.\"BirthDate\", 'YYYY-MM-DD'), TO_TIMESTAMP(cp.\"BirthDate\", 'YYYY-MM-DD'))) as \"FirstChildAge\",
-    $query_sel .= "distinct hp.\"ID\" as \"HusbandID\", wp.\"ID\" as \"WifeID\",  concat(hn.\"First\", ' ', hn.\"Middle\", ' ', hn.\"Last\") as \"HusbandName\",
+    $query_sel .= "distinct hp.\"ID\" as \"HusbandID\",  wp.\"ID\" as \"WifeID\", m.\"MarriageDate\", m.\"ID\" as \"MarriageID\", concat(hn.\"First\", ' ', hn.\"Middle\", ' ', hn.\"Last\") as \"HusbandName\",
         hn.\"First\" as \"HusbandFirst\", hn.\"Last\" as \"HusbandLast\", wn.\"First\" as \"WifeFirst\", wn.\"Last\" as \"WifeLast\", 
         AGE(TO_TIMESTAMP(m.\"MarriageDate\", 'YYYY-MM-DD'), TO_TIMESTAMP(hp.\"BirthDate\", 'YYYY-MM-DD')) as \"HusbandAge\", 
         concat(wn.\"First\", ' ', wn.\"Middle\", ' ', wn.\"Last\") as \"WifeName\", AGE(TO_TIMESTAMP(m.\"MarriageDate\", 'YYYY-MM-DD'), 
-        TO_TIMESTAMP(wp.\"BirthDate\", 'YYYY-MM-DD')) as \"WifeAge\", m.\"MarriageDate\", m.\"Type\",
+        TO_TIMESTAMP(wp.\"BirthDate\", 'YYYY-MM-DD')) as \"WifeAge\", m.\"Type\",
         m.\"DivorceDate\", m.\"CancelledDate\", wp.\"DeathDate\" as \"WifeDeath\", hp.\"DeathDate\" as \"HusbandDeath\",
         case when hp.\"BirthDate\" is null then null
         when wp.\"BirthDate\" is null then null
@@ -280,8 +281,9 @@ elseif($restype == "Marriage"){
                     }
                 break;
                 case "Type":
-                    if($martype[0] == "unknown") $query_where .= "and (m.\"Type\" = $".$paramCount." or m.\"Type\" is null) ";
-                    else $query_where .= "and m.\"Type\" = $".$paramCount." ";
+                    $decider = ($isisnot[$iinCount] == "isnot")?" not ":"";
+                    if($martype[0] == "unknown") $query_where .= "and".$decider."(m.\"Type\" = $".$paramCount." or m.\"Type\" is null) ";
+                    else $query_where .= "and".$decider."m.\"Type\" = $".$paramCount." ";
                     array_push($params, $martype[0]);
                     $paramCount++;
                 break;
@@ -295,18 +297,26 @@ elseif($restype == "Marriage"){
         case "WifeLast":
         case "HusbandLast":
         case "MarriageDate":
+        case "WifeAge":
+        case "HusbandAge":
+        case "AgeDiff":
             if($dir == "asc") $query_where .= " order by \"".$sort."\" asc ";
             elseif($dir == "desc") $query_where .= " order by \"".$sort."\" desc ";
         break;
     }
     $query_where .= " nulls last ";
     $where_for_stats = $query_where;
+    $query_after_stats = $query_after;
     if(is_numeric($lim)) $query_after .= "limit ".$lim;
     else $query_after .= "limit 15";
     $result = pg_query_params($db, $query_before.$query_sel.$query_from.$query_joins.$query_where.$query_after, $params);
-    $query_sel_stats = "select * from (";
-    $query_after .= ") a;";
+    $query_sel_stats = "select count(distinct \"MarriageID\") as \"ResultCount\" from (";
+    $query_after_stats .= ") a;";
+    $stats_result = pg_query_params($db, $query_sel_stats.$query_before.$query_sel.$query_from.$query_joins.$where_for_stats.$query_after_stats, $params);
+    //echo $query_sel_stats.$query_before.$query_sel.$query_from.$query_joins.$where_for_stats.$query_after_stats;
     $rows = pg_fetch_all($result);
+    $stats = pg_fetch_all($stats_result);
+    if($rows && $stats) array_unshift($rows, $stats);
 }
 //echo $query_before.$query_sel.$query_from.$query_where.$query_after;
 //$result = pg_query_params($db, $query_before.$query_sel.$query_from.$query_where.$query_after, $params);
