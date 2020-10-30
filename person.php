@@ -297,6 +297,11 @@ ini_set("display_errors", 1);
                             $r_i = 1;
                         if ($person["temple_rites"] != null && $person["temple_rites"] != false) {
                             foreach ($person["temple_rites"] as $rite) {
+
+                                // Kathleen asked that second anointings not show up in the public view
+                                // so if this rite is one of those, then ignore it
+                                if ($rite["Type"] == "secondAnnointing" || $rite["Type"] == "secondAnnointingTime")
+                                    continue;
                                 
                                 if ($rite["ProxyID"] == null)
                                     $rite["ProxyName"] = "";
