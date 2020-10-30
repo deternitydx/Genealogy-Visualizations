@@ -2,62 +2,17 @@
  * @author Ryan Pope <rcp3by@virginia.edu>
  */
 
-let base_marriages = `
-<div id="line-ID">
-        <select id="restrict-ID" onchange="updateRestrictor(ID)" class="param-column-select">
-          <option value="MarriageDate">Marriage Date</option>
-          <option value="Type">Marriage Type</option>
-          <option value="DivorceDate">Divorce Date</option>
-          <option value="CancelledDate">Cancellation Date</option>
-          <option value="HusbandFirst">Husband's First Name</option>
-          <option value="HusbandLast">Husband's Last Name</option>
-          <option value="WifeFirst">Wife's First Name</option>
-          <option value="WifeLast">Wife's Last Name</option>
-        </select>
-        <span id="spec-ID">
-          is
-          <select id="constraint-ID" onchange="updateConstraint(ID)" class="param-date-classifier">
-            <option value="before">before</option>
-            <option value="on">on</option>
-            <option value="after">after</option>
-            <option value="known">known</option>
-            <option value="unknown">unknown</option>
-          </select>
-          <input type="date" id="date-ID" value="1856-06-01" class="param-date"/>
-        </span>
-        <button onclick="deleteRestrictor(ID)">X</button>
-      </div>
+function makeValueSelector(keys, aliases, type) {
+  let out = is_isnot_selector;
+  out += '<select id="constraint-ID" onchange="updateConstraint(ID)" class="param-' + type + '">';
+  for (let i = 0; i < keys.length; i++) {
+    out += '<option value="' + keys[i] + '">' + aliases[i] + "</option>";
+  }
+  out += "</select>";
+  return out;
+}
 
-`;
-
-let base_people = `
-<div id="line-ID">
-        <select id="restrict-ID" onchange="updateRestrictor(ID)" class="param-column-select">
-          <option value="BirthDate">Birth Date</option>
-          <option value="DeathDate">Death Date</option>
-          <option value="First">First Name</option>
-          <option value="Last">Last Name</option>
-          <option value="Lifespan">Lifespan</option>
-          <option value="Office">Office</option>
-          <option value="MarriageCount"># of Marriages</option>
-          <option value="NatChildCount"># of Children</option>
-        </select>
-        <span id="spec-ID">
-          is
-          <select id="constraint-ID" onchange="updateConstraint(ID)" class="param-date-classifier">
-            <option value="before">before</option>
-            <option value="on">on</option>
-            <option value="after">after</option>
-            <option value="known">known</option>
-            <option value="unknown">unknown</option>
-          </select>
-          <input type="date" id="date-ID" value="1856-06-01" class="param-date"/>
-        </span>
-        <button onclick="deleteRestrictor(ID)">X</button>
-      </div>
-`;
-
-let is_isnot_selector = `
+const is_isnot_selector = `
 <select id="is-isnot-ID" class="is-isnot">
   <option value="is">is</option>
   <option value="isnot">is not</option>
@@ -65,8 +20,9 @@ let is_isnot_selector = `
 
 `;
 
-let date_selector = `
-  is
+const date_selector =
+  is_isnot_selector +
+  `
         <select id="constraint-ID" onchange="updateConstraint(ID)" class="param-date-classifier">
             <option value="before">before</option>
             <option value="on">on</option>
@@ -78,7 +34,7 @@ let date_selector = `
 
 `;
 
-let martype_selector =
+const martype_selector =
   is_isnot_selector +
   `
         <select id="constraint-ID" class="param-martype">
@@ -91,14 +47,16 @@ let martype_selector =
 
 `;
 
-let string_selector = `
-        is
+const string_selector =
+  is_isnot_selector +
+  `
         <input type="text" id="constraint-ID" class="param-text" />
 
 `;
 
-let num_selector = `
-        is
+const num_selector =
+  is_isnot_selector +
+  `
         <select id="constraint-ID" onchange="updateConstraint(ID)" class="param-num-classifier">
             <option value="less">less than</option>
             <option value="equal">equal to</option>
@@ -108,8 +66,9 @@ let num_selector = `
 
 `;
 
-let office_selector = `
-        is
+const office_selector =
+  is_isnot_selector +
+  `
         <select id="constraint-ID" onchange="updateConstraint(ID)" class="param-office">
           <option value="First Presidency">First Presidency</option>
           <option value="Apostle">Apostle</option>
@@ -131,8 +90,9 @@ let office_selector = `
 
 `;
 
-let known_unknown_selector = `
-is
+const known_unknown_selector =
+  is_isnot_selector +
+  `
 <select id="constraint-ID" class="param-known-unknown">
     <option value="known">known</option>
     <option value="unknown">unknown</option>
@@ -140,18 +100,7 @@ is
 
 `;
 
-let inverse_martype_selector = `
-is
-        <select id="constraint-ID" class="param-martype">
-            <option value="civil">Civil</option>
-            <option value="eternity">Eternity</option>
-            <option value="time">Time</option>
-            <option value="byu">BYU</option>
-            <option value="unknown">unknown</option>
-        </select>
-`;
-
-let person_sort = `
+const person_sort = `
           <option value="Last" selected>Last Name</option>
           <option value="First">First Name</option>
           <option value="BirthDate">Birth Date</option>
@@ -164,7 +113,7 @@ let person_sort = `
 
 `;
 
-let marriage_sort = `
+const marriage_sort = `
           <option value="HusbandLast" selected>Husband's Last Name</option>
           <option value="WifeLast">Wife's Last Name</option>
           <option value="HusbandFirst">Husband's First Name</option>
@@ -175,11 +124,57 @@ let marriage_sort = `
           <option value="AgeDiff">Age Difference</option>
 `;
 
-let person_DB_restrict = `
+const person_DB_restrict = `
           <option value="All" selected>All People</option>
           <option value="AnnointedQuorum">Annointed Quorum</option></select>
 `;
 
-let marriage_DB_restrict = `
+const marriage_DB_restrict = `
           <option value="All" selected>All Marriages</option>
+`;
+
+const base_marriages =
+  `
+<div id="line-ID">
+        <select id="restrict-ID" onchange="updateRestrictor(ID)" class="param-column-select">
+          <option value="MarriageDate">Marriage Date</option>
+          <option value="Phase">Phase</option>
+          <option value="Type">Marriage Type</option>
+          <option value="DivorceDate">Divorce Date</option>
+          <option value="CancelledDate">Cancellation Date</option>
+          <option value="HusbandFirst">Husband's First Name</option>
+          <option value="HusbandLast">Husband's Last Name</option>
+          <option value="WifeFirst">Wife's First Name</option>
+          <option value="WifeLast">Wife's Last Name</option>
+        </select>
+        <span id="spec-ID">
+          ` +
+  date_selector +
+  `
+        </span>
+        <button class="delete-button" onclick="deleteRestrictor(ID)">X</button>
+      </div>
+
+`;
+
+const base_people =
+  `
+<div id="line-ID">
+        <select id="restrict-ID" onchange="updateRestrictor(ID)" class="param-column-select">
+          <option value="BirthDate">Birth Date</option>
+          <option value="DeathDate">Death Date</option>
+          <option value="First">First Name</option>
+          <option value="Last">Last Name</option>
+          <option value="Lifespan">Lifespan</option>
+          <option value="Office">Office</option>
+          <option value="MarriageCount"># of Spouses</option>
+          <option value="NatChildCount"># of Children</option>
+        </select>
+        <span id="spec-ID">
+          ` +
+  date_selector +
+  `
+        </span>
+        <button class="delete-button" onclick="deleteRestrictor(ID)">X</button>
+      </div>
 `;

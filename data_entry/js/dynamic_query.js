@@ -4,13 +4,13 @@
 
 let lineID = 1;
 let rtype = "Person";
-let currcols = new Set();
+let rows = [1];
 $(document).ready(function () {
   $("select").each(function () {
     $(this).val($(this).find("option[selected]").val());
   });
   lineID = 1;
-  $("#param-selector").html(base_people.replace(/ID/g, lineID));
+  $("#param-selector").html("<span id='and-label-" + lineID + "'>where... </span>" + base_people.replace(/ID/g, lineID));
   $("#sort-selector").html(person_sort);
   lineID++;
   $("#form-container").show();
@@ -20,14 +20,14 @@ function setResultType(type) {
   rtype = type;
   if (type == "Marriage") {
     lineID = 1;
-    $("#param-selector").html(base_marriages.replace(/ID/g, lineID));
+    $("#param-selector").html("<span id='and-label-" + lineID + "'>where... </span>" + base_marriages.replace(/ID/g, lineID));
     $("#sort-selector").html(marriage_sort);
     $("#db-restrictor").html(marriage_DB_restrict);
     lineID++;
   }
   if (type == "Person") {
     lineID = 1;
-    $("#param-selector").html(base_people.replace(/ID/g, lineID));
+    $("#param-selector").html("<span id='and-label-" + lineID + "'>where... </span>" + base_people.replace(/ID/g, lineID));
     $("#sort-selector").html(person_sort);
     $("#db-restrictor").html(person_DB_restrict);
     lineID++;
@@ -35,8 +35,18 @@ function setResultType(type) {
 }
 
 function deleteRestrictor(r) {
+  x = Math.min(...rows);
   $("#line-" + r).remove();
   $("#and-label-" + r).remove();
+  rows = rows.filter(function (value) {
+    return value != r;
+  });
+  if (x === r) {
+    $("#and-label-" + Math.min(...rows)).html("where... ");
+  }
+  if(rows.length === 0){
+    $("#add-button").html("+");
+  }
 }
 
 function updateRestrictor(r) {
@@ -65,6 +75,7 @@ function updateRestrictor(r) {
       break;
     case "MarriageCount":
     case "NatChildCount":
+    case "Phase":
       $("#spec-" + r).html(num_selector.replace(/ID/g, r));
       break;
     case "Office":
@@ -87,12 +98,20 @@ function updateConstraint(r) {
   }
 }
 function addNewConstraint() {
-  if (rtype == "Marriage") {
-    $("#param-selector").append("<span id='and-label-" + lineID + "'>and </span>" + base_marriages.replace(/ID/g, lineID));
+  $("#add-button").html("+ and");
+  rows.push(lineID);
+  let and_where = "";
+  if (rows.length === 1) {
+    and_where = "where... ";
+  } else {
+    and_where = "and ";
+  }
+  if (rtype === "Marriage") {
+    $("#param-selector").append("<span id='and-label-" + lineID + "'>" + and_where + "</span>" + base_marriages.replace(/ID/g, lineID));
     lineID++;
   }
-  if (rtype == "Person") {
-    $("#param-selector").append("<span id='and-label-" + lineID + "'>and </span>" + base_people.replace(/ID/g, lineID));
+  if (rtype === "Person") {
+    $("#param-selector").append("<span id='and-label-" + lineID + "'>" + and_where + "</span>" + base_people.replace(/ID/g, lineID));
     lineID++;
   }
 }
@@ -151,7 +170,7 @@ function getResult() {
 
   let nums = $(".param-num")
     .map(function () {
-      return $(this).val();
+      return parseInt($(this).val());
     })
     .toArray();
 
@@ -187,7 +206,7 @@ function getResult() {
       isisnot: JSON.stringify(isIsNot),
     },
     function (data) {
-      //console.log(data);
+      console.log(data);
       data = data.replace(/null/g, "\"<span class='null-result'>null</span>\"");
       d = JSON.parse(data);
       if (typeof d != "object") {
@@ -200,7 +219,7 @@ function getResult() {
         $("#processing-info").html("");
         if (rtype == "Person") {
           $("#results-view").append(
-            "<tr><th>Full Name</th><th>Birth Date</th><th>Death Date</th><th>Lifespan</th><th>Office(s)</th><th>Spouses</th><th>Births/Adopt</th></tr>"
+            "<tr><th>Full Name</th><th>Birth Date</th><th>Death Date</th><th>Lifespan</th><th>Office(s)</th><th>Spouses</th><th>Marriage Types</th><th>Births/Adopt</th></tr>"
           );
           stats = d[0][0];
           $("#result-count").html(stats.ResultCount + " results (" + (d.length - 1) + " shown)");
@@ -253,11 +272,15 @@ function getResult() {
                 "</td><td>" +
                 el.DeathDate +
                 "</td><td>" +
-                el.Lifespan +
+                el.Lifespan.replace(/years|year/g, "y.")
+                  .replace(/mons|mon/g, "mo.")
+                  .replace(/days|day/g, "d.") +
                 "</td><td>" +
                 el.Office +
                 "</td><td>" +
                 el.MarriageCount +
+                "</td><td>" +
+                el.MarriageTypes +
                 "</td><td>" +
                 el.NatChildCount +
                 "/" +
@@ -267,7 +290,7 @@ function getResult() {
           });
         } else if (rtype == "Marriage") {
           $("#results-view").append(
-            "<tr><th>Marriage Date</th><th>Husband's Name</th><th>Husband's Age at Marriage</th><th>Wife's Name</th><th>Wife's Age at Marriage</th><th>Marriage Type</th><th>Age Difference</th></tr>"
+            "<tr><th>D/C?</th><th>Plural?</th><th>Phase</th><th>Marriage Date</th><th>Husband's Name</th><th>Husband's Age at Marriage</th><th>Wife's Name</th><th>Wife's Age at Marriage</th><th>Wife's Age at First Birth</th><th>Marriage Type</th><th>Age Difference</th></tr>"
           );
           stats = d[0][0];
           //console.log(stats.ResultCount);
@@ -307,6 +330,7 @@ function getResult() {
                 case "HusbandAge":
                 case "WifeAge":
                 case "AgeDiff":
+                case "WifeFirstBirthAge":
                   tableout +=
                     "<td>" +
                     el[property]

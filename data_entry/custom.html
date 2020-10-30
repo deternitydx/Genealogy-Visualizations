@@ -26,6 +26,35 @@
         width: 60%;
         margin-bottom: 20px;
       }
+      .delete-button {
+        border: 1px solid red;
+        border-radius: 20px;
+        font-weight: bold;
+        outline: none;
+      }
+      .delete-button:hover {
+        color: red;
+      }
+      #result-button {
+        font-size: 15px;
+        margin-top: 10px;
+        border: 1px solid blueviolet;
+        border-radius: 20px;
+        font-weight: bold;
+        outline: none;
+      }
+      #result-button:hover {
+        color: blueviolet;
+      }
+      #add-button {
+        border: 1px solid green;
+        border-radius: 20px;
+        font-weight: bold;
+        outline: none;
+      }
+      #add-button:hover {
+        color: green;
+      }
       td,
       th {
         width: calc(100% / 6%);
@@ -34,12 +63,18 @@
       th {
         text-align: left;
       }
+      tr:nth-child(even) {
+        background: #f7f7f7;
+      }
+      tr:nth-child(odd) {
+        background: white;
+      }
       #form-container {
         margin-left: 5px;
         margin-top: 5px;
       }
       #limit-selector {
-        width: 3em;
+        width: 4em;
       }
       #result-count {
         margin-left: 5%;
@@ -68,11 +103,9 @@
           <option value="All" selected>All People</option>
           <option value="AnnointedQuorum">Annointed Quorum</option></select
         ><br />
-        where...<br />
       </div>
       <div id="param-selector"></div>
-      <button onclick="addNewConstraint()">+</button>
-      <button onclick="getResult()">Get</button><br />
+      <button id="add-button" onclick="addNewConstraint()">+ and</button>
       <div id="sort-selector-container">
         Sort by:
         <select id="sort-selector"></select>
@@ -81,9 +114,11 @@
           <option value="asc">Ascending</option></select
         ><br />
         Show <input type="number" id="limit-selector" value="15" /> results<br />
+
         <div id="download-info" hidden>
           <button id="download-button" onclick="toCSV('results-view')">Download Table</button> as <input type="text" id="dl-name" value="table" />
         </div>
+        <button id="result-button" onclick="getResult()">Get Result</button><br />
       </div>
     </div>
     <h3 id="processing-info" class="processing"></h3>
