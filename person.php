@@ -111,14 +111,6 @@ ini_set("display_errors", 1);
             padding-top: 0px;
             margin-left: 20px;
         }
-        #upper-container{
-          display: grid;
-          grid-template-columns: 95% 5%;
-          vertical-align: center;
-        }
-        #bc{
-          grid-column: 1;
-        }
         #edit-icon{
           font-size: 2.5rem;
         }
