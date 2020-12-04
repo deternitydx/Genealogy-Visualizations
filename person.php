@@ -262,7 +262,12 @@ ini_set("display_errors", 1);
                         <p class="card-text"><a href='person.php?id=<?=$person["information"]["FatherID"]?>'><?=$person["information"]["FatherName"]?></a> to <a href='person.php?id=<?=$person["information"]["MotherID"]?>'><?=$person["information"]["MotherName"]?></a></p>
                         <?php }?>
                         <?php display($person["information"], "ParentMarriageDate", "Date", true)?>
-                        <?php display($person["information"], "ParentMarriageType", "Marriage Type")?>
+                        <?php 
+                          if($person["information"]["ParentMarriageType"] == "byu"){
+                            $person["information"]["ParentMarriageType"] = "unknown";
+                          }
+                          display($person["information"], "ParentMarriageType", "Marriage Type")
+                        ?>
                       </div>
                     </div>
                     <div class="card">
