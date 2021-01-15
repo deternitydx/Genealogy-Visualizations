@@ -14,9 +14,9 @@ $knunk = json_decode($_POST["knu"]);
 $nums = json_decode($_POST["num"]);
 $numCls = json_decode($_POST["numcls"]);
 $offices = json_decode($_POST["off"]);
-$sort = $_POST["sort"];
-$dir = $_POST["dir"];
-$lim = $_POST["lim"];
+// $sort = $_POST["sort"];
+// $dir = $_POST["dir"];
+// $lim = $_POST["lim"];
 $restrict = $_POST["restrict"];
 $isisnot = json_decode($_POST["isisnot"]);
 
@@ -165,25 +165,25 @@ if($restype == "Person"){
             count(\"ID\") as \"ResultCount\"
             from (";
     $query_where .= "group by p0.\"ID\", n0.\"First\", n0.\"Middle\", n0.\"Last\", p0.\"BirthDate\", p0.\"DeathDate\" ";
-    switch($sort){
-        case "First":
-        case "Last":
-        case "BirthDate":
-        case "DeathDate":
-        case "MarriageCount":
-        case "TotChildCount":
-        case "AdChildCount":
-        case "NatChildCount":
-        case "Lifespan":
-            if($dir == "asc") $query_where .= " order by \"".$sort."\" asc ";
-            elseif($dir == "desc") $query_where .= " order by \"".$sort."\" desc ";
-        break;
-    }
-    $query_where .= " nulls last ";
+    // switch($sort){
+    //     case "First":
+    //     case "Last":
+    //     case "BirthDate":
+    //     case "DeathDate":
+    //     case "MarriageCount":
+    //     case "TotChildCount":
+    //     case "AdChildCount":
+    //     case "NatChildCount":
+    //     case "Lifespan":
+    //         if($dir == "asc") $query_where .= " order by \"".$sort."\" asc ";
+    //         elseif($dir == "desc") $query_where .= " order by \"".$sort."\" desc ";
+    //     break;
+    // }
+    // $query_where .= " nulls last ";
     $where_for_stats = $query_where;
     $query_after_stats = $query_after;
-    if(is_numeric($lim)) $query_after .= "limit ".$lim;
-    else $query_after .= "limit 15";
+    // if(is_numeric($lim)) $query_after .= "limit ".$lim;
+    // else $query_after .= "limit 15";
     //echo $query_before.$query_sel.$query_from.$query_where.$query_after;
     $result = pg_query_params($db, $query_before.$query_sel.$query_from.$query_joins.$query_where.$query_after, $params);
     if(!$result){
@@ -192,8 +192,8 @@ if($restype == "Person"){
     //$query_sel_stats = "select * from (".$query_sel_stats;
     //echo $query_before.$query_sel.$query_from.$query_where.$query_after;
     $query_after_stats .= ") a ";
-    if(is_numeric($lim)) $query_after_stats .= "limit ".$lim;
-    else $query_after_stats .= "limit 15";
+    // if(is_numeric($lim)) $query_after_stats .= "limit ".$lim;
+    // else $query_after_stats .= "limit 15";
     //echo $query_sel_stats.$query_before.$query_sel.$query_from.$where_for_stats.$query_after;
     // echo $query_sel_stats.$query_before.$query_sel.$query_from.$query_joins.$where_for_stats.$query_after_stats;
     $stats_result = pg_query_params($db, $query_sel_stats.$query_before.$query_sel.$query_from.$query_joins.$where_for_stats.$query_after_stats, $params);
@@ -338,25 +338,25 @@ elseif($restype == "Marriage"){
         }
     }
     $query_where .= " group by hp.\"ID\", wp.\"ID\", hn.\"First\", hn.\"Middle\", hn.\"Last\", wn.\"First\", wn.\"Middle\", wn.\"Last\", m.\"MarriageDate\", hp.\"BirthDate\", wp.\"BirthDate\", m.\"Type\", m.\"DivorceDate\", m.\"CancelledDate\", wp.\"DeathDate\", hp.\"DeathDate\", m.\"ID\", hpm.\"PersonID\", wpm.\"PersonID\" ";
-    switch($sort){
-        case "WifeFirst":
-        case "HusbandFirst":
-        case "WifeLast":
-        case "HusbandLast":
-        case "MarriageDate":
-        case "WifeAge":
-        case "HusbandAge":
-        case "AgeDiff":
-            if($dir == "asc") $query_where .= " order by \"".$sort."\" asc ";
-            elseif($dir == "desc") $query_where .= " order by \"".$sort."\" desc ";
-        break;
-    }
+    // switch($sort){
+    //     case "WifeFirst":
+    //     case "HusbandFirst":
+    //     case "WifeLast":
+    //     case "HusbandLast":
+    //     case "MarriageDate":
+    //     case "WifeAge":
+    //     case "HusbandAge":
+    //     case "AgeDiff":
+    //         if($dir == "asc") $query_where .= " order by \"".$sort."\" asc ";
+    //         elseif($dir == "desc") $query_where .= " order by \"".$sort."\" desc ";
+    //     break;
+    // }
     
-    $query_where .= " nulls last ";
+    // $query_where .= " nulls last ";
     $where_for_stats = $query_where;
     $query_after_stats = $query_after;
-    if(is_numeric($lim)) $query_after .= "limit ".$lim;
-    else $query_after .= "limit 15";
+    // if(is_numeric($lim)) $query_after .= "limit ".$lim;
+    // else $query_after .= "limit 15";
     $result = pg_query_params($db, $query_before.$query_sel.$query_from.$query_joins.$query_where.$query_after, $params);
     if(!$result){
         die("Errored on data query");

@@ -26,7 +26,7 @@ const date_selector =
         <select id="constraint-ID" onchange="updateConstraint(ID)" class="param-date-classifier">
             <option value="before">before</option>
             <option value="on">on</option>
-            <option value="after">after</option>
+            <option value="after" selected>after</option>
             <option value="known">known</option>
             <option value="unknown">unknown</option>
         </select>

@@ -5,6 +5,7 @@
 let lineID = 1;
 let rtype = "Person";
 let rows = [1];
+var results = null;
 $(document).ready(function () {
   $("select").each(function () {
     $(this).val($(this).find("option[selected]").val());
@@ -14,6 +15,16 @@ $(document).ready(function () {
   $("#sort-selector").html(person_sort);
   lineID++;
   $("#form-container").show();
+
+  $("#results-view").append(
+    "<thead><tr><th>Full Name</th><th>Birth Date</th><th>Death Date</th><th>Lifespan</th><th>Office(s)</th><th>Spouses</th><th>Marriage Types</th><th>Births/Adopt</th></tr></thead>"
+  );
+
+  results = $('#results-view').DataTable(
+    {
+      "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+    }
+  );
 });
 
 function setResultType(type) {
@@ -117,15 +128,20 @@ function addNewConstraint() {
 }
 
 function getResult() {
+
+  $("#results-view_wrapper").remove();
+  $("#stats-view").after("<table id='results-view'></table>");
+
   var start = Date.now();
-  $("#results-view").html("");
-  $("#results-view").hide();
+
+  $("#results-view_wrapper").hide();
   $("#stats-view").html("");
   $("#stats-view").hide();
   $("#result-count").hide();
   $("#processing-info").html("Fetching query results...");
-  $("#processing-sub").html("");
-  let jsonResponse = "";
+  $("#processing-sub").html("Queries with more results may take a while to appear.");
+  $("#processing-sub").show();
+
   let columns = $(".param-column-select")
     .map(function () {
       return $(this).val();
@@ -214,12 +230,13 @@ function getResult() {
         var end = Date.now();
         $("#processing-sub").html("(" + (end - start) / 1000 + " seconds)");
       } else {
+        $("#processing-sub").hide();
         $("#download-info").show();
         //console.log(d.length-1);
         $("#processing-info").html("");
         if (rtype == "Person") {
           $("#results-view").append(
-            "<tr><th>Full Name</th><th>Birth Date</th><th>Death Date</th><th>Lifespan</th><th>Office(s)</th><th>Spouses</th><th>Marriage Types</th><th>Births/Adopt</th></tr>"
+            "<thead><tr><th>Full Name</th><th>Birth Date</th><th>Death Date</th><th>Lifespan</th><th>Office(s)</th><th>Spouses</th><th>Marriage Types</th><th>Births/Adopt</th></tr></thead>"
           );
           stats = d[0][0];
           $("#result-count").html(stats.ResultCount + " results (" + (d.length - 1) + " shown)");
@@ -261,8 +278,9 @@ function getResult() {
               "</td></tr>"
           );
           $("#stats-view").show();
-          d.slice(1).forEach(function (el) {
-            $("#results-view").append(
+          let tableout = "<tbody>";
+          d.slice(1).forEach(function (el){
+            tableout += 
               "<tr><td><a href=http://nauvoo.iath.virginia.edu/viz/person.php?id=" +
                 el.ID +
                 ">" +
@@ -285,17 +303,19 @@ function getResult() {
                 el.NatChildCount +
                 "/" +
                 el.AdChildCount +
-                "</td></tr>"
-            );
+                "</td></tr>";
+            
           });
+            $("#results-view").append(tableout + "</tbody>");
         } else if (rtype == "Marriage") {
           $("#results-view").append(
-            "<tr><th>D/C?</th><th>Plural?</th><th>Phase</th><th>Marriage Date</th><th>Husband's Name</th><th>Husband's Age at Marriage</th><th>Wife's Name</th><th>Wife's Age at Marriage</th><th>Wife's Age at First Birth</th><th>Marriage Type</th><th>Age Difference</th></tr>"
+            "<thead><tr><th>D/C?</th><th>Plural?</th><th>Phase</th><th>Marriage Date</th><th>Husband's Name</th><th>Husband's Age at Marriage</th><th>Wife's Name</th><th>Wife's Age at Marriage</th><th>Wife's Age at First Birth</th><th>Marriage Type</th><th>Age Difference</th></tr></thead>"
           );
           stats = d[0][0];
           //console.log(stats.ResultCount);
+          let tableout = "<tbody>";
           d.slice(1).forEach(function (el) {
-            let tableout = "<tr>";
+            tableout += "<tr>";
             for (const property in el) {
               // console.log(property, el[property]);
               switch (property) {
@@ -331,26 +351,32 @@ function getResult() {
                 case "WifeAge":
                 case "AgeDiff":
                 case "WifeFirstBirthAge":
-                  tableout +=
-                    "<td>" +
-                    el[property]
-                      .replace(/years|year/g, "y.")
-                      .replace(/mons|mon/g, "mo.")
-                      .replace(/days|day/g, "d.") +
-                    "</td>";
+                  let l = el[property].replace(/years|year/g, "y.").replace(/mons|mon/g, "mo.").replace(/days|day/g, "d.");
+                  tableout += "<td>" + l + "</td>";
                   break;
                 default:
                   tableout += "<td>" + el[property] + "</td>";
               }
             }
-            $("#result-count").html(stats.ResultCount + " results (" + (d.length - 1) + " shown)");
-            $("#result-count").show();
-            $("#results-view").append(tableout + "</tr>");
+            tableout +=  "</tr>";
           });
+            $("#results-view").append(tableout + "</tbody>");
+          
         }
         var end = Date.now();
-        $("#result-count").append(" found in " + (end - start) / 1000 + " seconds");
-        $("#results-view").show();
+        results = $('#results-view').DataTable(
+          {
+            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            dom: 'Blfrtip',
+            buttons: [
+              'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
+            "order": [[ 3, "desc" ]]
+          }
+        );
+        // results.buttons().container().insertBefore( '#results-view_filter' );
+        $("#results-view_wrapper").show();
+        $("#results-view_info").append( "<br/><span id='return-speed'>("+ (end-start) / 1000 + " sec.)</span>" );
       }
     }
   );
