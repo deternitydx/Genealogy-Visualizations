@@ -11,19 +11,26 @@ ini_set("display_errors", 1);
         // creating a new person
         die("No parameters provided.  Cannot continue.");
     }
-    $first = (isset($_GET["first"]))?$_GET["first"]:"";
-    $last = (isset($_GET["last"]))?$_GET["last"]:"";
-    $birthdate = (isset($_GET["birth"]))?$_GET["birth"]:"";
-    $deathdate = (isset($_GET["death"]))?$_GET["death"]:"";
+    $first = pg_escape_string((isset($_GET["first"]))?$_GET["first"]:"");
+    $middle = pg_escape_string((isset($_GET["middle"]))?$_GET["middle"]:"");
+    $last = pg_escape_string((isset($_GET["last"]))?$_GET["last"]:"");
+    $birthdate = pg_escape_string((isset($_GET["birth"]))?$_GET["birth"]:"");
+    $deathdate = pg_escape_string((isset($_GET["death"]))?$_GET["death"]:"");
+
+    if($first == "" && $middle == "" && $last == "" && $birthdate == "" && $deathdate == ""){
+        echo "Not enough parameters specified. Please try again.\n";
+        exit;
+    }
 
     include("database.php");
     $db = pg_connect($db_conn_string);
 
     $query_start = "SELECT * FROM (SELECT distinct on (p.\"ID\") p.\"ID\", concat(n.\"First\", ' ', n.\"Middle\", ' ', n.\"Last\", ' ', n.\"Suffix\") as \"FullName\", p.\"BirthDate\", p.\"DeathDate\" from \"Person\" p, \"Name\" n where p.\"ID\" = n.\"PersonID\" and n.\"Type\" = 'authoritative'";
-    if($first != "") $query_start = $query_start."and n.\"First\" ilike '{$first}' ";
+    if($first != "") $query_start = $query_start."and n.\"First\" like '{$first}' ";
+    if($middle != "") $query_start = $query_start."and n.\"Middle\" like '{$middle}' ";
     if($last != "") $query_start = $query_start."and n.\"Last\" ilike '{$last}' ";
-    if($birthdate != "") $query_start = $query_start."and p.\"BirthDate\" ilike '{$birthdate}%' ";
-    if($deathdate != "") $query_start = $query_start."and p.\"DeathDate\" ilike '{$deathdate}%' ";
+    if($birthdate != "") $query_start = $query_start."and p.\"BirthDate\" like '%{$birthdate}%' ";
+    if($deathdate != "") $query_start = $query_start."and p.\"DeathDate\" like '%{$deathdate}%' ";
     $query_start = $query_start.") m order by \"FullName\"";
 
 
