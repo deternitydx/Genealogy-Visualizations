@@ -27,6 +27,29 @@ $(document).ready(function () {
   );
 });
 
+function sortFromVerbose(vb){ // gets sortable value [rough timestamp] from verbose dates (for example, '21 y. 2 d. 3 mo.')
+  let time = 0;
+  let yrsIndex = vb.indexOf("y.");
+  if(yrsIndex >= 0){
+    let yrs = parseInt(vb.substring(0, yrsIndex-1));
+    vb = vb.substring(yrsIndex+3);
+    time += yrs*365;
+  }
+  let monsIndex = vb.indexOf("m.");
+  if(monsIndex >= 0){
+    let mons = parseInt(vb.substring(0, monsIndex-1));
+    vb = vb.substring(monsIndex+3);
+    time += mons*30;
+  }
+  let daysIndex = vb.indexOf("d.");
+  if(daysIndex >= 0){
+    let days = parseInt(vb.substring(0, daysIndex-1));
+    vb = vb.substring(daysIndex+3);
+    time += days;
+  }
+  return time;
+}
+
 function setResultType(type) {
   rtype = type;
   if (type == "Marriage") {
@@ -222,7 +245,7 @@ function getResult() {
       isisnot: JSON.stringify(isIsNot),
     },
     function (data) {
-      console.log(data);
+      // console.log(data);
       data = data.replace(/null/g, "\"<span class='null-result'>null</span>\"");
       d = JSON.parse(data);
       if (typeof d != "object") {
@@ -281,11 +304,11 @@ function getResult() {
           let tableout = "<tbody>";
           d.slice(1).forEach(function (el){
             let bd = new Date(el.BirthDate);
-            let dd = new Date(el.DeathDate) || "z";
-            let ls = 0;
-            if(bd != "z" && dd != "z"){
-              ls = dd - bd;
-            }
+            let dd = new Date(el.DeathDate);
+            let ls = dd - bd;
+            if(!ls) ls = 0;
+            if (bd == "Invalid Date") bd = new Date(0);
+            if (dd == "Invalid Date") dd = new Date(0);
             tableout += 
               "<tr><td><a href=http://nauvoo.iath.virginia.edu/viz/person.php?id=" +
                 el.ID +
@@ -358,7 +381,7 @@ function getResult() {
                 case "AgeDiff":
                 case "WifeFirstBirthAge":
                   let l = el[property].replace(/years|year/g, "y.").replace(/mons|mon/g, "mo.").replace(/days|day/g, "d.");
-                  tableout += "<td>" + l + "</td>";
+                  tableout += "<td data-sort="+sortFromVerbose(l)+">" + l + "</td>";
                   break;
                 default:
                   tableout += "<td>" + el[property] + "</td>";
