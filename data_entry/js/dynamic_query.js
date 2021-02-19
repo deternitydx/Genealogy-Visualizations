@@ -280,16 +280,22 @@ function getResult() {
           $("#stats-view").show();
           let tableout = "<tbody>";
           d.slice(1).forEach(function (el){
+            let bd = new Date(el.BirthDate);
+            let dd = new Date(el.DeathDate) || "z";
+            let ls = 0;
+            if(bd != "z" && dd != "z"){
+              ls = dd - bd;
+            }
             tableout += 
               "<tr><td><a href=http://nauvoo.iath.virginia.edu/viz/person.php?id=" +
                 el.ID +
                 ">" +
                 el.FullName.replace(/\s+/g, " ") +
-                "</a></td><td>" +
+                "</a></td><td data-order="+bd.getTime()+">" +
                 el.BirthDate +
-                "</td><td>" +
+                "</td><td data-order="+dd.getTime()+">" +
                 el.DeathDate +
-                "</td><td>" +
+                "</td><td data-order="+ls+">" +
                 el.Lifespan.replace(/years|year/g, "y.")
                   .replace(/mons|mon/g, "mo.")
                   .replace(/days|day/g, "d.") +
@@ -299,7 +305,7 @@ function getResult() {
                 el.MarriageCount +
                 "</td><td>" +
                 el.MarriageTypes +
-                "</td><td>" +
+                "</td><td data-order="+(parseInt(el.NatChildCount)+parseInt(el.AdChildCount))+">" +
                 el.NatChildCount +
                 "/" +
                 el.AdChildCount +
