@@ -1,5 +1,5 @@
 /**
- * @author Ryan Pope <rcp3by@virginia.edu>
+ * @author Ryan Pope <pope@virginia.edu>
  */
 
 let lineID = 1;
@@ -303,21 +303,21 @@ function getResult() {
           $("#stats-view").show();
           let tableout = "<tbody>";
           d.slice(1).forEach(function (el){
+            let bdt = (el.BirthDate.length > 4)?el.BirthDate.substring(0, 4) + "&ndash;" + el.BirthDate.substring(5):el.BirthDate; // someone please fix this
+            let ddt = (el.DeathDate.length > 4)?el.DeathDate.substring(0, 4) + "&ndash;" + el.DeathDate.substring(5):el.DeathDate; // I had to do this because of horrible Excel formatting of dates before 1900
             let bd = new Date(el.BirthDate);
             let dd = new Date(el.DeathDate);
             let ls = dd - bd;
             if(!ls) ls = 0;
-            if (bd == "Invalid Date") bd = new Date(0);
-            if (dd == "Invalid Date") dd = new Date(0);
             tableout += 
               "<tr><td><a href=http://nauvoo.iath.virginia.edu/viz/person.php?id=" +
                 el.ID +
                 ">" +
                 el.FullName.replace(/\s+/g, " ") +
-                "</a></td><td data-order="+bd.getTime()+">" +
-                el.BirthDate +
-                "</td><td data-order="+dd.getTime()+">" +
-                el.DeathDate +
+                "</a></td><td>" +
+                bdt + 
+                "</td><td>" +
+                ddt +
                 "</td><td data-order="+ls+">" +
                 el.Lifespan.replace(/years|year/g, "y.")
                   .replace(/mons|mon/g, "mo.")
@@ -383,6 +383,11 @@ function getResult() {
                   let l = el[property].replace(/years|year/g, "y.").replace(/mons|mon/g, "mo.").replace(/days|day/g, "d.");
                   tableout += "<td data-sort="+sortFromVerbose(l)+">" + l + "</td>";
                   break;
+                case "MarriageDate":
+                  let e = el[property]
+                  if(e.length > 4) tableout += "<td>" + e.substring(0, 4) + "&ndash;" + e.substring(5) + "</td>";
+                  else tableout += "<td>" + e + "</td>";
+                  break;
                 default:
                   tableout += "<td>" + el[property] + "</td>";
               }
@@ -398,7 +403,7 @@ function getResult() {
             lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
             dom: 'Blfrtip',
             buttons: [
-              'copy', 'csv', 'excel', 'pdf', 'print'
+              'copy', 'excel', 'pdf', 'print'
             ],
             "order": [[ 3, "desc" ]]
           }
