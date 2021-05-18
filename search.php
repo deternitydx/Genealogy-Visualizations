@@ -26,8 +26,8 @@ ini_set("display_errors", 1);
     $db = pg_connect($db_conn_string);
 
     $query_start = "SELECT * FROM (SELECT distinct on (p.\"ID\") p.\"ID\", concat(n.\"First\", ' ', n.\"Middle\", ' ', n.\"Last\", ' ', n.\"Suffix\") as \"FullName\", p.\"BirthDate\", p.\"DeathDate\" from \"Person\" p, \"Name\" n where p.\"ID\" = n.\"PersonID\" and n.\"Type\" = 'authoritative'";
-    if($first != "") $query_start = $query_start."and n.\"First\" like '{$first}' ";
-    if($middle != "") $query_start = $query_start."and n.\"Middle\" like '{$middle}' ";
+    if($first != "") $query_start = $query_start."and n.\"First\" ilike '{$first}' ";
+    if($middle != "") $query_start = $query_start."and n.\"Middle\" ilike '{$middle}' ";
     if($last != "") $query_start = $query_start."and n.\"Last\" ilike '{$last}' ";
     if($birthdate != "") $query_start = $query_start."and p.\"BirthDate\" like '%{$birthdate}%' ";
     if($deathdate != "") $query_start = $query_start."and p.\"DeathDate\" like '%{$deathdate}%' ";
