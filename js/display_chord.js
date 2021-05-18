@@ -90,10 +90,10 @@ function ChordDisplay(element) {
         var table = cont.append("table");
         table.append("tr").append("td").style("background", "#A1CB87").style("color", "#000000").text("Biological");
         table.append("tr").append("td").style("background", "#FFCD81").style("color", "#000000").text("Adoption");
-        table.append("tr").append("td").style("background", "#C9BCD6").style("color", "#000000").text("Married (BYU)");
         table.append("tr").append("td").style("background", "#AD85FF").style("color", "#000000").text("Sealed (Eternity)");
         table.append("tr").append("td").style("background", "#f7fcb9").style("color", "#000000").text("Sealed (Time)");
         table.append("tr").append("td").style("background", "#FFB2E6").style("color", "#000000").text("Married (Civil)");
+        table.append("tr").append("td").style("background", "#C9BCD6").style("color", "#000000").text("Married (Unknown)");
         /**
         var time = "All Time";
         if (_this.originalTime != null) {
@@ -249,9 +249,8 @@ function ChordDisplay(element) {
             .range(_this.colorList);
 
             _this.fillType = d3.scale.ordinal()
-                 .domain(["adoption", "biological", "byu", "eternity", "time", "civil", "placeholder", "biological.adoption",  "civil.eternity", "civil.time", "civil.eternity.time", "civil.eternity.eternity"])
-                 .range(["#FFCD81", "#A1CB87", "#C9BCD6", "#AD85FF", "#f7fcb9", "#FFB2E6", "#ffffff", "url(#biological-adoption)", "url(#civil-eternity)", "url(#civil-time)", "url(#civil-eternity-time)", "url(#civil-eternity)"]);
-
+                 .domain(["byu", "adoption", "biological", "eternity", "time", "civil", "placeholder", "biological.adoption",  "civil.eternity", "civil.time", "civil.eternity.time", "civil.eternity.eternity", "eternity.eternity"])
+                 .range(["#C9BCD6", "#FFCD81", "#A1CB87", "#AD85FF", "#f7fcb9", "#FFB2E6", "#ffffff", "url(#biological-adoption)", "url(#civil-eternity)", "url(#civil-time)", "url(#civil-eternity-time)", "url(#civil-eternity)", "#AD85FF"]);
 
             _this.chord = d3.layout.chord()
             .padding(.01)
