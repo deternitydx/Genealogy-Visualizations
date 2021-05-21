@@ -12,7 +12,6 @@ ini_set("display_errors", 1);
     }
     // load the person
     $person = json_decode(file_get_contents($base_url . "api/edit_person.php?id=".$_GET["id"]), true);
-    //$person = json_decode(file_get_contents("sample.json"), true);
 
     /*
      * Display Dates
@@ -111,8 +110,21 @@ ini_set("display_errors", 1);
             padding-top: 0px;
             margin-left: 20px;
         }
+        #upper-container{
+          display: grid;
+          grid-template-columns: 95% 5%;
+          vertical-align: center;
+        }
+        #bc{
+          grid-column: 1;
+        }
         #edit-icon{
-          font-size: 2.5rem;
+          font-weight: bold;
+          display:block;
+          margin-bottom: 5px;
+        }
+        #name-header{
+          margin-bottom: 0;
         }
         .marriage-divider{
           background-color: black;
@@ -138,7 +150,7 @@ ini_set("display_errors", 1);
         foreach ($person["names"] as $name) {
             if ($name["Type"] == 'authoritative') {
                 $fullname = "{$name["Prefix"]} {$name["First"]} {$name["Middle"]} {$name["Last"]} {$name["Suffix"]}";
-                echo "<h1>
+                echo "<h1 id='name-header'>
                     <span>{$name["Prefix"]}</span>
                     <span>{$name["First"]}</span>
                     <span>{$name["Middle"]}</span>
@@ -153,17 +165,20 @@ ini_set("display_errors", 1);
             } // endif
         } // end foreach
     ?>
-
-    <div id="upper-container">
+    <a id="edit-icon" href='./data_entry/individual.php?id=<?=$_GET["id"]?>'><i class='fa fa-pencil' aria-hidden='true'></i>  Edit</a>
+    
     <nav aria-label="breadcrumb" id="bc">
+    <div id="upper-container">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="index.php">Home</a></li>
         <li class="breadcrumb-item"><a href="data_view/people.php">All People</a></li>
         <li class="breadcrumb-item active" aria-current="page"><?=$fullname?></li>
       </ol>
+      </div>
+      
     </nav>
-    <!-- <a id="edit-icon" href='./data_entry/individual.php?id=<?=$_GET["id"]?>'><i class='fa fa-male' id="edit-icon" aria-hidden='false'></i></a> -->
-    </div>
+    
+    
 
     <div class="row mb-3">
         <div class="col-md-12 themed-grid-col">
@@ -260,14 +275,14 @@ ini_set("display_errors", 1);
                         <!-- <p class="card-text"><?=$person["information"]["ParentMarriageString"]?></p> -->
                         <?php if(array_key_exists("MotherName", $person["information"]) && array_key_exists("MotherName", $person["information"])){?>
                         <p class="card-text"><a href='person.php?id=<?=$person["information"]["FatherID"]?>'><?=$person["information"]["FatherName"]?></a> to <a href='person.php?id=<?=$person["information"]["MotherID"]?>'><?=$person["information"]["MotherName"]?></a></p>
-                        <?php }?>
                         <?php display($person["information"], "ParentMarriageDate", "Date", true)?>
                         <?php 
-                          if($person["information"]["ParentMarriageType"] == "byu"){
-                            $person["information"]["ParentMarriageType"] = "unknown";
-                          }
-                          display($person["information"], "ParentMarriageType", "Marriage Type")
+                        if($person["information"]["ParentMarriageType"] == "byu"){
+                          $person["information"]["ParentMarriageType"] = "unknown";
+                        }
+                        display($person["information"], "ParentMarriageType", "Marriage Type")
                         ?>
+                        <?php }?>
                       </div>
                     </div>
                     <div class="card">
@@ -294,12 +309,12 @@ ini_set("display_errors", 1);
                             $r_i = 1;
                         if ($person["temple_rites"] != null && $person["temple_rites"] != false) {
                             foreach ($person["temple_rites"] as $rite) {
-
+                                
                                 // Kathleen asked that second anointings not show up in the public view
                                 // so if this rite is one of those, then ignore it
                                 if ($rite["Type"] == "secondAnnointing" || $rite["Type"] == "secondAnnointingTime")
                                     continue;
-                                
+
                                 if ($rite["ProxyID"] == null)
                                     $rite["ProxyName"] = "";
                                 if ($rite["AnnointedToID"] == null)
