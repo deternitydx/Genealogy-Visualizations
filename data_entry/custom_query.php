@@ -4,7 +4,7 @@ include("../database.php");
 $db = pg_connect($db_conn_string);
 
 
-$restype = $_POST["res"]; //this is the main returned value. For marriages, we also return husband and wife names/ids, and for people we return marriage and child counts.
+$restype = $_POST["res"];
 $martype = json_decode($_POST["mt"]);
 $dates = json_decode($_POST["dt"]);
 $dateCls = json_decode($_POST["dtcls"]);
@@ -14,9 +14,6 @@ $knunk = json_decode($_POST["knu"]);
 $nums = json_decode($_POST["num"]);
 $numCls = json_decode($_POST["numcls"]);
 $offices = json_decode($_POST["off"]);
-// $sort = $_POST["sort"];
-// $dir = $_POST["dir"];
-// $lim = $_POST["lim"];
 $restrict = $_POST["restrict"];
 $isisnot = json_decode($_POST["isisnot"]);
 
@@ -165,48 +162,26 @@ if($restype == "Person"){
             count(\"ID\") as \"ResultCount\"
             from (";
     $query_where .= "group by p0.\"ID\", n0.\"First\", n0.\"Middle\", n0.\"Last\", p0.\"BirthDate\", p0.\"DeathDate\" ";
-    // switch($sort){
-    //     case "First":
-    //     case "Last":
-    //     case "BirthDate":
-    //     case "DeathDate":
-    //     case "MarriageCount":
-    //     case "TotChildCount":
-    //     case "AdChildCount":
-    //     case "NatChildCount":
-    //     case "Lifespan":
-    //         if($dir == "asc") $query_where .= " order by \"".$sort."\" asc ";
-    //         elseif($dir == "desc") $query_where .= " order by \"".$sort."\" desc ";
-    //     break;
-    // }
-    // $query_where .= " nulls last ";
     $where_for_stats = $query_where;
     $query_after_stats = $query_after;
-    // if(is_numeric($lim)) $query_after .= "limit ".$lim;
-    // else $query_after .= "limit 15";
-    //echo $query_before.$query_sel.$query_from.$query_where.$query_after;
+
+
     $result = pg_query_params($db, $query_before.$query_sel.$query_from.$query_joins.$query_where.$query_after, $params);
     if(!$result){
         die("Errored on data query");
     }
-    //$query_sel_stats = "select * from (".$query_sel_stats;
-    //echo $query_before.$query_sel.$query_from.$query_where.$query_after;
+
+
     $query_after_stats .= ") a ";
-    // if(is_numeric($lim)) $query_after_stats .= "limit ".$lim;
-    // else $query_after_stats .= "limit 15";
-    //echo $query_sel_stats.$query_before.$query_sel.$query_from.$where_for_stats.$query_after;
-    // echo $query_sel_stats.$query_before.$query_sel.$query_from.$query_joins.$where_for_stats.$query_after_stats;
     $stats_result = pg_query_params($db, $query_sel_stats.$query_before.$query_sel.$query_from.$query_joins.$where_for_stats.$query_after_stats, $params);
     if(!$stats_result){
         die("Errored on stats query");
     }
     $rows = pg_fetch_all($result);
     $stats = pg_fetch_all($stats_result);
-    //print_r($stats);
     if($rows && $stats) array_unshift($rows, $stats);
 }
 elseif($restype == "Marriage"){
-    #MIN(AGE(TO_TIMESTAMP(wp.\"BirthDate\", 'YYYY-MM-DD'), TO_TIMESTAMP(cp.\"BirthDate\", 'YYYY-MM-DD'))) as \"FirstChildAge\",
     $query_sel .= "distinct hp.\"ID\" as \"HusbandID\",  wp.\"ID\" as \"WifeID\",
         case when m.\"DivorceDate\" is null and m.\"CancelledDate\" is null then 'N' else 'Y' end as \"IsSeparated\",
         case when exists(select * from \"Marriage\" m1 
@@ -215,7 +190,8 @@ elseif($restype == "Marriage"){
 					    and (m1.\"DivorceDate\" is null or extract(epoch from to_timestamp(m1.\"DivorceDate\", 'YYYY-MM-DD') - to_timestamp(m.\"MarriageDate\", 'YYYY-MM-DD')) > 0)
 						and (m1.\"CancelledDate\" is null or extract(epoch from to_timestamp(m1.\"CancelledDate\", 'YYYY-MM-DD') - to_timestamp(m.\"MarriageDate\", 'YYYY-MM-DD')) > 0)
 					   ) then 'Y' else 'N' end as \"IsPlural\",
-        case when to_timestamp(m.\"MarriageDate\", 'YYYY-MM-DD') > '1829-01-01' and  to_timestamp(m.\"MarriageDate\", 'YYYY-MM-DD') < '1840-06-30' then 1
+        case 
+        when to_timestamp(m.\"MarriageDate\", 'YYYY-MM-DD') > '1829-01-01' and  to_timestamp(m.\"MarriageDate\", 'YYYY-MM-DD') < '1840-06-30' then 1
         when to_timestamp(m.\"MarriageDate\", 'YYYY-MM-DD') < '1844-06-27' then 2
         when to_timestamp(m.\"MarriageDate\", 'YYYY-MM-DD') < '1845-12-09' then 3
         when to_timestamp(m.\"MarriageDate\", 'YYYY-MM-DD') < '1846-02-28' then 4
@@ -223,7 +199,9 @@ elseif($restype == "Marriage"){
         when to_timestamp(m.\"MarriageDate\", 'YYYY-MM-DD') < '1874-06-23' then 6
         when to_timestamp(m.\"MarriageDate\", 'YYYY-MM-DD') < '1890-10-06' then 7
         when to_timestamp(m.\"MarriageDate\", 'YYYY-MM-DD') < '1910-10-05' then 8
-        else null end as \"Phase\",
+        else null 
+        end 
+        as \"Phase\",
         m.\"MarriageDate\", m.\"ID\" as \"MarriageID\", concat(hn.\"First\", ' ', hn.\"Middle\", ' ', hn.\"Last\") as \"HusbandName\",
         hn.\"First\" as \"HusbandFirst\", hn.\"Last\" as \"HusbandLast\", wn.\"First\" as \"WifeFirst\", wn.\"Last\" as \"WifeLast\", 
         AGE(TO_TIMESTAMP(m.\"MarriageDate\", 'YYYY-MM-DD'), TO_TIMESTAMP(hp.\"BirthDate\", 'YYYY-MM-DD')) as \"HusbandAge\", 
@@ -337,26 +315,12 @@ elseif($restype == "Marriage"){
         $iinCount++;
         }
     }
-    $query_where .= " group by hp.\"ID\", wp.\"ID\", hn.\"First\", hn.\"Middle\", hn.\"Last\", wn.\"First\", wn.\"Middle\", wn.\"Last\", m.\"MarriageDate\", hp.\"BirthDate\", wp.\"BirthDate\", m.\"Type\", m.\"DivorceDate\", m.\"CancelledDate\", wp.\"DeathDate\", hp.\"DeathDate\", m.\"ID\", hpm.\"PersonID\", wpm.\"PersonID\" ";
-    // switch($sort){
-    //     case "WifeFirst":
-    //     case "HusbandFirst":
-    //     case "WifeLast":
-    //     case "HusbandLast":
-    //     case "MarriageDate":
-    //     case "WifeAge":
-    //     case "HusbandAge":
-    //     case "AgeDiff":
-    //         if($dir == "asc") $query_where .= " order by \"".$sort."\" asc ";
-    //         elseif($dir == "desc") $query_where .= " order by \"".$sort."\" desc ";
-    //     break;
-    // }
+    $query_where .= " group by hp.\"ID\", wp.\"ID\", hn.\"First\", hn.\"Middle\", hn.\"Last\", wn.\"First\", wn.\"Middle\", wn.\"Last\", m.\"MarriageDate\", 
+    hp.\"BirthDate\", wp.\"BirthDate\", m.\"Type\", m.\"DivorceDate\", m.\"CancelledDate\", wp.\"DeathDate\", hp.\"DeathDate\", m.\"ID\", hpm.\"PersonID\", wpm.\"PersonID\" ";
     
-    // $query_where .= " nulls last ";
     $where_for_stats = $query_where;
     $query_after_stats = $query_after;
-    // if(is_numeric($lim)) $query_after .= "limit ".$lim;
-    // else $query_after .= "limit 15";
+
     $result = pg_query_params($db, $query_before.$query_sel.$query_from.$query_joins.$query_where.$query_after, $params);
     if(!$result){
         die("Errored on data query");
@@ -367,28 +331,101 @@ elseif($restype == "Marriage"){
     if(!$stats_result){
         die("Errored on stats query");
     }
-    //echo $query_sel_stats.$query_before.$query_sel.$query_from.$query_joins.$where_for_stats.$query_after_stats;
+
     $rows = pg_fetch_all($result);
     $stats = pg_fetch_all($stats_result);
     if($rows && $stats) array_unshift($rows, $stats);
 }
-//echo $query_before.$query_sel.$query_from.$query_where.$query_after;
-//$result = pg_query_params($db, $query_before.$query_sel.$query_from.$query_where.$query_after, $params);
-// $result = pg_query_params($db, $query_sel.$query_from.$query_where, $params);
-// $query_sel_stats = "select * from (";
-// $query_after .= ") a;";
-//echo $query_sel_stats.$query_before.$query_sel.$query_from.$where_for_stats.$query_after;
-//$stats_result = pg_query_params($db, $query_sel_stats.$query_before.$query_sel.$query_from.$where_for_stats.$query_after, $params);
-
-//$rows = pg_fetch_all($result);
-//$stats = pg_fetch_all($stats_result);
-//print_r($result);
-
-//if($rows && $stats) array_unshift($rows, $stats);
+elseif($restype=="Adoption"){
+    $query_sel .= "nms.\"Date\" as \"AdoptionDate\",
+    nms.\"AdopteeID\", concat(apn.\"First\", ' ', apn.\"Middle\", ' ', apn.\"Last\") as \"AdopteeName\",
+    age(to_timestamp(nms.\"Date\", 'YYYY-MM-DD'), to_timestamp(ap.\"BirthDate\", 'YYYY-MM-DD')) as \"AdopteeAge\",
+    hp.\"ID\" as \"FatherID\", concat(hpn.\"First\", ' ', hpn.\"Middle\", ' ', hpn.\"Last\") as \"FatherName\",
+    wp.\"ID\" as \"MotherID\", concat(wpn.\"First\", ' ', wpn.\"Middle\", ' ', wpn.\"Last\") as \"MotherName\",
+    bm.\"Type\" as \"BirthMarriageType\"";
+    $query_from .= "\"NonMaritalSealings\" nms ";
+    $query_joins .= "left join \"Person\" ap on ap.\"ID\" = nms.\"AdopteeID\"
+    left join \"Name\" apn on apn.\"PersonID\" = nms.\"AdopteeID\" and apn.\"Type\" = 'authoritative'
+    left join \"Marriage\" am on am.\"ID\" = nms.\"MarriageID\"
+    left join \"PersonMarriage\" hpm on hpm.\"MarriageID\" = am.\"ID\" and hpm.\"Role\" = 'Husband'
+    left join \"PersonMarriage\" wpm on wpm.\"MarriageID\" = am.\"ID\" and wpm.\"Role\" = 'Wife'
+    left join \"Person\" hp on hp.\"ID\" = hpm.\"PersonID\"
+    left join \"Person\" wp on wp.\"ID\" = wpm.\"PersonID\"
+    left join \"Name\" hpn on hpn.\"PersonID\" = hp.\"ID\" and hpn.\"Type\" = 'authoritative'
+    left join \"Name\" wpn on wpn.\"PersonID\" = wp.\"ID\" and wpn.\"Type\" = 'authoritative'
+    left join \"Marriage\" bm on bm.\"ID\" = ap.\"BiologicalChildOfMarriage\"";
+    $query_where .= " where nms.\"Type\" = 'adoption' ";
+    if(count($cols) > 0){
+        foreach(range(0, count($cols)-1) as $q){
+            $decider = ($isisnot[$iinCount] == "isnot")?" not ":" ";
+            switch($cols[$q]){
+                case "AdoptionDate":
+                    switch($dateCls[$dateCount]){
+                        case "before":
+                            $query_where .= "and".$decider."nms.\"Date\" < $".$paramCount." ";
+                            array_push($params, $dates[$dateCount]);
+                            $paramCount++;
+                        break;
+                        case "after":
+                            $query_where .= "and".$decider."nms.\"Date\" > $".$paramCount." ";
+                            array_push($params, $dates[$dateCount]);
+                            $paramCount++;
+                        break;
+                        case "on":
+                            $query_where .= "and".$decider."nms.\"Date\" = $".$paramCount." ";
+                            array_push($params, $dates[$dateCount]);
+                            $paramCount++;
+                        break;
+                        case "known":
+                            $query_where .= "and".$decider."(nms.\"Date\" is not null and not nms.\"Date\" = '' )";
+                        break;
+                        case "unknown":
+                            $query_where .= "and".$decider."(nms.\"Date\" is null or nms.\"Date\" = '') ";
+                        break;
+                    }
+                    $dateCount++;
+                break;
+                case "AdopteeName":
+                    if($texts[$textCount] != ""){
+                        $query_where .= "and".$decider."concat(apn.\"First\", ' ', apn.\"Middle\", ' ', apn.\"Last\") ilike $".$paramCount." ";
+                        array_push($params, "%".$texts[$textCount]."%");
+                        $textCount++;
+                        $paramCount++;
+                    }
+                break;
+                case "FatherName":
+                    if($texts[$textCount] != ""){
+                        $query_where .= "and".$decider."concat(hpn.\"First\", ' ', hpn.\"Middle\", ' ', hpn.\"Last\") ilike $".$paramCount." ";
+                        array_push($params, "%".$texts[$textCount]."%");
+                        $textCount++;
+                        $paramCount++;
+                    }
+                break;
+                case "MotherName":
+                    if($texts[$textCount] != ""){
+                        $query_where .= "and".$decider."concat(wpn.\"First\", ' ', wpn.\"Middle\", ' ', wpn.\"Last\") ilike $".$paramCount." ";
+                        array_push($params, "%".$texts[$textCount]."%");
+                        $textCount++;
+                        $paramCount++;
+                    }
+                break;
+                case "BirthMarriageType":
+                    if($martype[$mtCount] == "unknown") $query_where .= "and".$decider."(bm.\"Type\" = $".$paramCount." or bm.\"Type\" is null) ";
+                    else $query_where .= "and".$decider."bm.\"Type\" = $".$paramCount." ";
+                    array_push($params, $martype[$mtCount]);
+                    $paramCount++;
+                    $mtCount++;
+                break;
+            }
+        $iinCount++;
+        }
+    }
+    $result = pg_query_params($db, $query_before.$query_sel.$query_from.$query_joins.$query_where.$query_after, $params);
+    if(!$result){
+        die("Errored on data query");
+    }
+    $rows = pg_fetch_all($result);
+}
 echo json_encode($rows);
-
-
-
-
 
 ?>
