@@ -29,6 +29,23 @@ function goSankey() {
     window.location.href = link;
     return false;
 }
+function goGraph() {
+    var vals = new Array();
+    var add = "";
+    var levels = "&levels=" + $('#levels').val();
+    $(':checkbox:checked[name^=ids]').val(function() { 
+        if (this.value.indexOf("&wife=1") != -1) {
+            add = "&wife=-1";
+            vals.push(this.value.substr(0, this.value.indexOf('&'))); 
+        } else
+            vals.push(this.value); 
+    });
+    var goTo = vals.join(",");
+    var link = "marriagegraph.html?id=" + goTo + add + levels;
+    console.log(link);
+    window.location.href = link;
+    return false;
+}
 </script>
 
 </head>
@@ -95,7 +112,7 @@ foreach ($arr as $mar) {
 
 echo "</tbody></table></form>";
 echo "<h3>Actions available for selected members</h3>";
-echo "<p>Degrees of separation: <select id='levels'><option selected value='0'>0</option><option value='1'>1</option><option value='2'>2</option></select>  View: <button onClick='goSankey();'>Combined Lineage Flow</button> <br/>Note: this combined view is only available currently if all selected members are male or female.  No mixed gender displays are available at this time.</p>";
+echo "<p>Degrees of separation: <select id='levels'><option selected value='0'>0</option><option value='1'>1</option><option value='2'>2</option></select>  View: <button onClick='goSankey();'>Combined Lineage Flow</button> <button onClick='goGraph();'>Combined Marriage Graph</button> <br/>Note: this combined view is only available currently if all selected members are male or female.  No mixed gender displays are available at this time.</p>";
 ?>
 </body>
 </html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.node {
+    stroke: #fff;
+    stroke-width: 1.5px;
+}
+
+.link {
+    stroke: #999;
+    stroke-opacity: .6;
+    stroke-width: 1;
+}
+
+</style>
+<body>
+    <script src="//d3js.org/d3.v3.js"></script>
+    
+    <script>
+var QueryString = function () {
+  // This function is anonymous, is executed immediately and 
+  // the return value is assigned to QueryString!
+  var query_string = {};
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i=0;i<vars.length;i++) {
+    var pair = vars[i].split("=");
+    	// If first entry with this name
+    if (typeof query_string[pair[0]] === "undefined") {
+      query_string[pair[0]] = pair[1];
+    	// If second entry with this name
+    } else if (typeof query_string[pair[0]] === "string") {
+      var arr = [ query_string[pair[0]], pair[1] ];
+      query_string[pair[0]] = arr;
+    	// If third or later entry with this name
+    } else {
+      query_string[pair[0]].push(pair[1]);
+    }
+  } 
+    return query_string;
+} ();
+    
+var append = "?";
+    if (QueryString.wife)
+        append += "view=female&";
+    if (QueryString.id)
+        append += "id=" + QueryString.id + "&";
+    if (QueryString.levels)
+        append += "levels=" + QueryString.levels + "&";
+    if (QueryString.forwards)
+        append += "forwards=1&";
+    if (QueryString.backwards)
+        append += "backwards=1&";
+
+    "api/lineage.php" + append
+
+        console.log("Starting the script");
+
+var winW = 630, winH = 460;
+if (document.body && document.body.offsetWidth) {
+     winW = document.body.offsetWidth;
+      winH = document.body.offsetHeight;
+}
+if (document.compatMode=='CSS1Compat' &&
+            document.documentElement &&
+                document.documentElement.offsetWidth ) {
+     winW = document.documentElement.offsetWidth;
+      winH = document.documentElement.offsetHeight;
+}
+if (window.innerWidth && window.innerHeight) {
+     winW = window.innerWidth;
+      winH = window.innerHeight;
+}
+
+var width = winW,
+    height = winH;
+
+var color = d3.scale.category20();
+
+var force = d3.layout.force()
+    .charge(-990)
+    .gravity(0.8)
+    .linkDistance(30)
+    .size([width, height]);
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+    console.log("calling d3");
+    d3.json("api/lineage.php" + append, function(error, graph) {
+        if (error) throw error;
+        console.log("Starting the display");
+
+        var degIndex = 0;
+        var maxDeg = 0;
+        console.log(graph);
+        
+        graph.people.forEach(function(edge, i) {
+            graph.marriageUnits.forEach(function(node, j) {
+                if (typeof edge.source != "number" && node.id == edge.source[0])
+                    edge.source = j;
+                if (typeof edge.target != "number" && node.id == edge.target[0])
+                    edge.target = j;
+            });
+        });
+        graph.marriageUnits.forEach(function(node, j) {
+            node.id = j;
+        });
+        
+        
+        force
+            .nodes(graph.marriageUnits)
+            .links(graph.people);
+
+        console.log(graph);
+
+        var link = svg.selectAll(".link")
+            .data(graph.people)
+            .enter().append("line")
+            .attr("class", function(d) {return "link from" + d.source + " to" + d.target; })
+            .style("stroke-width", 1);
+
+        var node = svg.selectAll(".node")
+            .data(graph.marriageUnits)
+            .enter().append("circle")
+            .attr("class", "node")
+            .attr("r", 5)      
+            .attr("id", function(d) {return "n" + d.id; })
+            .style("fill", function(d) { return color(1); })
+            .on("mouseover",
+                function(d) {
+                    d3.select("#n"+d.id).attr("r", 10);
+                    d3.selectAll(".from"+d.id).attr("style", "stroke: #B45F04; stroke-opacity: 1; stroke-width: 2");
+                })
+            .on("mouseout",
+                function(d) {
+                    d3.select("#n"+d.id).attr("r", 5);
+                    d3.selectAll(".from"+d.id).attr("style", "");
+                })
+            .call(force.drag);
+
+        node.append("title")
+            .text(function(d) { return d.name; });
+
+        force.on("tick", function() {
+            link.attr("x1", function(d) { return d.source.x; })
+                .attr("y1", function(d) { return d.source.y; })
+                .attr("x2", function(d) { return d.target.x; })
+                .attr("y2", function(d) { return d.target.y; });
+
+            node.attr("cx", function(d) { return d.x; })
+                .attr("cy", function(d) { return d.y; });
+        });
+        
+        graph.marriageUnits.forEach( function(node) {
+                // start the node in the center
+                node.x = width / 2;
+                node.y = height / 2;
+        });
+
+        setTimeout(function() {
+            force.start();
+            for (var i = 150; i > 0; --i) force.tick();
+            force.stop();
+
+
+        }, 3);
+
+
+    });
+    </script>
+</body>
+</html>
