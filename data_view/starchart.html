@@ -132,7 +132,7 @@ var svg = d3.select("body").append("svg")
             .call(force.drag);
 
         node.append("title")
-            .text(function(d) { return d.name; });
+            .text(function(d) { return d.label; });
 
         force.on("tick", function() {
             link.attr("x1", function(d) { return d.source.x; })
