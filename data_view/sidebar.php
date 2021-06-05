@@ -8,6 +8,7 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         die("Missing UVA Person ID.  Cannot continue.");
     }
     // load the person
+    $id = $_GET["id"];
     $person = json_decode(file_get_contents($base_url . "api/edit_person.php?id=".$_GET["id"]), true);
     $marriages = $person["marriages"];
 
@@ -133,6 +134,8 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
     }
 
 ?>
+
+<a href="http://nauvoo.iath.virginia.edu/viz/chord.html?id=$id">View Chord Diagram</a>
 
 <h3>Root Marriage</h3>
 
