@@ -30,7 +30,7 @@ $aq_query = "SELECT DISTINCT p.\"ID\" FROM \"Person\" p, \"ChurchOrgMembership\"
 
 
 if($restype == "Person"){
-    $query_sel .= "p0.\"ID\", concat(n0.\"First\", ' ', n0.\"Middle\", ' ', n0.\"Last\") as \"FullName\", n0.\"First\", n0.\"Last\", p0.\"BirthDate\", p0.\"DeathDate\", 
+    $query_sel .= "p0.\"ID\", concat(n0.\"First\", ' ', n0.\"Middle\", ' ', n0.\"Last\", ' ', n0.\"Suffix\") as \"FullName\", n0.\"First\", n0.\"Last\", p0.\"BirthDate\", p0.\"DeathDate\", 
     AGE(TO_TIMESTAMP(p0.\"DeathDate\", 'YYYY-MM-DD'), TO_TIMESTAMP(p0.\"BirthDate\", 'YYYY-MM-DD')) as \"Lifespan\", 
     string_agg(distinct o.\"Name\", ', ') as \"Office\", string_agg(distinct cast(m.\"Type\" as varchar), ', ') as \"MarriageTypes\", count(distinct sp.\"ID\") as \"MarriageCount\", count(distinct cp.\"ID\") as \"NatChildCount\", count(distinct ap.\"ID\") as \"AdChildCount\", (count(distinct ap.\"ID\")+count(distinct cp.\"ID\")) as \"TotChildCount\"";
     $query_from .= "\"Person\" p0 ";
@@ -161,7 +161,7 @@ if($restype == "Person"){
             min(\"NatChildCount\") as \"MinNatChild\",
             count(\"ID\") as \"ResultCount\"
             from (";
-    $query_where .= "group by p0.\"ID\", n0.\"First\", n0.\"Middle\", n0.\"Last\", p0.\"BirthDate\", p0.\"DeathDate\" ";
+    $query_where .= "group by p0.\"ID\", n0.\"First\", n0.\"Middle\", n0.\"Last\", n0.\"Suffix\", p0.\"BirthDate\", p0.\"DeathDate\"";
     $where_for_stats = $query_where;
     $query_after_stats = $query_after;
 
@@ -338,7 +338,9 @@ elseif($restype == "Marriage"){
 }
 elseif($restype=="Adoption"){
     $query_sel .= "nms.\"Date\" as \"AdoptionDate\",
-    nms.\"AdopteeID\", concat(apn.\"First\", ' ', apn.\"Middle\", ' ', apn.\"Last\") as \"AdopteeName\",
+    nms.\"AdopteeID\",
+    concat(apn.\"First\", ' ', apn.\"Middle\") as \"AdopteeFirst\",
+    apn.\"Last\" as \"AdopteeLast\",
     age(to_timestamp(nms.\"Date\", 'YYYY-MM-DD'), to_timestamp(ap.\"BirthDate\", 'YYYY-MM-DD')) as \"AdopteeAge\",
     hp.\"ID\" as \"FatherID\", concat(hpn.\"First\", ' ', hpn.\"Middle\", ' ', hpn.\"Last\") as \"FatherName\",
     wp.\"ID\" as \"MotherID\", concat(wpn.\"First\", ' ', wpn.\"Middle\", ' ', wpn.\"Last\") as \"MotherName\",

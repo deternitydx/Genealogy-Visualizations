@@ -5,7 +5,7 @@
 let lineID = 1;
 let rtype = "Person";
 let rows = [1];
-var results = null;
+let results = null;
 $(document).ready(function () {
   $("select").each(function () {
     $(this).val($(this).find("option[selected]").val());
@@ -172,7 +172,7 @@ function getResult() {
   $("#results-view_wrapper").remove();
   $("#stats-view").after("<table id='results-view'></table>");
 
-  var start = Date.now();
+  let start = Date.now();
 
   $("#results-view_wrapper").hide();
   $("#stats-view").html("");
@@ -418,7 +418,7 @@ function getResult() {
         else if (rtype == "Adoption") {
           order_column = 0;
           $("#results-view").append(
-            "<thead><tr><th>Adoption Date</th><th>Adoptee Name</th><th>Adoptee Age</th><th>Adopting Father</th><th>Adopting Mother</th><th>Birth Marriage Type</th></tr></thead>"
+            "<thead><tr><th>Adoption Date</th><th>Adoptee First</th><th>Adoptee Last</th><th>Adoptee Age</th><th>Adopting Father</th><th>Adopting Mother</th><th>Birth Marriage Type</th></tr></thead>"
           );
           let tableout = "<tbody>";
           d.slice(1).forEach(function (el) {
