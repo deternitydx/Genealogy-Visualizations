@@ -165,7 +165,7 @@ ini_set("display_errors", 1);
             } // endif
         } // end foreach
     ?>
-    <a id="edit-icon" href='./data_entry/individual.php?id=<?=$_GET["id"]?>'><i class='fa fa-pencil' aria-hidden='true'></i>  Edit</a>
+    <!-- <a id="edit-icon" href='./data_entry/individual.php?id=<?=$_GET["id"]?>'><i class='fa fa-pencil' aria-hidden='true'></i>  Edit</a> -->
     
     <nav aria-label="breadcrumb" id="bc">
     <div id="upper-container">
