@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Fetch ID of husband, grab all marriages in $marriages
+ * Root marriage is always the first marriage, so $marriages[0], push it onto a seen array, by field "SpouseID"
+ * Create plurals array for plural marriages
+ */
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
     $split = explode("data_view/sidebar.php", $url);
     $base_url = $split[0];
@@ -7,6 +15,9 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         // creating a new person
         die("Missing UVA Person ID.  Cannot continue.");
     }
+    
+    
+
     // load the person
     $id = $_GET["id"];
     $person = json_decode(file_get_contents($base_url . "api/edit_person.php?id=".$_GET["id"]), true);
@@ -19,6 +30,8 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
     //     }
     // }
     // if($root == null) $root = $marriages[0];
+    
+
     $seen = [];
     $root = $marriages[0];
     array_push($seen, $root["SpouseID"]);
@@ -26,9 +39,19 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
     $plurals = array();
     $latest_restriction = "0000-00-00";
 
-
+    uasort($marriages,"sortMarriages");
     foreach($marriages as $m1){
-        if($m1["MarriageDate"] < $latest_restriction) array_push($plurals, $m1);
+        //I'm not sure what the point of $latest_restriction is? Just going to ignore it for now because it seems like it's excluding marriage dates that shouldnt be excluded
+
+        //Posthumous handling
+        $husband_death_date = $person["information"]["DeathDate"];
+        $not_posthumous = true;
+        if(cmpDates($husband_death_date,$m1["MarriageDate"]) < 1) $not_posthumous = false;
+        if($m1["ID"]!= $root["ID"] && $not_posthumous){
+            //Only want to include marriages after the root and those that aren't posthumous
+            //echo 'Marriage date is : ' . $m1["MarriageDate"] . "</br>";
+            array_push($plurals, $m1);
+        } 
         $divdate = ($m1["DivorceDate"] == null)?"9999-99-99":$m1["DivorceDate"];
         $cncdate = ($m1["CancelledDate"] == null)?"9999-99-99":$m1["CancelledDate"];
         $earliest_marriage_restriction = min($divdate, $cncdate, $m1["SpouseDeath"]);
@@ -43,95 +66,13 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         return floor($diff / (365*60*60*24));
     }
 
-    function cmpDates($a, $b){
-        $ad = trim($a);
-        $bd = trim($b);
-        if(strlen($ad) == 4) $ad .= "-99-99";
-        if(strlen($bd) == 4) $bd .= "-99-99";
-        if(strlen($ad) == 7) $ad .= "-99";
-        if(strlen($bd) == 7) $bd .= "-99";
-        
-        if (strtotime($ad) == strtotime($bd)) {
-            return 0;
-        }
-        return (strtotime($ad) < strtotime($bd)) ? -1 : 1;
-    }
-
-    function fetchMarriagesBefore($date, $wifeID, $currentHusbandID){
-        global $seen;
-        include("../database.php");
-        $db = pg_connect($db_conn_string);
-        $result = pg_query($db, "
-            select CONCAT(hn.\"First\", ' ', hn.\"Middle\", ' ', hn.\"Last\") as \"HusbandName\", hp.\"ID\" as \"HusbandID\", hp.\"DeathDate\" as \"SpouseDeath\", m.\"MarriageDate\", m.\"DivorceDate\", m.\"CancelledDate\"
-            from \"Marriage\" m, \"PersonMarriage\" wpm, \"PersonMarriage\" hpm, \"Name\" hn, \"Person\" wp, \"Person\" hp
-            where wpm.\"PersonID\" = ".$wifeID."
-            and m.\"ID\" = wpm.\"MarriageID\"
-            and hpm.\"MarriageID\" = m.\"ID\" and not hpm.\"PersonID\" = ".$wifeID."
-            and hn.\"PersonID\" = hpm.\"PersonID\"
-            and hp.\"ID\" = hpm.\"PersonID\"
-            and wp.\"ID\" = wpm.\"PersonID\"
-            and hpm.\"Role\" = 'Husband'
-            and wpm.\"Role\" = 'Wife'
-            and m.\"MarriageDate\" < '".$date."';
-        ");
-
-        $ms = pg_fetch_all($result);
-        $out = "<dt>Previous Marriages:</dt>";
-        if(!empty($ms)){
-            foreach($ms as $marriage){
-                if($marriage["HusbandID"] != $currentHusbandID && !in_array($marriage["HusbandID"], $seen)){
-                    $divdate = ($marriage["DivorceDate"] == null)?"9999-99-99":$marriage["DivorceDate"];
-                    $cncdate = ($marriage["CancelledDate"] == null)?"9999-99-99":$marriage["CancelledDate"];
-                    $earliest_marriage_restriction = min($divdate, $cncdate, $marriage["SpouseDeath"]);
-                    $out = $out."<dd><a target='_blank' href=http://nauvoo.iath.virginia.edu/viz/person.php?id=".$marriage["HusbandID"].">".$marriage["HusbandName"]."</a></dd>";//, ".explode("-", $marriage["MarriageDate"])[0];//."-".explode("-", $earliest_marriage_restriction)[0]."), ";
-                    array_push($seen, $marriage["HusbandID"]);
-                }
-            }
-            return ($out=="<dt>Previous Marriages:</dt>")?"":$out;//substr($out, 0, -2);
-        }
-        return "";
-    }
-
-    function fetchMarriagesAfter($date, $wifeID, $currentHusbandID){
-        global $seen;
-        include("../database.php");
-        $db = pg_connect($db_conn_string);
-        $result = pg_query($db, "
-            select CONCAT(hn.\"First\", ' ', hn.\"Middle\", ' ', hn.\"Last\") as \"HusbandName\", hp.\"ID\" as \"HusbandID\", hp.\"DeathDate\" as \"SpouseDeath\", m.\"MarriageDate\", m.\"DivorceDate\", m.\"CancelledDate\"
-            from \"Marriage\" m, \"PersonMarriage\" wpm, \"PersonMarriage\" hpm, \"Name\" hn, \"Person\" wp, \"Person\" hp
-            where wpm.\"PersonID\" = ".$wifeID."
-            and m.\"ID\" = wpm.\"MarriageID\"
-            and hpm.\"MarriageID\" = m.\"ID\" and not hpm.\"PersonID\" = ".$wifeID."
-            and hn.\"PersonID\" = hpm.\"PersonID\"
-            and hp.\"ID\" = hpm.\"PersonID\"
-            and wp.\"ID\" = wpm.\"PersonID\"
-            and hpm.\"Role\" = 'Husband'
-            and wpm.\"Role\" = 'Wife'
-            and m.\"MarriageDate\" >= '".$date."';
-        ");
-
-        $ms = pg_fetch_all($result);
-        $out = "<dt>Subsequent Marriages:</dt>";
-        if(!empty($ms)){
-            foreach($ms as $marriage){
-                if($marriage["HusbandID"] != $currentHusbandID && !in_array($marriage["HusbandID"], $seen)){
-                    $divdate = ($marriage["DivorceDate"] == null)?"9999-99-99":$marriage["DivorceDate"];
-                    $cncdate = ($marriage["CancelledDate"] == null)?"9999-99-99":$marriage["CancelledDate"];
-                    $earliest_marriage_restriction = min($divdate, $cncdate, $marriage["SpouseDeath"]);
-                    $out = $out."<dd><a target='_blank' href=http://nauvoo.iath.virginia.edu/viz/person.php?id=".$marriage["HusbandID"].">".$marriage["HusbandName"]."</a></dd>";//, ".explode("-", $marriage["MarriageDate"])[0]."; ";//."-".explode("-", $earliest_marriage_restriction)[0]."), ";
-                    array_push($seen, $marriage["HusbandID"]);
-                }
-            }
-            return ($out=="<dt>Subsequent Marriages:</dt>")?"":$out;
-        }
-        return "";
-    }
 
     $first_nondup = 0;
     foreach($plurals as $p){
         if(!in_array($p["SpouseID"], $seen)) break;
         $first_nondup++;
     }
+
 
 ?>
 
@@ -169,12 +110,116 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
     }
     foreach ($spouses as $s) {?>
     <dt><a target="_blank" href="http://nauvoo.iath.virginia.edu/viz/person.php?id=<?=$s[0]["SpouseID"]?>"><?=trim(substr($s[0]["SpouseName"], 0, strrpos($s[0]["SpouseName"], " ")))?></a><?=($s[0]["MarriageDate"] != null && $s[0]["MarriageDate"] != "" && $s[0]["SpouseBirth"] != null && $s[0]["SpouseBirth"] != "")?", ".years_between($s[0]["SpouseBirth"], $s[0]["MarriageDate"]):""?></dt>
-    <?php if(cmpDates($s[0]["MarriageDate"], $person["information"]["DeathDate"]) > 0){ ?>
-        <dd>Posthumous</dd>
-    <?php } ?>
+    
     <dd><?=($s[0]["MarriageDate"] != null && $s[0]["MarriageDate"] != "")?$s[0]["MarriageDate"]:"UNK"?></dd>
     <!-- <dd><?=($s[0]["SpouseDeath"] != null)?"(".explode("-", $s[0]["SpouseBirth"])[0]."-".explode("-", $s[0]["SpouseDeath"])[0].")":"b. ".explode("-", $s[0]["SpouseBirth"])[0]?></dd> -->
     <?php } ?>
+
+
+
+    <?php
+    function fetchMarriagesBefore($date, $wifeID, $currentHusbandID){
+        global $seen;
+        include("../database.php");
+        $db = pg_connect($db_conn_string);
+        $result = pg_query($db, "
+            select CONCAT(hn.\"First\", ' ', hn.\"Middle\", ' ', hn.\"Last\") as \"HusbandName\", hp.\"ID\" as \"HusbandID\", hp.\"DeathDate\" as \"SpouseDeath\", m.\"MarriageDate\", m.\"DivorceDate\", m.\"CancelledDate\"
+            from \"Marriage\" m, \"PersonMarriage\" wpm, \"PersonMarriage\" hpm, \"Name\" hn, \"Person\" wp, \"Person\" hp
+            where wpm.\"PersonID\" = ".$wifeID."
+            and m.\"ID\" = wpm.\"MarriageID\"
+            and hpm.\"MarriageID\" = m.\"ID\" and not hpm.\"PersonID\" = ".$wifeID."
+            and hn.\"PersonID\" = hpm.\"PersonID\"
+            and hp.\"ID\" = hpm.\"PersonID\"
+            and wp.\"ID\" = wpm.\"PersonID\"
+            and hpm.\"Role\" = 'Husband'
+            and wpm.\"Role\" = 'Wife'
+            and m.\"MarriageDate\" < '".$date."';
+        ");
+
+        $ms = pg_fetch_all($result);
+        $out = "<dt>Previous Marriages:</dt>";
+        if(!empty($ms)){
+            foreach($ms as $marriage){
+                if($marriage["HusbandID"] != $currentHusbandID && !in_array($marriage["HusbandID"], $seen)){
+                    $divdate = ($marriage["DivorceDate"] == null)?"9999-99-99":$marriage["DivorceDate"];
+                    $cncdate = ($marriage["CancelledDate"] == null)?"9999-99-99":$marriage["CancelledDate"];
+                    $earliest_marriage_restriction = min($divdate, $cncdate, $marriage["SpouseDeath"]);
+                    $out = $out."<dd><a target='_blank' href=http://nauvoo.iath.virginia.edu/viz/person.php?id=".$marriage["HusbandID"].">".$marriage["HusbandName"]."</a></dd>";//, ".explode("-", $marriage["MarriageDate"])[0];//."-".explode("-", $earliest_marriage_restriction)[0]."), ";
+                    array_push($seen, $marriage["HusbandID"]);
+                }
+            }
+            return ($out=="<dt>Previous Marriages:</dt>")?"":$out;//substr($out, 0, -2);
+        }
+        return "";
+    }
+    function fetchMarriagesAfter($date, $wifeID, $currentHusbandID){
+        global $seen;
+        include("../database.php");
+        $db = pg_connect($db_conn_string);
+        $result = pg_query($db, "
+            select CONCAT(hn.\"First\", ' ', hn.\"Middle\", ' ', hn.\"Last\") as \"HusbandName\", hp.\"ID\" as \"HusbandID\", hp.\"DeathDate\" as \"SpouseDeath\", m.\"MarriageDate\", m.\"DivorceDate\", m.\"CancelledDate\"
+            from \"Marriage\" m, \"PersonMarriage\" wpm, \"PersonMarriage\" hpm, \"Name\" hn, \"Person\" wp, \"Person\" hp
+            where wpm.\"PersonID\" = ".$wifeID."
+            and m.\"ID\" = wpm.\"MarriageID\"
+            and hpm.\"MarriageID\" = m.\"ID\" and not hpm.\"PersonID\" = ".$wifeID."
+            and hn.\"PersonID\" = hpm.\"PersonID\"
+            and hp.\"ID\" = hpm.\"PersonID\"
+            and wp.\"ID\" = wpm.\"PersonID\"
+            and hpm.\"Role\" = 'Husband'
+            and wpm.\"Role\" = 'Wife'
+            and m.\"MarriageDate\" >= '".$date."';
+        ");
+
+        $ms = pg_fetch_all($result);
+        $out = "<dt>Subsequent Marriages:</dt>";
+        if(!empty($ms)){
+            foreach($ms as $marriage){
+                if($marriage["HusbandID"] != $currentHusbandID && !in_array($marriage["HusbandID"], $seen)){
+                    $divdate = ($marriage["DivorceDate"] == null)?"9999-99-99":$marriage["DivorceDate"];
+                    $cncdate = ($marriage["CancelledDate"] == null)?"9999-99-99":$marriage["CancelledDate"];
+                    $earliest_marriage_restriction = min($divdate, $cncdate, $marriage["SpouseDeath"]);
+                    $out = $out."<dd><a target='_blank' href=http://nauvoo.iath.virginia.edu/viz/person.php?id=".$marriage["HusbandID"].">".$marriage["HusbandName"]."</a></dd>";//, ".explode("-", $marriage["MarriageDate"])[0]."; ";//."-".explode("-", $earliest_marriage_restriction)[0]."), ";
+                    array_push($seen, $marriage["HusbandID"]);
+                }
+            }
+            return ($out=="<dt>Subsequent Marriages:</dt>")?"":$out;
+        }
+        return "";
+    }
+
+    function cmpDates($a, $b){
+        $ad = trim($a);
+        $bd = trim($b);
+        if(strlen($ad) == 4) $ad .= "-99-99";
+        if(strlen($bd) == 4) $bd .= "-99-99";
+        if(strlen($ad) == 7) $ad .= "-99";
+        if(strlen($bd) == 7) $bd .= "-99";
+        
+        if (strtotime($ad) == strtotime($bd)) {
+            return 0;
+        }
+        return (strtotime($ad) < strtotime($bd)) ? -1 : 1;
+    }
+
+    function sortMarriages($marriage1,$marriage2){
+        //Different from cmpDates in that it compares marriageDate for the purpose of usort()
+        //usort() cannot call cmpDates()
+        $marriage1_date = ($marriage1["MarriageDate"]);
+        $marriage2_date = ($marriage2["MarriageDate"]);
+        if(strlen($marriage1_date) == 4) $marriage1_date .= "-99-99";
+        
+        if(strlen($marriage2_date) == 4) $marriage2_date .= "-99-99";
+        if(strlen($marriage1_date) == 7) $marriage1_date .= "-99";
+        if(strlen($marriage2_date) == 7) $marriage2_date .= "-99";
+
+        if (strcmp($marriage1_date,$marriage2_date)==0) {
+            return 0;
+        }
+        $res = (strcmp($marriage1_date,$marriage2_date)<0) ? -1 : 1;
+        return $res;
+    }
+    ?>
+    
 
 
 </dl>
