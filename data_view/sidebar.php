@@ -46,10 +46,10 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
     function cmpDates($a, $b){
         $ad = trim($a);
         $bd = trim($b);
-        if(strlen($ad) == 4) $ad .= "-01-01";
-        if(strlen($bd) == 4) $bd .= "-01-01";
-        if(strlen($ad) == 7) $ad .= "-01";
-        if(strlen($bd) == 7) $bd .= "-01";
+        if(strlen($ad) == 4) $ad .= "-99-99";
+        if(strlen($bd) == 4) $bd .= "-99-99";
+        if(strlen($ad) == 7) $ad .= "-99";
+        if(strlen($bd) == 7) $bd .= "-99";
         
         if (strtotime($ad) == strtotime($bd)) {
             return 0;
@@ -135,7 +135,7 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
 ?>
 
-<a href="http://nauvoo.iath.virginia.edu/viz/chord.html?id=$id">View Chord Diagram</a>
+<a href="http://nauvoo.iath.virginia.edu/viz/chord.html?id=<?php echo $id; ?>">View Chord Diagram</a>
 
 <h3>Root Marriage</h3>
 
