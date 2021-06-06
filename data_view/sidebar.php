@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Fetch ID of husband, grab all marriages in $marriages
+ * Root marriage is always the first marriage, so $marriages[0], push it onto a seen array, by field "SpouseID"
+ * Create plurals array for plural marriages
+ */
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
     $split = explode("data_view/sidebar.php", $url);
     $base_url = $split[0];
@@ -7,6 +15,9 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         // creating a new person
         die("Missing UVA Person ID.  Cannot continue.");
     }
+    
+    
+
     // load the person
     $id = $_GET["id"];
     $person = json_decode(file_get_contents($base_url . "api/edit_person.php?id=".$_GET["id"]), true);
@@ -19,6 +30,8 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
     //     }
     // }
     // if($root == null) $root = $marriages[0];
+    
+
     $seen = [];
     $root = $marriages[0];
     array_push($seen, $root["SpouseID"]);
@@ -26,9 +39,19 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
     $plurals = array();
     $latest_restriction = "0000-00-00";
 
-
+    uasort($marriages,"sortMarriages");
     foreach($marriages as $m1){
-        if($m1["MarriageDate"] < $latest_restriction) array_push($plurals, $m1);
+        //I'm not sure what the point of $latest_restriction is? Just going to ignore it for now because it seems like it's excluding marriage dates that shouldnt be excluded
+
+        //Posthumous handling
+        $husband_death_date = $person["information"]["DeathDate"];
+        $not_posthumous = true;
+        if(cmpDates($husband_death_date,$m1["MarriageDate"]) < 1) $not_posthumous = false;
+        if($m1["ID"]!= $root["ID"] && $not_posthumous){
+            //Only want to include marriages after the root and those that aren't posthumous
+            //echo 'Marriage date is : ' . $m1["MarriageDate"] . "</br>";
+            array_push($plurals, $m1);
+        } 
         $divdate = ($m1["DivorceDate"] == null)?"9999-99-99":$m1["DivorceDate"];
         $cncdate = ($m1["CancelledDate"] == null)?"9999-99-99":$m1["CancelledDate"];
         $earliest_marriage_restriction = min($divdate, $cncdate, $m1["SpouseDeath"]);
@@ -43,20 +66,58 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         return floor($diff / (365*60*60*24));
     }
 
-    function cmpDates($a, $b){
-        $ad = trim($a);
-        $bd = trim($b);
-        if(strlen($ad) == 4) $ad .= "-01-01";
-        if(strlen($bd) == 4) $bd .= "-01-01";
-        if(strlen($ad) == 7) $ad .= "-01";
-        if(strlen($bd) == 7) $bd .= "-01";
-        
-        if (strtotime($ad) == strtotime($bd)) {
-            return 0;
-        }
-        return (strtotime($ad) < strtotime($bd)) ? -1 : 1;
+
+    $first_nondup = 0;
+    foreach($plurals as $p){
+        if(!in_array($p["SpouseID"], $seen)) break;
+        $first_nondup++;
     }
 
+
+?>
+
+<a href="http://nauvoo.iath.virginia.edu/viz/chord.html?id=<?php echo $id; ?>">View Chord Diagram</a>
+
+<h3>Root Marriage</h3>
+
+<dt><a target="_blank" href="http://nauvoo.iath.virginia.edu/viz/person.php?id=<?=$_GET["id"]?>"><?=$person["names"][0]["First"]." ".$person["names"][0]["Middle"]." ".$person["names"][0]["Last"]?></a><?=", ".years_between($person["information"]["BirthDate"], $root["MarriageDate"])?><br>
+<a target="_blank" href="http://nauvoo.iath.virginia.edu/viz/person.php?id=<?=$root["SpouseID"]?>"><?=trim(substr($root["SpouseName"], 0, strrpos($root["SpouseName"], " ")))?></a><?=", ".years_between($root["SpouseBirth"], $root["MarriageDate"])?></dt>
+<?=$root["MarriageDate"]?>
+
+
+<h3><?=(count($plurals) > 1)?"First Plural":"First & Only Plural"?></h3>
+
+<dl><dt><a target="_blank" href="http://nauvoo.iath.virginia.edu/viz/person.php?id=<?=$plurals[$first_nondup]["SpouseID"]?>"><?=trim(substr($plurals[$first_nondup]["SpouseName"], 0, strrpos($plurals[$first_nondup]["SpouseName"], " ")))?></a><?=", ".years_between($plurals[$first_nondup]["SpouseBirth"], $plurals[$first_nondup]["MarriageDate"])?></dt>
+<dd><?=$plurals[$first_nondup]["MarriageDate"]?></dd> 
+<?=fetchMarriagesBefore($plurals[$first_nondup]["MarriageDate"], $plurals[$first_nondup]["SpouseID"], $_GET["id"])?>
+<?=fetchMarriagesAfter($plurals[$first_nondup]["MarriageDate"], $plurals[$first_nondup]["SpouseID"], $_GET["id"])?></dl>
+
+<h3>Subsequent Plural</h3>
+<dl>
+<?php
+    $i = 0;
+    $spouses = [];
+    foreach($plurals as $m){
+        if(!in_array($m["SpouseID"], $seen)){
+            if($i > 0){
+                if(!isset($spouses[$m["SpouseID"]]))
+                    $spouses[$m["SpouseID"]] = [];
+                array_push($spouses[$m["SpouseID"]], $m);
+            }
+            $i++;
+            array_push($seen, $m["SpouseID"]);
+        }
+    }
+    foreach ($spouses as $s) {?>
+    <dt><a target="_blank" href="http://nauvoo.iath.virginia.edu/viz/person.php?id=<?=$s[0]["SpouseID"]?>"><?=trim(substr($s[0]["SpouseName"], 0, strrpos($s[0]["SpouseName"], " ")))?></a><?=($s[0]["MarriageDate"] != null && $s[0]["MarriageDate"] != "" && $s[0]["SpouseBirth"] != null && $s[0]["SpouseBirth"] != "")?", ".years_between($s[0]["SpouseBirth"], $s[0]["MarriageDate"]):""?></dt>
+    
+    <dd><?=($s[0]["MarriageDate"] != null && $s[0]["MarriageDate"] != "")?$s[0]["MarriageDate"]:"UNK"?></dd>
+    <!-- <dd><?=($s[0]["SpouseDeath"] != null)?"(".explode("-", $s[0]["SpouseBirth"])[0]."-".explode("-", $s[0]["SpouseDeath"])[0].")":"b. ".explode("-", $s[0]["SpouseBirth"])[0]?></dd> -->
+    <?php } ?>
+
+
+
+    <?php
     function fetchMarriagesBefore($date, $wifeID, $currentHusbandID){
         global $seen;
         include("../database.php");
@@ -91,7 +152,6 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         }
         return "";
     }
-
     function fetchMarriagesAfter($date, $wifeID, $currentHusbandID){
         global $seen;
         include("../database.php");
@@ -127,54 +187,39 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         return "";
     }
 
-    $first_nondup = 0;
-    foreach($plurals as $p){
-        if(!in_array($p["SpouseID"], $seen)) break;
-        $first_nondup++;
-    }
-
-?>
-
-<a href="http://nauvoo.iath.virginia.edu/viz/chord.html?id=$id">View Chord Diagram</a>
-
-<h3>Root Marriage</h3>
-
-<dt><a target="_blank" href="http://nauvoo.iath.virginia.edu/viz/person.php?id=<?=$_GET["id"]?>"><?=$person["names"][0]["First"]." ".$person["names"][0]["Middle"]." ".$person["names"][0]["Last"]?></a><?=", ".years_between($person["information"]["BirthDate"], $root["MarriageDate"])?><br>
-<a target="_blank" href="http://nauvoo.iath.virginia.edu/viz/person.php?id=<?=$root["SpouseID"]?>"><?=trim(substr($root["SpouseName"], 0, strrpos($root["SpouseName"], " ")))?></a><?=", ".years_between($root["SpouseBirth"], $root["MarriageDate"])?></dt>
-<?=$root["MarriageDate"]?>
-
-
-<h3><?=(count($plurals) > 1)?"First Plural":"First & Only Plural"?></h3>
-
-<dl><dt><a target="_blank" href="http://nauvoo.iath.virginia.edu/viz/person.php?id=<?=$plurals[$first_nondup]["SpouseID"]?>"><?=trim(substr($plurals[$first_nondup]["SpouseName"], 0, strrpos($plurals[$first_nondup]["SpouseName"], " ")))?></a><?=", ".years_between($plurals[$first_nondup]["SpouseBirth"], $plurals[$first_nondup]["MarriageDate"])?></dt>
-<dd><?=$plurals[$first_nondup]["MarriageDate"]?></dd> 
-<?=fetchMarriagesBefore($plurals[$first_nondup]["MarriageDate"], $plurals[$first_nondup]["SpouseID"], $_GET["id"])?>
-<?=fetchMarriagesAfter($plurals[$first_nondup]["MarriageDate"], $plurals[$first_nondup]["SpouseID"], $_GET["id"])?></dl>
-
-<h3>Subsequent Plural</h3>
-<dl>
-<?php
-    $i = 0;
-    $spouses = [];
-    foreach($plurals as $m){
-        if(!in_array($m["SpouseID"], $seen)){
-            if($i > 0){
-                if(!isset($spouses[$m["SpouseID"]]))
-                    $spouses[$m["SpouseID"]] = [];
-                array_push($spouses[$m["SpouseID"]], $m);
-            }
-            $i++;
-            array_push($seen, $m["SpouseID"]);
+    function cmpDates($a, $b){
+        $ad = trim($a);
+        $bd = trim($b);
+        if(strlen($ad) == 4) $ad .= "-99-99";
+        if(strlen($bd) == 4) $bd .= "-99-99";
+        if(strlen($ad) == 7) $ad .= "-99";
+        if(strlen($bd) == 7) $bd .= "-99";
+        
+        if (strtotime($ad) == strtotime($bd)) {
+            return 0;
         }
+        return (strtotime($ad) < strtotime($bd)) ? -1 : 1;
     }
-    foreach ($spouses as $s) {?>
-    <dt><a target="_blank" href="http://nauvoo.iath.virginia.edu/viz/person.php?id=<?=$s[0]["SpouseID"]?>"><?=trim(substr($s[0]["SpouseName"], 0, strrpos($s[0]["SpouseName"], " ")))?></a><?=($s[0]["MarriageDate"] != null && $s[0]["MarriageDate"] != "" && $s[0]["SpouseBirth"] != null && $s[0]["SpouseBirth"] != "")?", ".years_between($s[0]["SpouseBirth"], $s[0]["MarriageDate"]):""?></dt>
-    <?php if(cmpDates($s[0]["MarriageDate"], $person["information"]["DeathDate"]) > 0){ ?>
-        <dd>Posthumous</dd>
-    <?php } ?>
-    <dd><?=($s[0]["MarriageDate"] != null && $s[0]["MarriageDate"] != "")?$s[0]["MarriageDate"]:"UNK"?></dd>
-    <!-- <dd><?=($s[0]["SpouseDeath"] != null)?"(".explode("-", $s[0]["SpouseBirth"])[0]."-".explode("-", $s[0]["SpouseDeath"])[0].")":"b. ".explode("-", $s[0]["SpouseBirth"])[0]?></dd> -->
-    <?php } ?>
+
+    function sortMarriages($marriage1,$marriage2){
+        //Different from cmpDates in that it compares marriageDate for the purpose of usort()
+        //usort() cannot call cmpDates()
+        $marriage1_date = ($marriage1["MarriageDate"]);
+        $marriage2_date = ($marriage2["MarriageDate"]);
+        if(strlen($marriage1_date) == 4) $marriage1_date .= "-99-99";
+        
+        if(strlen($marriage2_date) == 4) $marriage2_date .= "-99-99";
+        if(strlen($marriage1_date) == 7) $marriage1_date .= "-99";
+        if(strlen($marriage2_date) == 7) $marriage2_date .= "-99";
+
+        if (strcmp($marriage1_date,$marriage2_date)==0) {
+            return 0;
+        }
+        $res = (strcmp($marriage1_date,$marriage2_date)<0) ? -1 : 1;
+        return $res;
+    }
+    ?>
+    
 
 
 </dl>
