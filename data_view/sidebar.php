@@ -5,9 +5,9 @@
  * Root marriage is always the first marriage, so $marriages[0], push it onto a seen array, by field "SpouseID"
  * Create plurals array for plural marriages
  */
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
 $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
     $split = explode("data_view/sidebar.php", $url);
     $base_url = $split[0];
