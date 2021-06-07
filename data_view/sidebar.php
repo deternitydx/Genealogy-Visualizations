@@ -1,13 +1,10 @@
 <?php
 
-/**
- * Fetch ID of husband, grab all marriages in $marriages
- * Root marriage is always the first marriage, so $marriages[0], push it onto a seen array, by field "SpouseID"
- * Create plurals array for plural marriages
- */
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(E_ALL);
+//For debugging purposes. Comment out when pushing to repo
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
     $split = explode("data_view/sidebar.php", $url);
     $base_url = $split[0];
@@ -16,8 +13,6 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         die("Missing UVA Person ID.  Cannot continue.");
     }
     
-    
-
     // load the person
     $id = $_GET["id"];
     $person = json_decode(file_get_contents($base_url . "api/edit_person.php?id=".$_GET["id"]), true);
@@ -35,6 +30,7 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
     $seen = [];
     $root = $marriages[0];
     array_push($seen, $root["SpouseID"]);
+    //var_dump($root);
 
     $plurals = array();
     $latest_restriction = "0000-00-00";
@@ -66,11 +62,51 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         return floor($diff / (365*60*60*24));
     }
 
+    /**
+     * Check for existence of second or "other" civil marriage
+     * Condition 1: Previous wife must have died prior to the marriage date. In the case of  second civil, the root wife must have died before the marriage date
+     * Condition 2: The marriage type must be civil
+     */
+    $civil_index = 0;
+    $root_wife_death_date = $root["SpouseDeath"];
+    $second_civil = array();
+    $other_civil = array();
+    while($civil_index < sizeof($plurals)){
+        if($civil_index ==0){
+            //Check for second civil marriage
+            if(($plurals[0]["Type"]=="civil") && (cmpDates($root_wife_death_date,$plurals[0]["MarriageDate"])==-1)){
+                array_push($second_civil,$plurals[0]);
+                array_push($seen,$plurals[0]["SpouseID"]);
+                //echo "Existence of second civil marriage! Date is : " . $plurals[0]["MarriageDate"] . "</br>";
+            }
+        }
+        else{
+            //Check for other civil marriage
+            $previous_wife_death_date = $plurals[$civil_index-1]["SpouseDeath"];
+            if(($plurals[$civil_index-1]["Type"]=="civil") && (cmpDates($previous_wife_death_date,$plurals[$civil_index-1]["MarriageDate"])==-1)){
+                array_push($other_civil,$plurals[$civil_index]);
+                array_push($seen,$plurals[$civil_index]["SpouseID"]);
+                //echo "Existence of other civil marriage! Date is : " . $plurals[0]["MarriageDate"];
+            }
+        }
+        $civil_index++;
+    }
 
-    $first_nondup = 0;
-    foreach($plurals as $p){
-        if(!in_array($p["SpouseID"], $seen)) break;
-        $first_nondup++;
+
+
+
+    //If there is an existence of a civil marriage, want to move the first plural to the second index
+    $first_nondup = (empty($second_civil)) ? 0 : 1;
+    if(!empty($other_civil)){
+        //If there is an other civil marriage, move the first-plural-index to right after the other_civil array
+        $first_nondup = 1 + sizeof($other_civil);
+    }
+    for($i =0; $i< sizeof($plurals);$i++){
+        if(!in_array($plurals[$i]["SpouseID"], $seen)){
+            //echo "First plural instance is : " . $plurals[$i]["SpouseName"] . "</br>";
+            $first_nondup = $i;
+            break;
+        } 
     }
 
 
@@ -83,6 +119,47 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 <dt><a target="_blank" href="http://nauvoo.iath.virginia.edu/viz/person.php?id=<?=$_GET["id"]?>"><?=$person["names"][0]["First"]." ".$person["names"][0]["Middle"]." ".$person["names"][0]["Last"]?></a><?=", ".years_between($person["information"]["BirthDate"], $root["MarriageDate"])?><br>
 <a target="_blank" href="http://nauvoo.iath.virginia.edu/viz/person.php?id=<?=$root["SpouseID"]?>"><?=trim(substr($root["SpouseName"], 0, strrpos($root["SpouseName"], " ")))?></a><?=", ".years_between($root["SpouseBirth"], $root["MarriageDate"])?></dt>
 <?=$root["MarriageDate"]?>
+
+
+<?php
+    //Second civil
+    if(!empty($second_civil)){
+        $wife_id = $second_civil[0]["SpouseID"];
+        $wife_name = trim(substr($second_civil[0]["SpouseName"], 0, strrpos($second_civil[0]["SpouseName"], " ")));
+        $wife_marriage_age_string = ", ".years_between($second_civil[0]["SpouseBirth"], $second_civil[0]["MarriageDate"]);
+        $wife_marriage_date = $second_civil[0]["MarriageDate"];
+        $wife_prior_marriages = fetchMarriagesBefore($second_civil[0]["MarriageDate"], $second_civil[0]["SpouseID"], $_GET["id"]);
+        $wife_after_marriages = fetchMarriagesAfter($second_civil[0]["MarriageDate"], $second_civil[0]["SpouseID"], $_GET["id"]);
+        echo <<<EOT
+        <h3>Second Civil</h3>
+        <dl><dt><a target="_blank" href="http://nauvoo.iath.virginia.edu/viz/person.php?id=$wife_id">$wife_name</a>$wife_marriage_age_string</dt>
+        <dd>$wife_marriage_date</dd> 
+        $wife_prior_marriages
+        $wife_after_marriages</dl>
+        EOT;
+    }
+?>
+
+ <?php
+    if(!empty($other_civil)){
+        echo "<h3>Other Civil</h3>";
+        for($i=0;$i<sizeof($other_civil);$i++){
+            $wife_id = $other_civil[$i]["SpouseID"];
+            $wife_name = trim(substr($other_civil[$i]["SpouseName"], 0, strrpos($other_civil[$i]["SpouseName"], " ")));
+            $wife_marriage_age_string = ", ".years_between($other_civil[$i]["SpouseBirth"], $second_civil[$i]["MarriageDate"]);
+            if($other_civil[$i]["SpouseBirth"]==null || $other_civil[$i]["SpouseBirth"]=="" || $other_civil[$i]["MarriageDate"]==null || $other_civil[$i]["MarriageDate"]==""){
+                $wife_marriage_age_string="";
+            }
+            $wife_marriage_date = $other_civil[$i]["MarriageDate"];
+            echo <<<EOT
+            <dt><a target="_blank" href="http://nauvoo.iath.virginia.edu/viz/person.php?id=$wife_id"><$wife_name></a>$wife_marriage_age_string</dt>
+            <dd>$wife_marriage_date</dd> 
+            EOT;
+        }         
+    }
+?> 
+
+
 
 
 <h3><?=(count($plurals) > 1)?"First Plural":"First & Only Plural"?></h3>
