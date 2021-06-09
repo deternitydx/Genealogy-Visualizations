@@ -130,13 +130,15 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         $wife_marriage_date = $second_civil[0]["MarriageDate"];
         $wife_prior_marriages = fetchMarriagesBefore($second_civil[0]["MarriageDate"], $second_civil[0]["SpouseID"], $_GET["id"]);
         $wife_after_marriages = fetchMarriagesAfter($second_civil[0]["MarriageDate"], $second_civil[0]["SpouseID"], $_GET["id"]);
-        echo <<<EOT
+        
+        // this isn't great practice, should build string to echo instead
+        ?>
         <h3>Second Civil</h3>
-        <dl><dt><a target="_blank" href="http://nauvoo.iath.virginia.edu/viz/person.php?id=$wife_id">$wife_name</a>$wife_marriage_age_string</dt>
-        <dd>$wife_marriage_date</dd> 
-        $wife_prior_marriages
-        $wife_after_marriages</dl>
-        EOT;
+        <dl><dt><a target="_blank" href="http://nauvoo.iath.virginia.edu/viz/person.php?id=<?=$wife_id?>"><?=$wife_name?></a><?=$wife_marriage_age_string?></dt>
+        <dd><?=$wife_marriage_date?></dd> 
+        <?=$wife_prior_marriages?>
+        <?=$wife_after_marriages?></dl>
+        <?php
     }
 ?>
 
@@ -151,10 +153,9 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                 $wife_marriage_age_string="";
             }
             $wife_marriage_date = $other_civil[$i]["MarriageDate"];
-            echo <<<EOT
-            <dt><a target="_blank" href="http://nauvoo.iath.virginia.edu/viz/person.php?id=$wife_id"><$wife_name></a>$wife_marriage_age_string</dt>
-            <dd>$wife_marriage_date</dd> 
-            EOT;
+            echo "
+            <dt><a target=\"_blank\" href=\"http://nauvoo.iath.virginia.edu/viz/person.php?id=$wife_id\">$wife_name</a>$wife_marriage_age_string</dt>
+            <dd>$wife_marriage_date</dd>";
         }         
     }
 ?> 
