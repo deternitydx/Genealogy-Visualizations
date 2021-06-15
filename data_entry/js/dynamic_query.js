@@ -360,7 +360,7 @@ function getResult() {
         } else if (rtype == "Marriage") {
           order_column = 3;
           $("#results-view").append(
-            "<thead><tr><th>D/C?</th><th>Plural?</th><th>Phase</th><th>Marriage Date</th><th>Husband's Name</th><th>Husband's Age at Marriage</th><th>Wife's Name</th><th>Wife's Age at Marriage</th><th>Wife's Age at First Birth</th><th>Marriage Type</th><th>Age Difference</th></tr></thead>"
+            "<thead><tr><th>D/C?</th><th>Plural?</th><th>Phase</th><th>Marriage Date</th><th>Husband's Name</th><th>Husband's Office(s)</th><th>Husband's Age at Marriage</th><th>Wife's Name</th><th>Wife's Office(s)</th><th>Wife's Age at Marriage</th><th>Wife's Age at First Birth</th><th>Marriage Type</th><th>Age Difference</th></tr></thead>"
           );
           stats = d[0][0];
           let tableout = "<tbody>";
