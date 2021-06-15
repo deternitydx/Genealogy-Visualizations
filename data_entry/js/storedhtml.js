@@ -147,6 +147,8 @@ const base_marriages =
           <option value="HusbandLast">Husband's Last Name</option>
           <option value="WifeFirst">Wife's First Name</option>
           <option value="WifeLast">Wife's Last Name</option>
+          <option value="HusbandOffice">Husband's Office</option>
+          <option value="WifeOffice">Wife's Office</option>
         </select>
         <span id="spec-ID">
           ` +

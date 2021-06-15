@@ -222,7 +222,11 @@ elseif($restype == "Marriage"){
     left join \"Person\" wp on wp.\"ID\" = wpm.\"PersonID\"
     left join \"Person\" cp on cp.\"BiologicalChildOfMarriage\" = m.\"ID\"
     left join \"Name\" hn on hn.\"PersonID\" = hp.\"ID\" and hn.\"Type\" = 'authoritative'
-    left join \"Name\" wn on wn.\"PersonID\" = wp.\"ID\" and wn.\"Type\" = 'authoritative'";
+    left join \"Name\" wn on wn.\"PersonID\" = wp.\"ID\" and wn.\"Type\" = 'authoritative'
+    left join \"PersonOffice\" ho on ho.\"PersonID\" = hp.\"ID\"
+    left join \"PersonOffice\" wo on wo.\"PersonID\" = wp.\"ID\"
+    left join \"Office\" hoo on hoo.\"ID\" = ho.\"OfficeID\"
+    left join \"Office\" woo on woo.\"ID\" = wo.\"OfficeID\"";
     $query_where .= " where 1=1 ";
     if(count($cols) > 0){
         foreach(range(0, count($cols)-1) as $q){
