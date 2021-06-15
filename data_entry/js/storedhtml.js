@@ -80,6 +80,7 @@ const office_selector =
           <option value="Deacon">Deacon</option>
           <option value="Bishop">Bishop</option>
           <option value="Patriarch">Patriarch</option>
+          <option value="Council of Fifty">Council of Fifty</option>
           <option value="Relief Society">Relief Society</option>
           <option value="Temple Worker">Temple Worker</option>
           <option value="Midwife">Midwife</option>

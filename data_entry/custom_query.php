@@ -129,6 +129,7 @@ if($restype == "Person"){
                         case "Deacon":
                         case "Bishop":
                         case "Patriarch":
+                        case "Council of Fifty":
                         case "Relief Society":
                         case "Temple Worker":
                         case "Midwife":
