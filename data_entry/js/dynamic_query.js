@@ -244,6 +244,8 @@ function getResult() {
     })
     .toArray();
 
+  console.log('Columns is '+JSON.stringify(columns));
+  console.log('Offices is '+JSON.stringify(offices));
   let req = $.post(
     "custom_query.php",
     {

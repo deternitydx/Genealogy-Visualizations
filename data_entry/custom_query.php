@@ -23,7 +23,7 @@ $query_where = $query_joins = "";
 $query_before = "select * from (";
 $query_after = ") c where 1 = 1 ";
 $where_for_stats = "";
-$dateCount = $iinCount = $textCount = $numCount = $knCount = $offCount = $mtCount = 0;
+$dateCount = $iinCount = $textCount = $numCount = $knCount = $offCount = $mtCount =$husbandOffCount=$wifeOffCount= 0;
 $paramCount = 1;
 $params = [];
 $aq_query = "SELECT DISTINCT p.\"ID\" FROM \"Person\" p, \"ChurchOrgMembership\" m, \"ChurchOrganization\" c where m.\"PersonID\" = p.\"ID\" and m.\"ChurchOrgID\" = c.\"ID\" and c.\"Name\" = 'Annointed Quorum'";
@@ -235,6 +235,41 @@ elseif($restype == "Marriage"){
         foreach(range(0, count($cols)-1) as $q){
             $decider = ($isisnot[$iinCount] == "isnot")?" not ":" ";
             switch($cols[$q]){
+                case "HusbandOffice":
+                    if($offices[$husbandOffCount]=="known"){
+                        $query_where .= "and".$decider."hoo.\"Name\" is not null";
+                        $husbandOffCount++;
+                        break;
+                    } 
+                    else if($offices[$husbandOffCount]=="unknown"){
+                        $query_where .= "and".$decider."hoo.\"Name\" is null";
+                        $husbandOffCount++;
+                        break;
+                    } 
+                    else{
+                        $query_where .= "and".$decider."hoo.\"Name\" ilike '%".$offices[$husbandOffCount]."%'";
+                        $husbandOffCount++;
+                        break;
+                    } 
+
+                case "WifeOffice":
+                    if($offices[$wifeOffCount]=="known"){
+                        $query_where .= "and".$decider."woo.\"Name\" is not null";
+                        $wifeOffCount++;
+                        break;
+                    } 
+                    else if($offices[$wifeOffCount]=="unknown"){
+                        $query_where .= "and".$decider."woo.\"Name\" is null";
+                        $wifeOffCount++;
+                        break;
+                    } 
+                    else{
+                        $query_where .= "and".$decider."woo.\"Name\" ilike '%".$offices[$wifeOffCount]."%'";
+                        $wifeOffCount++;
+                        break;
+                    } 
+                    
+                    
                 case "MarriageDate":
                 case "DivorceDate":
                 case "CancelledDate":
