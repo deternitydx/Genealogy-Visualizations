@@ -236,39 +236,60 @@ elseif($restype == "Marriage"){
             $decider = ($isisnot[$iinCount] == "isnot")?" not ":" ";
             switch($cols[$q]){
                 case "HusbandOffice":
-                    if($offices[$husbandOffCount]=="known"){
-                        $query_where .= "and".$decider."hoo.\"Name\" is not null";
-                        $husbandOffCount++;
+                    switch($offices[$husbandOffCount]){
+                        case "First Presidency":
+                        case "Apostle":
+                        case "Seventy":
+                        case "High Priest":
+                        case "Elder":
+                        case "Teacher":
+                        case "Priest":
+                        case "Deacon":
+                        case "Bishop":
+                        case "Patriarch":
+                        case "Council of Fifty":
+                        case "Relief Society":
+                        case "Temple Worker":
+                        case "Midwife":
+                        case "Female Relief Society of Nauvoo":
+                            $query_after .= "and".$decider."\"".$cols[$q]."\" ilike '%".$offices[$husbandOffCount]."%'";
                         break;
-                    } 
-                    else if($offices[$husbandOffCount]=="unknown"){
-                        $query_where .= "and".$decider."hoo.\"Name\" is null";
-                        $husbandOffCount++;
+                        case "known":
+                            $query_where .= "and".$decider."hoo.\"Name\" is not null";
                         break;
-                    } 
-                    else{
-                        $query_where .= "and".$decider."hoo.\"Name\" ilike '%".$offices[$husbandOffCount]."%'";
-                        $husbandOffCount++;
-                        break;
-                    } 
+                        case "unknown":
+                            $query_where .= "and".$decider."hoo.\"Name\" is null";
+                    }
+                    $husbandOffCount++;
+                //NOTE: You cannot put a break here because you want to read all the elements in $offices, not just the first. Breaking will limit to the zeroeth index
 
                 case "WifeOffice":
-                    if($offices[$wifeOffCount]=="known"){
-                        $query_where .= "and".$decider."woo.\"Name\" is not null";
-                        $wifeOffCount++;
+                    switch($offices[$husbandOffCount]){
+                        case "First Presidency":
+                        case "Apostle":
+                        case "Seventy":
+                        case "High Priest":
+                        case "Elder":
+                        case "Teacher":
+                        case "Priest":
+                        case "Deacon":
+                        case "Bishop":
+                        case "Patriarch":
+                        case "Council of Fifty":
+                        case "Relief Society":
+                        case "Temple Worker":
+                        case "Midwife":
+                        case "Female Relief Society of Nauvoo":
+                            $query_after .= "and".$decider."\"".$cols[$q]."\" ilike '%".$offices[$wifeOffCount]."%'";
                         break;
-                    } 
-                    else if($offices[$wifeOffCount]=="unknown"){
-                        $query_where .= "and".$decider."woo.\"Name\" is null";
-                        $wifeOffCount++;
+                        case "known":
+                            $query_where .= "and".$decider."woo.\"Name\" is not null";
                         break;
-                    } 
-                    else{
-                        $query_where .= "and".$decider."woo.\"Name\" ilike '%".$offices[$wifeOffCount]."%'";
-                        $wifeOffCount++;
-                        break;
-                    } 
-                    
+                        case "unknown":
+                            $query_where .= "and".$decider."woo.\"Name\" is null";
+                    }
+                    $wifeOffCount++;
+                
                     
                 case "MarriageDate":
                 case "DivorceDate":
