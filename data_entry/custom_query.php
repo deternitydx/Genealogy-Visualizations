@@ -23,7 +23,7 @@ $query_where = $query_joins = "";
 $query_before = "select * from (";
 $query_after = ") c where 1 = 1 ";
 $where_for_stats = "";
-$dateCount = $iinCount = $textCount = $numCount = $knCount = $offCount = $mtCount = 0;
+$dateCount = $iinCount = $textCount = $numCount = $knCount = $offCount = $mtCount =$husbandOffCount=$wifeOffCount= 0;
 $paramCount = 1;
 $params = [];
 $aq_query = "SELECT DISTINCT p.\"ID\" FROM \"Person\" p, \"ChurchOrgMembership\" m, \"ChurchOrganization\" c where m.\"PersonID\" = p.\"ID\" and m.\"ChurchOrgID\" = c.\"ID\" and c.\"Name\" = 'Annointed Quorum'";
@@ -129,6 +129,7 @@ if($restype == "Person"){
                         case "Deacon":
                         case "Bishop":
                         case "Patriarch":
+                        case "Council of Fifty":
                         case "Relief Society":
                         case "Temple Worker":
                         case "Midwife":
@@ -204,8 +205,11 @@ elseif($restype == "Marriage"){
         as \"Phase\",
         m.\"MarriageDate\", m.\"ID\" as \"MarriageID\", concat(hn.\"First\", ' ', hn.\"Middle\", ' ', hn.\"Last\") as \"HusbandName\",
         hn.\"First\" as \"HusbandFirst\", hn.\"Last\" as \"HusbandLast\", wn.\"First\" as \"WifeFirst\", wn.\"Last\" as \"WifeLast\", 
+        string_agg(distinct hoo.\"Name\", ', ') as \"HusbandOffice\",
         AGE(TO_TIMESTAMP(m.\"MarriageDate\", 'YYYY-MM-DD'), TO_TIMESTAMP(hp.\"BirthDate\", 'YYYY-MM-DD')) as \"HusbandAge\", 
-        concat(wn.\"First\", ' ', wn.\"Middle\", ' ', wn.\"Last\") as \"WifeName\", AGE(TO_TIMESTAMP(m.\"MarriageDate\", 'YYYY-MM-DD'), 
+        concat(wn.\"First\", ' ', wn.\"Middle\", ' ', wn.\"Last\") as \"WifeName\",
+        string_agg(distinct woo.\"Name\", ', ') as \"WifeOffice\",
+         AGE(TO_TIMESTAMP(m.\"MarriageDate\", 'YYYY-MM-DD'), 
         TO_TIMESTAMP(wp.\"BirthDate\", 'YYYY-MM-DD')) as \"WifeAge\",
         age(min(to_date(cp.\"BirthDate\", 'YYYY-MM-DD')), to_date(wp.\"BirthDate\", 'YYYY-MM-DD')) as \"WifeFirstBirthAge\", 
         m.\"Type\",
@@ -221,12 +225,72 @@ elseif($restype == "Marriage"){
     left join \"Person\" wp on wp.\"ID\" = wpm.\"PersonID\"
     left join \"Person\" cp on cp.\"BiologicalChildOfMarriage\" = m.\"ID\"
     left join \"Name\" hn on hn.\"PersonID\" = hp.\"ID\" and hn.\"Type\" = 'authoritative'
-    left join \"Name\" wn on wn.\"PersonID\" = wp.\"ID\" and wn.\"Type\" = 'authoritative'";
+    left join \"Name\" wn on wn.\"PersonID\" = wp.\"ID\" and wn.\"Type\" = 'authoritative'
+    left join \"PersonOffice\" ho on ho.\"PersonID\" = hp.\"ID\"
+    left join \"PersonOffice\" wo on wo.\"PersonID\" = wp.\"ID\"
+    left join \"Office\" hoo on hoo.\"ID\" = ho.\"OfficeID\"
+    left join \"Office\" woo on woo.\"ID\" = wo.\"OfficeID\"";
     $query_where .= " where 1=1 ";
     if(count($cols) > 0){
         foreach(range(0, count($cols)-1) as $q){
             $decider = ($isisnot[$iinCount] == "isnot")?" not ":" ";
             switch($cols[$q]){
+                case "HusbandOffice":
+                    switch($offices[$husbandOffCount]){
+                        case "First Presidency":
+                        case "Apostle":
+                        case "Seventy":
+                        case "High Priest":
+                        case "Elder":
+                        case "Teacher":
+                        case "Priest":
+                        case "Deacon":
+                        case "Bishop":
+                        case "Patriarch":
+                        case "Council of Fifty":
+                        case "Relief Society":
+                        case "Temple Worker":
+                        case "Midwife":
+                        case "Female Relief Society of Nauvoo":
+                            $query_after .= "and".$decider."\"".$cols[$q]."\" ilike '%".$offices[$husbandOffCount]."%'";
+                        break;
+                        case "known":
+                            $query_where .= "and".$decider."hoo.\"Name\" is not null";
+                        break;
+                        case "unknown":
+                            $query_where .= "and".$decider."hoo.\"Name\" is null";
+                    }
+                    $husbandOffCount++;
+                //NOTE: You cannot put a break here because you want to read all the elements in $offices, not just the first. Breaking will limit to the zeroeth index
+
+                case "WifeOffice":
+                    switch($offices[$husbandOffCount]){
+                        case "First Presidency":
+                        case "Apostle":
+                        case "Seventy":
+                        case "High Priest":
+                        case "Elder":
+                        case "Teacher":
+                        case "Priest":
+                        case "Deacon":
+                        case "Bishop":
+                        case "Patriarch":
+                        case "Council of Fifty":
+                        case "Relief Society":
+                        case "Temple Worker":
+                        case "Midwife":
+                        case "Female Relief Society of Nauvoo":
+                            $query_after .= "and".$decider."\"".$cols[$q]."\" ilike '%".$offices[$wifeOffCount]."%'";
+                        break;
+                        case "known":
+                            $query_where .= "and".$decider."woo.\"Name\" is not null";
+                        break;
+                        case "unknown":
+                            $query_where .= "and".$decider."woo.\"Name\" is null";
+                    }
+                    $wifeOffCount++;
+                
+                    
                 case "MarriageDate":
                 case "DivorceDate":
                 case "CancelledDate":

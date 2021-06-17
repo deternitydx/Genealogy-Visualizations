@@ -80,6 +80,7 @@ const office_selector =
           <option value="Deacon">Deacon</option>
           <option value="Bishop">Bishop</option>
           <option value="Patriarch">Patriarch</option>
+          <option value="Council of Fifty">Council of Fifty</option>
           <option value="Relief Society">Relief Society</option>
           <option value="Temple Worker">Temple Worker</option>
           <option value="Midwife">Midwife</option>
@@ -146,6 +147,8 @@ const base_marriages =
           <option value="HusbandLast">Husband's Last Name</option>
           <option value="WifeFirst">Wife's First Name</option>
           <option value="WifeLast">Wife's Last Name</option>
+          <option value="HusbandOffice">Husband's Office</option>
+          <option value="WifeOffice">Wife's Office</option>
         </select>
         <span id="spec-ID">
           ` +
