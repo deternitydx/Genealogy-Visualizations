@@ -422,7 +422,7 @@ function getResult() {
         else if (rtype == "Adoption") {
           order_column = 0;
           $("#results-view").append(
-            "<thead><tr><th>Adoption Date</th><th>Adoptee First</th><th>Adoptee Last</th><th>Adoptee Age</th><th>Adopting Father</th><th>Adopting Mother</th><th>Birth Marriage Type</th></tr></thead>"
+            "<thead><tr><th>Adoption Date</th><th>Adoptee First</th><th>Adoptee Last</th><th>Adoptee Office</th><th>Adoptee Age</th><th>Adopting Father</th><th>Adopting Mother</th><th>Birth Marriage Type</th></tr></thead>"
           );
           let tableout = "<tbody>";
           d.slice(1).forEach(function (el) {
