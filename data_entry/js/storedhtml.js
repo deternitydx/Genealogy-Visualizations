@@ -134,6 +134,26 @@ const marriage_DB_restrict = `
           <option value="All" selected>All Marriages</option>
 `;
 
+const base_adoptions = 
+`
+<div id="line-ID">
+        <select id="restrict-ID" onchange="updateRestrictor(ID)" class="param-column-select">
+          <option value="AdoptionDate">Adoption Date</option>
+          <option value="AdopteeName">Adoptee Name</option>
+          <option value="FatherName">Father Name</option>
+          <option value="MotherName">Mother Name</option>
+          <option value="BirthMarriageType">Birth Marriage Type</option>
+        </select>
+        <span id="spec-ID">
+          ` +
+  date_selector +
+  `
+        </span>
+        <button class="delete-button" onclick="deleteRestrictor(ID)">X</button>
+      </div>
+
+`;
+
 const base_marriages =
   `
 <div id="line-ID">
