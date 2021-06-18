@@ -130,6 +130,7 @@ function updateRestrictor(r) {
     case "WifeOffice":
     case "FatherOffice":
     case "MotherOffice":
+    case "AdopteeOffice":
       $("#spec-" + r).html(office_selector.replace(/ID/g, r));
       break;
   }
