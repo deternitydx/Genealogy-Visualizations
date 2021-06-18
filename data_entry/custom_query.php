@@ -23,7 +23,7 @@ $query_where = $query_joins = "";
 $query_before = "select * from (";
 $query_after = ") c where 1 = 1 ";
 $where_for_stats = "";
-$dateCount = $iinCount = $textCount = $numCount = $knCount = $offCount = $mtCount =$husbandOffCount=$wifeOffCount= 0;
+$dateCount = $iinCount = $textCount = $numCount = $knCount = $offCount = $mtCount =$husbandOffCount=$wifeOffCount=$fatherOffCount=$motherOffCount= 0;
 $paramCount = 1;
 $params = [];
 $aq_query = "SELECT DISTINCT p.\"ID\" FROM \"Person\" p, \"ChurchOrgMembership\" m, \"ChurchOrganization\" c where m.\"PersonID\" = p.\"ID\" and m.\"ChurchOrgID\" = c.\"ID\" and c.\"Name\" = 'Annointed Quorum'";
@@ -434,6 +434,60 @@ elseif($restype=="Adoption"){
         foreach(range(0, count($cols)-1) as $q){
             $decider = ($isisnot[$iinCount] == "isnot")?" not ":" ";
             switch($cols[$q]){
+                case "FatherOffice":
+                    switch($offices[$fatherOffCount]){
+                        case "First Presidency":
+                        case "Apostle":
+                        case "Seventy":
+                        case "High Priest":
+                        case "Elder":
+                        case "Teacher":
+                        case "Priest":
+                        case "Deacon":
+                        case "Bishop":
+                        case "Patriarch":
+                        case "Council of Fifty":
+                        case "Relief Society":
+                        case "Temple Worker":
+                        case "Midwife":
+                        case "Female Relief Society of Nauvoo":
+                            $query_after .= "and".$decider."\"".$cols[$q]."\" ilike '%".$offices[$fatherOffCount]."%'";
+                        break;
+                        case "known":
+                            $query_where .= "and".$decider."hoo.\"Name\" is not null";
+                        break;
+                        case "unknown":
+                            $query_where .= "and".$decider."hoo.\"Name\" is null";
+                    }
+                    $fatherOffCount++;
+                //NOTE: You cannot put a break here because you want to read all the elements in $offices, not just the first. Breaking will limit to the zeroeth index
+
+                case "MotherOffice":
+                    switch($offices[$motherOffCount]){
+                        case "First Presidency":
+                        case "Apostle":
+                        case "Seventy":
+                        case "High Priest":
+                        case "Elder":
+                        case "Teacher":
+                        case "Priest":
+                        case "Deacon":
+                        case "Bishop":
+                        case "Patriarch":
+                        case "Council of Fifty":
+                        case "Relief Society":
+                        case "Temple Worker":
+                        case "Midwife":
+                        case "Female Relief Society of Nauvoo":
+                            $query_after .= "and".$decider."\"".$cols[$q]."\" ilike '%".$offices[$motherOffCount]."%'";
+                        break;
+                        case "known":
+                            $query_where .= "and".$decider."woo.\"Name\" is not null";
+                        break;
+                        case "unknown":
+                            $query_where .= "and".$decider."woo.\"Name\" is null";
+                    }
+                    $motherOffCount++;
                 case "AdoptionDate":
                     switch($dateCls[$dateCount]){
                         case "before":

@@ -128,8 +128,8 @@ function updateRestrictor(r) {
     case "Office":
     case "HusbandOffice":
     case "WifeOffice":
-    case "MotherOffice":
     case "FatherOffice":
+    case "MotherOffice":
       $("#spec-" + r).html(office_selector.replace(/ID/g, r));
       break;
   }
