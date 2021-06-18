@@ -142,6 +142,8 @@ const base_adoptions =
           <option value="AdopteeName">Adoptee Name</option>
           <option value="FatherName">Father Name</option>
           <option value="MotherName">Mother Name</option>
+          <option value="FatherOffice">Father Office</option>
+          <option value="MotherOffice">Mother Office</option>
           <option value="BirthMarriageType">Birth Marriage Type</option>
         </select>
         <span id="spec-ID">

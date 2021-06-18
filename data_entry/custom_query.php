@@ -408,7 +408,9 @@ elseif($restype=="Adoption"){
     ao.\"Name\" as \"AdopteeOffice\",
     age(to_timestamp(nms.\"Date\", 'YYYY-MM-DD'), to_timestamp(ap.\"BirthDate\", 'YYYY-MM-DD')) as \"AdopteeAge\",
     hp.\"ID\" as \"FatherID\", concat(hpn.\"First\", ' ', hpn.\"Middle\", ' ', hpn.\"Last\") as \"FatherName\",
+    hoo.\"Name\" as \"FatherOffice\",
     wp.\"ID\" as \"MotherID\", concat(wpn.\"First\", ' ', wpn.\"Middle\", ' ', wpn.\"Last\") as \"MotherName\",
+    woo.\"Name\" as \"MotherOffice\",
     bm.\"Type\" as \"BirthMarriageType\"";
     $query_from .= "\"NonMaritalSealings\" nms ";
     $query_joins .= "left join \"Person\" ap on ap.\"ID\" = nms.\"AdopteeID\"
@@ -422,7 +424,11 @@ elseif($restype=="Adoption"){
     left join \"Name\" wpn on wpn.\"PersonID\" = wp.\"ID\" and wpn.\"Type\" = 'authoritative'
     left join \"Marriage\" bm on bm.\"ID\" = ap.\"BiologicalChildOfMarriage\"
     left join \"PersonOffice\" apo on apo.\"PersonID\" = ap.\"ID\"
-    left join \"Office\" ao on ao.\"ID\" = apo.\"OfficeID\"";
+    left join \"Office\" ao on ao.\"ID\" = apo.\"OfficeID\"
+    left join \"PersonOffice\" ho on ho.\"PersonID\" = hp.\"ID\"
+    left join \"PersonOffice\" wo on wo.\"PersonID\" = wp.\"ID\"
+    left join \"Office\" hoo on hoo.\"ID\" = ho.\"OfficeID\"
+    left join \"Office\" woo on woo.\"ID\" = wo.\"OfficeID\"";
     $query_where .= " where nms.\"Type\" = 'adoption' ";
     if(count($cols) > 0){
         foreach(range(0, count($cols)-1) as $q){
