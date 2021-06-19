@@ -36,17 +36,19 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
     $latest_restriction = "0000-00-00";
 
     uasort($marriages,"sortMarriages");
+    $plural_names = array();
+    array_push($plural_names,$root["SpouseName"]);
     foreach($marriages as $m1){
         //I'm not sure what the point of $latest_restriction is? Just going to ignore it for now because it seems like it's excluding marriage dates that shouldnt be excluded
-
         //Posthumous handling
         $husband_death_date = $person["information"]["DeathDate"];
         $not_posthumous = true;
         if(cmpDates($husband_death_date,$m1["MarriageDate"]) < 1) $not_posthumous = false;
-        if($m1["ID"]!= $root["ID"] && $not_posthumous){
+        if($m1["ID"]!= $root["ID"] && $not_posthumous && !in_array($m1["SpouseName"],$plural_names) ){
             //Only want to include marriages after the root and those that aren't posthumous
             //echo 'Marriage date is : ' . $m1["MarriageDate"] . "</br>";
             array_push($plurals, $m1);
+            array_push($plural_names,$m1["SpouseName"]);
         } 
         $divdate = ($m1["DivorceDate"] == null)?"9999-99-99":$m1["DivorceDate"];
         $cncdate = ($m1["CancelledDate"] == null)?"9999-99-99":$m1["CancelledDate"];
@@ -74,7 +76,7 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
     while($civil_index < sizeof($plurals)){
         if($civil_index ==0){
             //Check for second civil marriage
-            if(($plurals[0]["Type"]=="civil") && (cmpDates($root_wife_death_date,$plurals[0]["MarriageDate"])==-1)){
+            if(($plurals[0]["Type"]=="civil") && (cmpDates($root_wife_death_date,$plurals[0]["MarriageDate"])==-1) && $root["Type"]=="civil"){
                 array_push($second_civil,$plurals[0]);
                 array_push($seen,$plurals[0]["SpouseID"]);
                 //echo "Existence of second civil marriage! Date is : " . $plurals[0]["MarriageDate"] . "</br>";
@@ -82,8 +84,9 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         }
         else{
             //Check for other civil marriage
+            if(empty($second_civil)) break;
             $previous_wife_death_date = $plurals[$civil_index-1]["SpouseDeath"];
-            if(($plurals[$civil_index-1]["Type"]=="civil") && (cmpDates($previous_wife_death_date,$plurals[$civil_index-1]["MarriageDate"])==-1)){
+            if(($plurals[$civil_index-1]["Type"]=="civil") && (cmpDates($previous_wife_death_date,$plurals[$civil_index-1]["MarriageDate"])==-1) &&$plurals[$civil_index-1]["Type"]=="civil" ){
                 array_push($other_civil,$plurals[$civil_index]);
                 array_push($seen,$plurals[$civil_index]["SpouseID"]);
                 //echo "Existence of other civil marriage! Date is : " . $plurals[0]["MarriageDate"];
@@ -91,6 +94,7 @@ $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         }
         $civil_index++;
     }
+
 
 
 
