@@ -161,10 +161,12 @@ ini_set("display_errors", 1);
                 else
                     echo "<i class='fa fa-female' aria-hidden='true'></i>";
                 echo "</h1>";
+                echo "<a href=\"\"><button class =\"btn btn-primary\">Edit Person</button></a>";
                 $n_i++;
             } // endif
         } // end foreach
     ?>
+    
     <!-- <a id="edit-icon" href='./data_entry/individual.php?id=<?=$_GET["id"]?>'><i class='fa fa-pencil' aria-hidden='true'></i>  Edit</a> -->
     
     <nav aria-label="breadcrumb" id="bc">

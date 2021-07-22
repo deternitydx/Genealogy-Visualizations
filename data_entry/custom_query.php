@@ -407,11 +407,10 @@ elseif($restype=="Adoption"){
     apn.\"Last\" as \"AdopteeLast\",
     ao.\"Name\" as \"AdopteeOffice\",
     age(to_timestamp(nms.\"Date\", 'YYYY-MM-DD'), to_timestamp(ap.\"BirthDate\", 'YYYY-MM-DD')) as \"AdopteeAge\",
-    hp.\"ID\" as \"FatherID\", concat(hpn.\"First\", ' ', hpn.\"Middle\", ' ', hpn.\"Last\") as \"FatherName\",
+    hp.\"ID\" as \"FatherID\", concat(hpn.\"First\", ' ', hpn.\"Middle\") as \"FatherFirst\", hpn.\"Last\" as \"FatherLast\",
     hoo.\"Name\" as \"FatherOffice\",
-    wp.\"ID\" as \"MotherID\", concat(wpn.\"First\", ' ', wpn.\"Middle\", ' ', wpn.\"Last\") as \"MotherName\",
-    woo.\"Name\" as \"MotherOffice\",
-    bm.\"Type\" as \"BirthMarriageType\"";
+    wp.\"ID\" as \"MotherID\", concat(wpn.\"First\", ' ', wpn.\"Middle\") as \"MotherFirst\", wpn.\"Last\" as \"MotherLast\",
+    woo.\"Name\" as \"MotherOffice\"";
     $query_from .= "\"NonMaritalSealings\" nms ";
     $query_joins .= "left join \"Person\" ap on ap.\"ID\" = nms.\"AdopteeID\"
     left join \"Name\" apn on apn.\"PersonID\" = nms.\"AdopteeID\" and apn.\"Type\" = 'authoritative'
