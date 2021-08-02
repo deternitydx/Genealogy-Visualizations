@@ -305,7 +305,7 @@ ini_set("display_errors", 1);
                         </p>
                       </div>
                     </div>
-                    <?php echo "<a href='$db_link' target= '_blank' ><i class='fa fa-pencil' aria-hidden='true'></i></a>" ; ?>
+                    <?php echo "<a href='$db_link' target= '_blank' ><i class='fas fa-edit' aria-hidden='true'></i></a>" ; ?>
                   </div>
                   <div class="tab-pane fade" id="nso" role="tabpanel" aria-labelledby="nso-tab">
                         <?php
