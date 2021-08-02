@@ -161,7 +161,8 @@ ini_set("display_errors", 1);
                 else
                     echo "<i class='fa fa-female' aria-hidden='true'></i>";
                 echo "</h1>";
-                echo "<a href=\"\"><button class =\"btn btn-primary\">Edit Person</button></a>";
+                $db_link = "http://nauvoo.iath.virginia.edu/viz/data_entry/individual.php?id=" . $_GET["id"];
+                echo "<a href='$db_link' target = '_blank'><button class =\"btn btn-primary\"  >Edit Person</button></a>";
                 $n_i++;
             } // endif
         } // end foreach
