@@ -158,9 +158,9 @@ ini_set("display_errors", 1);
                     <span>{$name["Suffix"]}</span>";
                 $db_link = "http://nauvoo.iath.virginia.edu/viz/data_entry/individual.php?id=" . $_GET["id"];
                 if ($person["information"]["Gender"] == "Male")
-                    echo "<a href = '$db_link' target= '_blank'><i class='fa fa-male' aria-hidden='true'></i></a>";
+                    echo "<i class='fa fa-male' aria-hidden='true'></i>";
                 else
-                    echo "<a href='$db_link' target= '_blank' ><i class='fa fa-female' aria-hidden='true'></i></a>";
+                    echo "<i class='fa fa-female' aria-hidden='true'></i>";
                 echo "</h1>";
                 $n_i++;
             } // endif
@@ -305,6 +305,7 @@ ini_set("display_errors", 1);
                         </p>
                       </div>
                     </div>
+                    <?php echo "<a href='$db_link' target= '_blank' ><i class='fa fa-pencil' aria-hidden='true'></i></a>" ; ?>
                   </div>
                   <div class="tab-pane fade" id="nso" role="tabpanel" aria-labelledby="nso-tab">
                         <?php
