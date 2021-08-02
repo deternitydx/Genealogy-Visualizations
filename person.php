@@ -156,13 +156,12 @@ ini_set("display_errors", 1);
                     <span>{$name["Middle"]}</span>
                     <span>{$name["Last"]}</span>
                     <span>{$name["Suffix"]}</span>";
-                if ($person["information"]["Gender"] == "Male")
-                    echo "<i class='fa fa-male' aria-hidden='true'></i>";
-                else
-                    echo "<i class='fa fa-female' aria-hidden='true'></i>";
-                echo "</h1>";
                 $db_link = "http://nauvoo.iath.virginia.edu/viz/data_entry/individual.php?id=" . $_GET["id"];
-                echo "<a href='$db_link' target = '_blank'><button class =\"btn btn-primary\"  >Edit Person</button></a>";
+                if ($person["information"]["Gender"] == "Male")
+                    echo "<a href = '$db_link' target= '_blank'><i class='fa fa-male' aria-hidden='true'></i></a>";
+                else
+                    echo "<a href='$db_link' target= '_blank' ><i class='fa fa-female' aria-hidden='true'></i></a>";
+                echo "</h1>";
                 $n_i++;
             } // endif
         } // end foreach
